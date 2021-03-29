@@ -3,7 +3,7 @@
 # Stevens Esports Website
 
 # Group Members:
-Jerry Chen;
+Jerry Chen;  
 Jerry Cheng;  
 Andrew Chuah;  
 Ryan Hartman;  
