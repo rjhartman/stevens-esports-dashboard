@@ -1,8 +1,8 @@
-## CS-546 Final Project
+# CS-546 Final Project
 
-# Stevens Esports Website
+## Stevens Esports Website
 
-# Group Members:
+## Group Members:
 Jerry Chen;  
 Jerry Cheng;  
 Andrew Chuah;  
