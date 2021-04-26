@@ -1,0 +1,19 @@
+{
+  "name": "stevens-esports",
+  "version": "1.0.0",
+  "description": "Stevens Esports club dashboard website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RHartman99/stevens-esports-dashboard.git"
+  },
+  "author": "Jerry Chen, Jerry Cheng, Andrew Chuah, Ryan Hartman, Daniel Pekata",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RHartman99/stevens-esports-dashboard/issues"
+  },
+  "homepage": "https://github.com/RHartman99/stevens-esports-dashboard#readme"
+}
