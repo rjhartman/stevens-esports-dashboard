@@ -1,0 +1,18 @@
+<h1>
+    {{title}}
+</h1>
+<main>
+<ul>
+    {{#each data.team}}
+    <ul>
+    <li class="team_name">{{this.name}}</li>
+    <li class="team_status">{{this.status}}</li>
+    <li class="team_game">{{this.game}}</li>
+    {{!-- figure out how to get users out of database later this is 100% wrong --}}
+    <ul>
+        {{#each data.users}}
+        <li class="team_player">{{this.nickname}} - {{this.firstName}} {{this.lastName}}</li>
+    </ul>
+    </ul>
+</ul>
+</main>
