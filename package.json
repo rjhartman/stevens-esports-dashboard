@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/RHartman99/stevens-esports-dashboard/issues"
   },
-  "homepage": "https://github.com/RHartman99/stevens-esports-dashboard#readme"
+  "homepage": "https://github.com/RHartman99/stevens-esports-dashboard#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-handlebars": "^5.3.0",
+    "handlebars": "^4.7.7"
+  }
 }
