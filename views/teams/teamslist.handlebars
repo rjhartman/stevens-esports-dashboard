@@ -1,0 +1,10 @@
+{{!-- this is meant to be the overall page that you can use to navigate to indivdual pages --}}
+<h1>
+    {{title}}
+</h1>
+<main>
+{{#each data.team}}
+    <p class="overall_team">{{this.name}}</p>
+    <a class="team_link" href='/teams/{{this.id}}'>View More Info</a>
+{{/each}}
+</main>
