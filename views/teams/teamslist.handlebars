@@ -3,8 +3,8 @@
     {{title}}
 </h1>
 <main>
-{{#each data.team}}
+{{#each teams}}
     <p class="overall_team">{{this.name}}</p>
-    <a class="team_link" href='/teams/{{this.id}}'>View More Info</a>
+    <a class="team_link" href='http://localhost:3000/teams/{{this._id}}'>View More Info</a>
 {{/each}}
 </main>

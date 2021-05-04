@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data');
 const teamData = data.teams;
+const teamFuncs = data.teamfunctions;
 
 
 router.get('/', async (req, res) => {
     try {
-        res.render('teams/teampage', {title: 'List of Teams', data: teamData});
+        res.render('teams/teamslist', {title: 'List of Teams', teams: teamData});
     } catch (e) {
         res.status(500);
     }
@@ -14,12 +15,13 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-      const show = await showData.getShowById(req.params.id);
-      //https://stackoverflow.com/questions/3790681/regular-expression-to-remove-html-tags
-      show.data.summary = show.data.summary.replace(/<[^>]*>/g, ' ').replace(/\s{2,}/g, ' ').trim();
-      res.render('shows/showpage', {title: show.data.name, body: show });
+        let id = Number(req.params.id);
+        const team = await teamFuncs.getTeamById(id);
+        res.render('teams/teampage', {title: team.name, team: team });
     } catch (e) {
-        res.status(500).render('shows/errorpage', {title: 'Error', error: e });
+        //res.status(500).render('shows/errorpage', {title: 'Error', error: e });
+        res.status(500);
+        console.log(e);
     }
 });
 

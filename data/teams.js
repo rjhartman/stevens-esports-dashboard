@@ -1,6 +1,6 @@
 module.exports = [
     {
-        _id: 0,
+        _id: 1,
         name: "Stevens League of Legends Red",
         status: "Varsity",
         game: "League of Legends",
@@ -8,7 +8,7 @@ module.exports = [
         "Andrew Chuah"],
     },
     {
-        _id: 1,
+        _id: 2,
         name: "Stevens Overwatch Gray",
         status: "Junior Varsity",
         game: "Overwatch",
@@ -16,7 +16,7 @@ module.exports = [
         "Daniel Pekata"],
     },
     {
-        _id: 2,
+        _id: 3,
         name: "Stevens Counter Strike Red",
         status: "Varsity",
         game: "Cunter Strike",
