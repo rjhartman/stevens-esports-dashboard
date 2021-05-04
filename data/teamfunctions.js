@@ -1,8 +1,7 @@
 const teamData = require('./teams');
 module.exports = {
     async getTeamById(id) {
-        let regex = /^[0-9]+$/;
-        if (id.match(regex) == null) {
+        if (typeof id !== "number") {
             throw `Error: id must be a number`;
         }
         if (Number(id) < 1) {
