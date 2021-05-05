@@ -19,7 +19,7 @@ module.exports = [
         _id: 3,
         name: "Stevens Counter Strike Red",
         status: "Varsity",
-        game: "Cunter Strike",
+        game: "Counter Strike",
         players: ["Ryan Hartman", 
         "Patrick Hill"],
     },
