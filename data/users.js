@@ -1,6 +1,6 @@
 module.exports = [
     {
-        _id: 0,
+        _id: 1,
         firstName: "Andrew",
         lastName: "Chuah",
         username: "achuah",
