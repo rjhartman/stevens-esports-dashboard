@@ -150,7 +150,7 @@ sub {
 }
 
 #header {
-    background: linear-gradient(to bottom, rgba(53,53,53,1), rgba(53,53,53,0));
+    background: linear-gradient(to bottom, #767676, #76767600);
     color: #FFFFFF;
     position: absolute;
     top: 0;
@@ -184,11 +184,11 @@ sub {
     letter-spacing: 1px;
     text-transform: uppercase;
     text-decoration: none;
-    color: #FFFFFF;
+    color: #ffffff;
 }
 
 #header-menu ul.menu > li > a:hover, #header-menu ul.menu > li > a:focus {
-    color: #e41f1f;
+    color: #ff2929;
     outline: none;
 }
 
@@ -213,7 +213,7 @@ sub {
     position: absolute;
     left: 0;
     width: 100%;
-    background-color: #636363;
+    background-color: #555555;
     color: #FFFFFF;
 }
 
@@ -225,6 +225,10 @@ sub {
     z-index: 2;
     display: block;
     pointer-events: none;
+}
+
+.page-container {
+    position: relative;
 }
 
 #landing-intro {
@@ -256,6 +260,11 @@ sub {
     margin-bottom: 12px;
 }
 
+#landing-intro p {
+    margin-bottom: 50px;
+    padding-bottom: 60px;
+}
+
 body .main {
     padding-top: 40px;
     background-image: url('/public/assets/intro_bg.jpg');
@@ -281,7 +290,7 @@ body .main {
 }
 
 #footer .footer-sm {
-    padding: 12px 0 12px;
+    padding: 0 0 12px;
 }
 
 #footer .footer-sm h4 {
@@ -301,6 +310,7 @@ body .main {
     display: -webkit-box;
     display: flex;
     flex-wrap: wrap;
+    padding-bottom: 60px;
 }
 
 #footer .footer-sm .sm-links li {
@@ -329,7 +339,7 @@ body .main {
 #footer .footer-sm .sm-links a span.icon {
     display: inline-block;
     vertical-align: middle;
-    margin-right: 6px;
+    margin-right: 8px;
 }
 
 #footer .footer-sm .sm-links a span.text {
@@ -339,8 +349,8 @@ body .main {
     font-size: 0.9rem;
     line-height: 2.4rem;
     letter-spacing: 1.33px;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    color: #ff0000;
+    text-shadow: 0 2px 4px #555555;
+    color: #ffb7b7;
     display: inline-block;
     vertical-align: middle;
 }
