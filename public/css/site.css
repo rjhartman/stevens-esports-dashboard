@@ -1,0 +1,120 @@
+.category{
+    display:none;
+}
+.option{
+    display:inline;
+}
+.banner_container{
+    position: relative;
+    width: 100%;
+    background-color: rgb(156, 1, 1);
+    height: 120px;
+}
+.child {
+    width: 100%;
+    /* Center vertically */
+    position: absolute;
+    top: 50%;
+    margin-top: -15px;
+}
+
+.team_filter{
+    margin-left: 5%;
+    margin-top: 10%;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    font-family: Verdana, sans-serif
+}
+.body_content{
+    width: 100%;
+}
+.tab_container{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+.upcoming{
+    background-color:rgb(156, 1, 1);
+    border: rgb(156, 1, 1);
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+.results{
+    background-color:white;
+    border-style: solid;
+    border-color: rgb(156, 1, 1);
+    color: rgb(156, 1, 1);
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+.unresolved_matches{
+    margin-top: 5%;
+}
+.match_listings{
+    margin-top: 5%;
+}
+.match{
+    
+    padding: 24px 12px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #E1E1E1;
+    border-top: 1px solid #E1E1E1;
+    position: relative;
+}
+.match_icon{
+    color: rgb(156, 1, 1);
+    display: block;
+    position: absolute;
+    left: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.match_info{
+    color: rgb(156, 1, 1);
+    font-family: 'HartwellAlt-Semibold', sans-serif;
+    display: block;
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 0 235px;
+    align-items: center;
+    /* position: absolute; */
+}
+.match_link{
+    width: 96px;
+    right: 5%;
+    display: block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.match_link a{
+    text-decoration: none;
+    box-sizing: border-box;
+    font-family: 'HartwellAlt-Semibold', sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    padding: 11px 22px 9px;
+    border-radius: 2px;
+    min-width: 96px;
+    border: 1px solid #c00909;
+    color: rgb(156, 1, 1);
+    box-shadow: 0 2px 4px 0 rgba(212, 1, 1, 0.5);
+}
+.match_date{
+    font-family: 'HartwellAlt-Semibold', sans-serif;
+    color: rgb(156, 1, 1);
+    left: 15%;
+    position:absolute;
+    display: block;
+    top: 50%;
+    transform: translateY(-50%);
+}

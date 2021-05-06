@@ -1,0 +1,89 @@
+<main>
+    <div class="team-filters">
+        <div class="banner_container">
+            <div class="child">
+                <a class="team_filter" href="/match">ALL</a>
+                <a class="team_filter" href="/match/1">LoL</a>
+                <a class="team_filter" href="/match/2">CSGO</a>
+                <a class="team_filter" href="/match/3">Valorant</a>
+                <a class="team_filter" href="/match/4">Overwatch</a>
+                <a class="team_filter" href="/match/5">Hearthstone</a>
+                <a class="team_filter" href="/match/6">Rocket League</a>
+                <a class="team_filter" href="/match/7">Rainbow Six</a>
+                <a class="team_filter" href="/match/8">CoD</a>
+            </div>
+            
+        </div>
+    </div>
+    <div class="body_content">
+        <div class="tab_container">
+            <button class="upcoming">
+                <span>Upcoming</span>
+            </button>
+            <button class="results">
+                <span>Results</span>
+            </button>
+        </div>
+        {{!-- Depending on which tab is selected the other div element would be hidden --}}
+        <div class="unresolved_matches">
+            <div class="match_listings">
+                {{#each umatch}}
+                <div class="match">
+                    {{!-- icon will show what game the match is for, ie LoL, Valorant, etc.
+                    match date would show the date/time the match starts,
+                    match info would have names of both teams in the match
+                    match link would take you to a vod if available or it could be another page with more detailed
+                    info --}}
+                    <span class="match_icon">
+                        {{!-- <img src={{this.icon_image}}></img> --}}
+                        {{this.game}}
+                    </span>
+                    <span class="match_date">{{this.date}}</span>
+                    <div class="match_info">
+                        <span class="team1">{{this.team1}}</span>
+                        <span class="versus">VS</span>
+                        <span class="team2">{{this.team2}}</span>
+                    </div>
+                    <div class="match_link">
+                        <a href="">Details</a>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        <div class="resolved_matches">
+            <div class="match_listings">
+                {{#each rmatch}}
+                <div class="match">
+                    {{!-- icon will show what game the match is for, ie LoL, Valorant, etc.
+                    match date would show the date/time the match starts,
+                    match info would have names of both teams in the match
+                    match link would take you to a vod if available --}}
+                    <span class="match_icon">
+                        {{!-- <img src={{this.icon_image}}> --}}
+                        {{this.game}}
+                    </img></span>
+                    <span class="match_date">{{this.date}}</span>
+                    <div class="match_info">
+                        <span class="team1Score">{{this.teamScore}}</span>
+                        <span class="team1">{{this.team1}}</span>
+                        <span class="versus">VS</span>
+                        <span class="team2">{{this.team2}}</span>
+                        <span class="team2Score">{{this.opponentScore}}</span>
+                    </div>
+                    <div class="match_link">
+                        <a href="">Details</a>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</main>
+
+<script 
+    src="https://code.jquery.com/jquery-2.2.4.min.js" 
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+    crossorigin="anonymous">
+</script>
+<script src="./../public/js/schedule.js"></script>
