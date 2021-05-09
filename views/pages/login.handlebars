@@ -5,14 +5,32 @@
         <nav id="header-menu" class="">
             <div class="menu-main-nav-container">
                 <ul id="menu-main-nav" class="menu">
-                    <li class="menu-item menu-item-type-post_type menu-item-object-page">
-                        <a href="/">Match Schedule</a>
+                    <li class="menu-item">
+                        <a href="/schedule">Match Schedule</a>
                     </li>
-                    <li class="team-items menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children">
-                        <a href="#">Rosters</a>
+                    <li class="team-dropdown">
+                        <a target="" onclick="dropdown()" class="dropdownButton">Rosters ▼</a>
+                        <div class="sub-menu-list" id="team-list">
+                            <span class="team">
+                                <a href="#"><img src="/public/assets/Logos/league_logo.png" alt="League of Legends Red Team">League of Legends Red</a>
+                            </span>
+                            <span class="team">
+                                <a href="#"><img src="/public/assets/Logos/league_logo.png" alt="League of Legends Gray Team">League of Legends Gray</a>
+                            </span>
+                            <span class="team">
+                                <a href="#"><img src="/public/assets/Logos/league_logo.png" alt="Overwatch Red Team">Overwatch Red</a>
+                            </span>
+                            <span class="team">
+                                <a href="#"><img src="/public/assets/Logos/league_logo.png" alt="Hearthstone Red Team">Hearthstone Red</a>
+                            </span>
+                        </div>
+                        <!-- .sub-menu-list -->
                     </li>
-                    <li class="menu-item menu-item-type-post_type menu-item-object-page">
-                        <a href="/">Register</a>
+                    <li class="menu-item">
+                        <a href="/team-sign-up">Team Registration</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/login">Sign In</a>
                     </li>
                 </ul>
             </div>
@@ -22,18 +40,20 @@
 </header>
 <!-- .header -->
 <div class="page-container">
-    <img id="landing-banner" src="public/assets/Promo_Photos_A/2_cropped.jpg" alt='Stevens Esports Banner'>
-    <div class="main">
-        <div id="landing-intro">
-            <div class="container width--wide">
-                <h1>What is Stevens Esports?</h1>
-                <p>
-                    Stevens Esports is a student-led organization within the Stevens Institute of Technology that caters to students who are interested in competitive gaming. Stevens Esports regularly competes in collegiate tournaments in games such as League of Legends, Counter-Strike: Global Offensive, Overwatch, Call of Duty, and many other games.
-                </p>
-                <p style="font-style: normal; font-weight: bold;">
-                    Interested? Sign up for an account here and register for a team!
-                </p>
-            </div>
+    <img id="landing-banner" src="/public/assets/intro_bg.jpg" alt='Stevens Esports Banner'>
+    <div class="main" style="background-image: none;">
+        <div class="container width--wide">
+            <p>Stevens Esports Account Registration</p>
+            {{#if error}}
+            <p id="error">{{error}}</p>
+            {{/if}}
+            <form method="POST" id="login-form" action="/login">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="Username..."><br><br>
+                <label for="password">Password:</label>
+                <input type="text" id="password" name="password" placeholder="Password...">
+                <button type="submit">Login</button>
+            </form>
         </div>
     </div>
 </div>
@@ -41,7 +61,7 @@
 <footer id="footer">
     <div class="footer-sm">
         <div class="container width--wide">
-            <h4>Follow us on social media!</h4>
+            <h2>Follow us on social media!</h2>
             <ul class="sm-links">
                 <li>
                     <a href="https://twitter.com/StevensEsports" class="twitter">
