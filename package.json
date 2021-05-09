@@ -19,6 +19,8 @@
   "dependencies": {
     "@khanacademy/tota11y": "^0.2.0",
     "express": "^4.17.1",
-    "express-handlebars": "^5.3.1"
+    "express-handlebars": "^5.3.1",
+    "express-session": "^1.17.1",
+    "mongodb": "^3.6.6"
   }
 }
