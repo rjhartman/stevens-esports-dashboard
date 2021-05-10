@@ -10,13 +10,98 @@
         <link rel="stylesheet" href="/public/css/site.css">
     </head>
     <body>
+        <header id="header">
+            <div class="container">
+                <!--<button id="mobile-menu__trigger" class></button>-->
+                <a href="/" class="header-logo"><img src="/public/assets/Logos/logo_color.png" alt="Stevens Esports Logo"></a>
+                <nav id="header-menu" class="">
+                    <div class="menu-main-nav-container">
+                        <ul id="menu-main-nav" class="menu">
+                            <li class="menu-item">
+                                <a href="/schedule">Match Schedule</a>
+                            </li>
+                            <li class="team-dropdown">
+                                <a target="" onclick="dropdown()" class="dropdownButton">Rosters ▼</a>
+                                <div class="sub-menu-list" id="team-list">
+                                    <span class="team">
+                                        <a href="#"><img src="/public/assets/Logos/league_logo.png" alt="League of Legends Red Team">League of Legends Red</a>
+                                    </span>
+                                    <span class="team">
+                                        <a href="#"><img src="/public/assets/Logos/league_logo.png" alt="League of Legends Gray Team">League of Legends Gray</a>
+                                    </span>
+                                    <span class="team">
+                                        <a href="#"><img src="/public/assets/Logos/league_logo.png" alt="Overwatch Red Team">Overwatch Red</a>
+                                    </span>
+                                    <span class="team">
+                                        <a href="#"><img src="/public/assets/Logos/league_logo.png" alt="Hearthstone Red Team">Hearthstone Red</a>
+                                    </span>
+                                </div>
+                                <!-- .sub-menu-list -->
+                            </li>
+                            <li class="menu-item">
+                                <a href="/team-sign-up">Team Registration</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="/login">Sign In</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <!-- .container -->
+        </header>
+        <!-- .header -->
         {{{body}}}
+        <footer id="footer">
+            <div class="footer-sm">
+                <div class="container width--wide">
+                    <h1>Follow us on social media!</h1>
+                    <ul class="sm-links">
+                        <li>
+                            <a href="https://twitter.com/StevensEsports" class="twitter">
+                                <span class="icon">
+                                    <svg fill="#ffffff" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="48px" height="48px"><path d="M 24 4.300781 C 23.101563 4.699219 22.199219 5 21.199219 5.101563 C 22.199219 4.5 23 3.5 23.398438 2.398438 C 22.398438 3 21.398438 3.398438 20.300781 3.601563 C 19.300781 2.601563 18 2 16.601563 2 C 13.898438 2 11.699219 4.199219 11.699219 6.898438 C 11.699219 7.300781 11.699219 7.699219 11.800781 8 C 7.699219 7.800781 4.101563 5.898438 1.699219 2.898438 C 1.199219 3.601563 1 4.5 1 5.398438 C 1 7.101563 1.898438 8.601563 3.199219 9.5 C 2.398438 9.398438 1.601563 9.199219 1 8.898438 C 1 8.898438 1 8.898438 1 9 C 1 11.398438 2.699219 13.398438 4.898438 13.800781 C 4.5 13.898438 4.101563 14 3.601563 14 C 3.300781 14 3 14 2.699219 13.898438 C 3.300781 15.898438 5.101563 17.300781 7.300781 17.300781 C 5.601563 18.601563 3.5 19.398438 1.199219 19.398438 C 0.800781 19.398438 0.398438 19.398438 0 19.300781 C 2.199219 20.699219 4.800781 21.5 7.5 21.5 C 16.601563 21.5 21.5 14 21.5 7.5 C 21.5 7.300781 21.5 7.101563 21.5 6.898438 C 22.5 6.199219 23.300781 5.300781 24 4.300781"/></svg>
+                                </span>
+                                <span class="text">@StevensEsports</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://youtube.com/channel/UCJRny_9NpVk52ENYMUxr4Fg" class="youtube">
+                                <span class="icon">
+                                    <?xml version="1.0"?><svg fill="#ffffff" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="48px" height="48px">    <path d="M21.582,6.186c-0.23-0.86-0.908-1.538-1.768-1.768C18.254,4,12,4,12,4S5.746,4,4.186,4.418 c-0.86,0.23-1.538,0.908-1.768,1.768C2,7.746,2,12,2,12s0,4.254,0.418,5.814c0.23,0.86,0.908,1.538,1.768,1.768 C5.746,20,12,20,12,20s6.254,0,7.814-0.418c0.861-0.23,1.538-0.908,1.768-1.768C22,16.254,22,12,22,12S22,7.746,21.582,6.186z M10,14.598V9.402c0-0.385,0.417-0.625,0.75-0.433l4.5,2.598c0.333,0.192,0.333,0.674,0,0.866l-4.5,2.598 C10.417,15.224,10,14.983,10,14.598z"/></svg>
+                                </span>
+                                <span class="text">Stevens Esports</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://twitch.tv/stevensesports" class="twitch">
+                                <span class="icon">
+                                    <svg fill="#ffffff" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="48px" height="48px"><path d="M 5.3632812 2 L 2 6.6367188 L 2 20 L 7 20 L 7 23 L 10 23 L 13 20 L 17 20 L 22 15 L 22 2 L 5.3632812 2 z M 6 4 L 20 4 L 20 13 L 17 16 L 12 16 L 9 19 L 9 16 L 6 16 L 6 4 z M 11 7 L 11 12 L 13 12 L 13 7 L 11 7 z M 16 7 L 16 12 L 18 12 L 18 7 L 16 7 z"/></svg>
+                                </span>
+                                <span class="text">StevensEsports</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://discord.gg/6sbU8C7" class="discord">
+                                <span class="icon">
+                                    <?xml version="1.0"?><svg fill="#ffffff" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="48px" height="48px">    <path d="M19.952,5.672c-1.904-1.531-4.916-1.79-5.044-1.801c-0.201-0.017-0.392,0.097-0.474,0.281 c-0.006,0.012-0.072,0.163-0.145,0.398c1.259,0.212,2.806,0.64,4.206,1.509c0.224,0.139,0.293,0.434,0.154,0.659 c-0.09,0.146-0.247,0.226-0.407,0.226c-0.086,0-0.173-0.023-0.252-0.072C15.584,5.38,12.578,5.305,12,5.305S8.415,5.38,6.011,6.872 c-0.225,0.14-0.519,0.07-0.659-0.154c-0.14-0.225-0.07-0.519,0.154-0.659c1.4-0.868,2.946-1.297,4.206-1.509 c-0.074-0.236-0.14-0.386-0.145-0.398C9.484,3.968,9.294,3.852,9.092,3.872c-0.127,0.01-3.139,0.269-5.069,1.822 C3.015,6.625,1,12.073,1,16.783c0,0.083,0.022,0.165,0.063,0.237c1.391,2.443,5.185,3.083,6.05,3.111c0.005,0,0.01,0,0.015,0 c0.153,0,0.297-0.073,0.387-0.197l0.875-1.202c-2.359-0.61-3.564-1.645-3.634-1.706c-0.198-0.175-0.217-0.477-0.042-0.675 c0.175-0.198,0.476-0.217,0.674-0.043c0.029,0.026,2.248,1.909,6.612,1.909c4.372,0,6.591-1.891,6.613-1.91 c0.198-0.172,0.5-0.154,0.674,0.045c0.174,0.198,0.155,0.499-0.042,0.673c-0.07,0.062-1.275,1.096-3.634,1.706l0.875,1.202 c0.09,0.124,0.234,0.197,0.387,0.197c0.005,0,0.01,0,0.015,0c0.865-0.027,4.659-0.667,6.05-3.111 C22.978,16.947,23,16.866,23,16.783C23,12.073,20.985,6.625,19.952,5.672z M8.891,14.87c-0.924,0-1.674-0.857-1.674-1.913 s0.749-1.913,1.674-1.913s1.674,0.857,1.674,1.913S9.816,14.87,8.891,14.87z M15.109,14.87c-0.924,0-1.674-0.857-1.674-1.913 s0.749-1.913,1.674-1.913c0.924,0,1.674,0.857,1.674,1.913S16.033,14.87,15.109,14.87z"/></svg>
+                                </span>
+                                <span class="text">Stevens Esports</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- .container width wide -->
+            </div>
+            <!-- .footer-sm -->
+        </footer>
+        <!-- .footer -->
     </body>
-    <script src="tota11y.min.js"></script>
-    <script src="/public/js/client.js"></script>
     <script 
         src="https://code.jquery.com/jquery-2.2.4.min.js" 
         integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
         crossorigin="anonymous">
     </script>
+    <script src="tota11y.min.js"></script>
+    <script src="/public/js/client.js"></script>
 </html>
