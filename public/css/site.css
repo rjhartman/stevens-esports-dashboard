@@ -838,6 +838,13 @@ sub {
     background-color: var(--dark-gray);
 }
 
+.form > .error {
+    color: var(--primary);
+    font-weight: bold;
+    margin-top: -1rem;
+    margin-bottom: 1rem;
+}
+
 /* ======================================================== */
 /*                       * Admin Header *                   */
 /* ======================================================== */
