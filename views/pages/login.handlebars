@@ -1,11 +1,11 @@
 <div class="page-container">
     <div class="main">
         <div class="login">
-            {{#if error}}
-            <p id="error">{{error}}</p>
-            {{/if}}
             <form method="POST" id="login-form" action="/login" class="form">
                 <h1>Log In</h1>
+                {{#if error}}
+                    <p class="error">{{error}}</p>
+                {{/if}}
                 <div class="form__row">
                     <label for="username">Username</label>
                     <input type="text" id="username" name="username" placeholder="Email or Username" required>

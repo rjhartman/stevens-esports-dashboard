@@ -27,6 +27,8 @@ body {
     --dark-gray: #A9A9A9;
 
     --primary-transition: all 0.4s ease-in-out;
+
+    --primary-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05);
 }
 
 /*
@@ -828,4 +830,55 @@ sub {
 .form .signup:hover {
     color: white;
     background-color: var(--dark-gray);
+}
+
+/* ======================================================== */
+/*                       * Admin Header *                   */
+/* ======================================================== */
+
+main.backend {
+    margin-top: 140px;
+}
+
+.ah {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    padding: 1rem;
+    padding-right: 2rem;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    box-shadow: var(--primary-shadow);
+    background-color: var(--gray);
+    font-size: 1.2rem;
+}
+
+.ah:before {
+    content: attr(data-name);
+    text-transform: uppercase;
+    font-size: 5rem;
+    font-weight: bold;
+    position: absolute;
+    opacity: 0.075;
+    z-index: -1;
+    left: 90px;
+}
+
+.ah__left--logo img {
+    max-width: 100px;
+    margin-right: 1rem;
+}
+
+.ah__left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.ah__left strong {
+    color: var(--burgundy);
 }

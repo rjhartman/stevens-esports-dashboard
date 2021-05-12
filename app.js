@@ -17,7 +17,7 @@ app.use(
     secret: "This is a secret.. shhh don't tell anyone",
     saveUninitialized: true,
     resave: false,
-    cookie: { maxAge: 60000 },
+    cookie: { maxAge: 60000000 },
   })
 );
 
@@ -33,9 +33,15 @@ app.engine(
 app.set("view engine", "handlebars");
 
 // Ensure a user is authenticated
-app.use("/admin", (req, res, next) => {
+app.use("/dashboard", (req, res, next) => {
   if (!req.session.user) return res.redirect("/login");
   else next();
+});
+
+// Ensure users who try to use certain actions in the dashboard have
+// sufficient permissions.
+app.use("/dashboard/admin", (req, res, next) => {
+  if (req.session.user.role !== "administrator") res.status(401).send();
 });
 
 configRoutes(app);
