@@ -1,22 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{{title}}</title>
-        <meta name="description" content="Home of the Stevens Esports Club, which is a student organization dealing with all things esports-related, with teams participating in League of Legends, Overwatch, Valorant, Hearthstone, Rocket League, Call of Duty, Counter Strike: Global Offensive, and Rainbow Six.">
-        <link rel="icon" type="image/png" sizes="32x32" href="/public/assets/favicon_package_v0.16/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/public/assets/favicon_package_v0.16/favicon-16x16.png">
-        <link rel="stylesheet" href="/public/css/site.css">
-    </head>
-    <body>
-        {{{body}}}
-    </body>
-    <script src="tota11y.min.js"></script>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <meta name="description"
+        content="Home of the Stevens Esports Club, which is a student organization dealing with all things esports-related, with teams participating in League of Legends, Overwatch, Valorant, Hearthstone, Rocket League, Call of Duty, Counter Strike: Global Offensive, and Rainbow Six.">
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/assets/favicon_package_v0.16/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/public/assets/favicon_package_v0.16/favicon-16x16.png">
+    {{!-- Google Fonts, adds Montserrat --}}
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    {{!-- End Google Fonts --}}
+    <link rel="stylesheet" href="/public/css/site.css">
+</head>
+
+<body>
+    {{> header }}
+    {{{body}}}
+    {{> footer }}
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <script src="/public/js/client.js"></script>
-    <script 
-        src="https://code.jquery.com/jquery-2.2.4.min.js" 
-        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-        crossorigin="anonymous">
-    </script>
+    {{!-- Add page specific scripts --}}
+    {{#each scripts}}
+        <script src="{{this}}"></script>
+    {{/each}}
+</body>
 </html>
