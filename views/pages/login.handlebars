@@ -1,19 +1,25 @@
 <div class="page-container">
-    <img id="landing-banner" src="/public/assets/intro_bg.jpg" alt='Stevens Esports Banner'>
-    <div class="main" style="background-image: none;">
-        <div class="container width--wide">
-            <p>Stevens Esports Account Registration</p>
-            {{#if error}}
-            <p id="error">{{error}}</p>
-            {{/if}}
-            <form method="POST" id="login-form" action="/login">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" placeholder="Username..."><br><br>
-                <label for="password">Password:</label>
-                <input type="text" id="password" name="password" placeholder="Password...">
+    <div class="main">
+        <div class="login">
+            <form method="POST" id="login-form" action="/login" class="form">
+                <h1>Log In</h1>
+                {{#if error}}
+                    <p class="error">{{error}}</p>
+                {{/if}}
+                <div class="form__row">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Email or Username" required>
+                    <p class="error"></p>
+                </div>
+                <div class="form__row">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                    <p class="error"></p>
+                </div>
                 <button type="submit">Login</button>
+                <div class="form__or">or</div>
+                <a class="signup" href="/register">Sign Up</a>
             </form>
         </div>
     </div>
 </div>
-<!-- .page-container -->
