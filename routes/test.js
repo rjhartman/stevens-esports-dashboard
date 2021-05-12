@@ -53,6 +53,7 @@ router.post("/login", async (req, res) => {
     return res.status(401).render("pages/login", {
       title: "Account Login | Stevens Esports",
       error: errorMessage,
+      scripts: ["/public/js/forms.js"],
     });
   }
 });
