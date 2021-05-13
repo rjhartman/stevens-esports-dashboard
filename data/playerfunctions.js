@@ -3,6 +3,7 @@ const userData = require('./users');
 
 async function getPlayerById(id){
     let player = undefined;
+
     if(typeof id !== 'string' || id.trim() == '')
         throw `Error: id ${id} is not a valid string.`;
 
@@ -15,8 +16,6 @@ async function getPlayerById(id){
     if(player == undefined){
         throw `Error: Player not found.`
     }
-    console.log('here player')
-    console.log(player)
     
     return player;
 }
@@ -35,20 +34,17 @@ async function getUserById(id){
     if(user == undefined){
         throw `Error: User not found.`;
     }
-    console.log('here')
-    console.log(user)
     return user;
 }
 
 async function getPersonById(id){
-    console.log(id)
-    let player = getPlayerById(id);
-    let userId = player.user;
+    let player = await getPlayerById(id);
+    let userId = String(player.user);
 
     if(typeof userId !== 'string' || userId.trim() == '')
         throw `Error: id ${userId} is not a valid string.`;
     
-    let user = getUserById(userId);
+    let user = await getUserById(userId);
 
 
     let person = {...player, ...user};

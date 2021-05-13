@@ -19,16 +19,16 @@ router.get('/:playerid', async (req, res) => {
     }
 
     if(typeof req.params.playerid != 'string'){
-        console.log(typeof playerid)
+        console.log(typeof req.params.playerid)
         res.status(400).render('player/error', {title: '400', error: 'Code 400: Search term is not type string.'});
         return;
     }
 
 
     try {
-        let id = Number(req.params.playerid);
+        let id = req.params.playerid;
         const person = await playerFuncs.getPersonById(id);
-        res.render('teams/teampage', {title: person.nickname, player: person});
+        res.render('player/player', {title: person.nickname, player: person});
     } catch (e) {
         //res.status(500).render('shows/errorpage', {title: 'Error', error: e });
         res.status(500);

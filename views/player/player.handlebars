@@ -1,8 +1,18 @@
 <h1>{{player.nickname}}</h1>
 
-<img src={{player.avatarLink}}>
+<img src={{player.avatar}}>
 
 <h2>{{player.firstName}} {{player.lastName}}</h2>
 
-<p></p>
+{{#if player.isCaptain}}
+<p>Captain</p>
+{{/if}}
+
+{{#unless player.isStarter}}
+<p>Substitute Player</p>
+{{/unless}}
+
+
+<p>{{player.position}}</p>
+<p>{{player.biography}}</p>
 
