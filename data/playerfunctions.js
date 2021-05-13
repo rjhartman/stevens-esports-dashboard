@@ -1,56 +1,58 @@
-const teamData = require('./teams');
 const playerData = require('./players');
 const userData = require('./users');
-/*
-module.exports = {
-    async getTeamById(id) {
-        if (typeof id !== "number") {
-            throw `Error: id must be a number`;
-        }
-        if (Number(id) < 1) {
-            throw `Error: id must be a positive integer`;
-        }
-        let team = undefined;
-        for (i = 0; i < teamData.length; i++) {
-            if (teamData[i]._id === id) {
-                team = teamData[i];
-            }
-        }
-        if (team === undefined) {
-            throw `Error: Show not found`;
-        }
-        return team;
-    },
-
-};
-*/
 
 async function getPlayerById(id){
-    let playerData = {};
-    if(typeof id !== 'number')
-        throw `Error: id ${id} is not a number.`;
-    if(Number(id) < 0)
-        throw `Error: id ${id} must be a positive integer.`
+    let player = undefined;
+    if(typeof id !== 'string' || id.trim() == '')
+        throw `Error: id ${id} is not a valid string.`;
 
-    return playerData;
+    for(i = 0; i < playerData.length; i++){
+        if(playerData[i]._id == id){
+            player = playerData[i];
+        }
+    }
+
+    if(player == undefined){
+        throw `Error: Player not found.`
+    }
+    console.log('here player')
+    console.log(player)
+    
+    return player;
 }
 
 async function getUserById(id){
-    let userData = {};
-    if(typeof id !== 'number')
-        throw `Error: id ${id} is not a number.`;
-    if(Number(id) < 0)
-        throw `Error: id ${id} must be a positive integer.`
+    let user = undefined;
+    if(typeof id !== 'string' || id.trim() == '')
+        throw `Error: id ${id} is not a valid string.`;
 
-    return userData;
+    for(i = 0; i < userData.length; i++){
+        if(userData[i]._id == id){
+            user = userData[i];
+        }
+    }
+
+    if(user == undefined){
+        throw `Error: User not found.`;
+    }
+    console.log('here')
+    console.log(user)
+    return user;
 }
 
 async function getPersonById(id){
+    console.log(id)
     let player = getPlayerById(id);
-    let user = getUserById(id);
+    let userId = player.user;
 
-    let person = {};
+    if(typeof userId !== 'string' || userId.trim() == '')
+        throw `Error: id ${userId} is not a valid string.`;
     
+    let user = getUserById(userId);
+
+
+    let person = {...player, ...user};
+    return person;
 }
 
-module.exports = getPersonById;
+module.exports = {getPersonById};
