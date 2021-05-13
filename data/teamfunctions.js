@@ -14,7 +14,7 @@ module.exports = {
             }
         }
         if (team === undefined) {
-            throw `Error: Show not found`;
+            throw `Error: Team not found`;
         }
         return team;
     }
