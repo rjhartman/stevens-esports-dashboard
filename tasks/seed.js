@@ -5,7 +5,7 @@ const teams = data.teamfunctions;
 async function main() {
     const db = await dbConnection();
     await db.dropDatabase();
-    const team_one = await teams.addTeam("Stevens LoL Red", "Varsity", "League of Legends", ["Jerry Chen", "Jerry Cheng"]);
+    const team_one = await teams.addTeam("Stevens LoL Red", "Varsity", "League of Legends", ["Jerry Cheng", "Andrew Chuah"]);
     const id = team_one._id;
     console.log('Done seeding database');
 
