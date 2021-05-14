@@ -2,6 +2,7 @@ const mongoCollections = require("../config/mongoCollections");
 const matches = mongoCollections.matches;
 const games = require('./games.js');
 const teams = require('./teams.js');
+let { ObjectId } = require('mongodb');
 const cloudinary = require("cloudinary").v2;
 require("dotenv").config();
 
@@ -62,7 +63,18 @@ function getLogo(matchType) {
             return cloudinary.url("logos/r6_logo_red.png");
     }
 }
-
+async function getMatchById(id){
+    // console.log(id);
+    checkString(id,'id');
+    
+    let parsedId = ObjectId(id);
+    const matchCollection = await matches();
+    // console.log(id);
+    const match = await matchCollection.findOne({ _id: parsedId });
+    if (match === null) throw 'No match with that id';
+    // console.log(match);
+    return match;
+}
 async function addMatch(obj){
     checkMatchObj(obj);
     const matchCollection = await matches();
@@ -85,16 +97,9 @@ async function addMatch(obj){
         matchType: obj.matchType
     };
     const newInsertInformation = await matchCollection.insertOne(newMatch);
-    return await getBookById(newInsertInformation.insertedId.toString());
+    return await getMatchById(newInsertInformation.insertedId.toString());
 }
-async function getMatchById(id){
-    checkString(id,'id');
-    let parsedId = ObjectId(id);
-    const matchCollection = await matches();
-    const match = await matchCollection.findOne({ _id: parsedId });
-    if (match === null) throw 'No match with that id';
-    return match;
-}
+
 async function updateMatch(id,obj){
     checkString(id,'id');
     let parsedId = ObjectId(id);
@@ -222,5 +227,7 @@ module.exports = {
     get_resolved_id,
     get_unresolved,
     get_unresolved_id,
-    addMatch
+    addMatch,
+    updateMatch,
+    getMatchById
 };
