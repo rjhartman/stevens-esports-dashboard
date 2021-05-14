@@ -1,10 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const users = require("./../data/users.js");
+const matches = require("./../data/match.js");
 const { ObjectID } = require("mongodb");
 
 router.get("/users", async (req, res) => {
   res.json(await users.getAllUsers(true));
+});
+
+router.get("/matches", async (req, res) => {
+  res.json(await matches.getAllMatches(true));
 });
 
 router.post("/users/:id/promote", async (req, res) => {

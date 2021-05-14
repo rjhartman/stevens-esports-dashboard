@@ -6,9 +6,9 @@ const users = mongoCollections.users;
 
 function initCloud() {
   cloudinary.config({
-      cloud_name: "stevens-esports",
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET
+    cloud_name: "stevens-esports",
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
   });
 }
 
@@ -22,7 +22,7 @@ module.exports = {
 
     // The username may be an email or username. Search for both.
     username = username.toLowerCase();
-    
+
     const user = await collection.findOne({
       $or: [
         {
@@ -35,8 +35,8 @@ module.exports = {
     });
 
     const userList = await collection.find({}).toArray();
-    console.log(userList)
-    console.log(user)
+    //console.log(userList)
+    //console.log(user)
     if (!user) throw `User with username ${username} not found.`;
     return user;
   },
@@ -44,18 +44,17 @@ module.exports = {
     const collection = await users();
     if (typeof id !== "string")
       throw `ID must be a string! Received ${typeof id}`;
-    if (!id || !(id = id.trim()))
-      throw `ID cannot be empty.`;
+    if (!id || !(id = id.trim())) throw `ID cannot be empty.`;
 
     let parsedId = ObjectID(id);
-    
+
     const user = await collection.findOne({
-      _id: parsedId
+      _id: parsedId,
     });
 
-    if(!user) throw `Error: player ${id} not found.`;
+    if (!user) throw `Error: player ${id} not found.`;
 
-    user._id = (user._id).toString();
+    user._id = user._id.toString();
 
     return user;
   },
@@ -71,7 +70,17 @@ module.exports = {
       .toArray();
     return users[0];
   },
-  async addUser(firstName, lastName, username, email, passwordDigest, nickname, avatar, bio) {
+  async addUser(
+    firstName,
+    lastName,
+    username,
+    email,
+    passwordDigest,
+    nickname,
+    avatar,
+    bio,
+    role = "regular"
+  ) {
     const collection = await mongoCollections.users();
     if (typeof username !== "string")
       throw `Username/email must be a string! Received ${typeof username}`;
@@ -82,13 +91,13 @@ module.exports = {
 
     initCloud();
 
-    let resultUpload = await cloudinary.uploader.upload(avatar,
-      {
-        width: 200,
-        height: 200,
-        x: 0, y: 0,
-        crop: "limit"
-      });
+    let resultUpload = await cloudinary.uploader.upload(avatar, {
+      width: 200,
+      height: 200,
+      x: 0,
+      y: 0,
+      crop: "limit",
+    });
 
     const returnVal = await collection.insertOne({
       firstName: firstName,
@@ -97,12 +106,12 @@ module.exports = {
       email: email,
       passwordDigest: passwordDigest,
       nickname: nickname,
-      role: "regular",
+      role: role,
       biography: bio,
-      avatar: resultUpload.secure_url
+      avatar: resultUpload.secure_url,
     });
 
-    if(returnVal.insertedCount === 0) throw "Error: Could not add user!";
+    if (returnVal.insertedCount === 0) throw "Error: Could not add user!";
     return await this.getUserById(returnVal.insertedId.toString());
   },
   async getAllUsers(sanitize = false) {

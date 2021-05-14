@@ -20,7 +20,7 @@ function checkMatchObj(obj){
 }
 
 router.post("/", async function (req, res) {
-  if (!req.body) throw `gameid required`;
+  if (!req.body) throw `match info required`;
   let matchInfo = req.body;
   try {
       // checkMatchObj(matchInfo);
