@@ -1,10 +1,36 @@
 <div class="page-container">
     <div class="main">
-        {{#each teams}}
-        <div class="team">
-            <p class="overall_team">{{this.name}}</p>
-            <a class="team_link" href='http://localhost:3000/teams/{{this._id}}'>View More Info</a>
+        <div class="team-grid">
+            {{#each teams}}
+            <div class="team">
+                {{!--#if teams.name}}
+                <h1>{{teams.name}}</h1> 
+                {{/if--}}
+                <h1>Stevens LoL Red</h1>
+                <dl>
+                    {{!--#if team.status--}}
+                    <dt class="teamStatus">Varsity Status</dt>
+                    <dd class="teamStatus">{{!--team.status--}}JV</dd>
+                    {{!--/if--}}
+                    {{!--#if team.game--}}
+                    <dt class="teamGame">Game</dt>
+                    <dd class="teamGame">{{team.game}}</dd>
+                    {{/if}}
+                    {{#if team.players}}
+                    <dt class="teamPlayers">Roster</dt>
+                    <dd class="teamPlayers">
+                        <ul>
+                            {{#each team.players}}
+                            <li>
+                                {{this}}
+                            </li>
+                            {{/each}}
+                        </ul>
+                    </dd>
+                    {{/if}}
+                </dl>
+            </div>
+            {{/each}}
         </div>
-        {{/each}}
-    </main>
+    </div>
 </div>
