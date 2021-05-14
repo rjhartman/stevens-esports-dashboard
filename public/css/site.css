@@ -31,6 +31,35 @@ body {
     --primary-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05);
 }
 
+/* ======================================================== */
+/*                    * Button Styles *                     */
+/* ======================================================== */
+
+
+.button {
+    background-color: var(--burgundy);
+    color: white;
+    padding: 1rem 2rem;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: all 0.4s ease-in-out;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #3d0000;
+}
+
+.button.rounded {
+    border-radius: 25px;
+}
+
+.button.rounded {
+    border-radius: 25px;
+}
+
 /*
     Link outline inconsistency between browsers
     Improves readability when focused and hovered
@@ -849,6 +878,124 @@ sub {
 /*                       * Admin Header *                   */
 /* ======================================================== */
 
+/* ======================================================== */
+/*                       * Loaders *                        */
+/* ======================================================== */
+
+.sk-chase {
+    width: 40px;
+    height: 40px;
+    position: relative;
+    animation: sk-chase 2.5s infinite linear both;
+}
+
+.sk-chase-dot {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0; 
+    animation: sk-chase-dot 2.0s infinite ease-in-out both; 
+}
+
+.sk-chase-dot:before {
+    content: '';
+    display: block;
+    width: 25%;
+    height: 25%;
+    background-color: var(--burgundy);
+    border-radius: 100%;
+    animation: sk-chase-dot-before 2.0s infinite ease-in-out both; 
+}
+
+.spinner {
+    margin: 100px auto;
+    width: 50px;
+    height: 40px;
+    text-align: center;
+    font-size: 10px;
+}
+  
+.spinner > div {
+    background-color: var(--burgundy);
+    height: 100%;
+    width: 6px;
+    display: inline-block;
+    
+    -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+    animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+  
+.spinner .rect2 {
+    -webkit-animation-delay: -1.1s;
+    animation-delay: -1.1s;
+}
+
+.spinner .rect3 {
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s;
+}
+
+.spinner .rect4 {
+    -webkit-animation-delay: -0.9s;
+    animation-delay: -0.9s;
+}
+
+.spinner .rect5 {
+    -webkit-animation-delay: -0.8s;
+    animation-delay: -0.8s;
+}
+
+.spinner .name {
+    font-size: 1rem;
+    text-align: center;
+}
+
+@-webkit-keyframes sk-stretchdelay {
+    0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+    20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes sk-stretchdelay {
+    0%, 40%, 100% { 
+        transform: scaleY(0.4);
+        -webkit-transform: scaleY(0.4);
+    }  20% { 
+        transform: scaleY(1.0);
+        -webkit-transform: scaleY(1.0);
+    }
+}
+
+.sk-chase-dot:nth-child(1) { animation-delay: -1.1s; }
+.sk-chase-dot:nth-child(2) { animation-delay: -1.0s; }
+.sk-chase-dot:nth-child(3) { animation-delay: -0.9s; }
+.sk-chase-dot:nth-child(4) { animation-delay: -0.8s; }
+.sk-chase-dot:nth-child(5) { animation-delay: -0.7s; }
+.sk-chase-dot:nth-child(6) { animation-delay: -0.6s; }
+.sk-chase-dot:nth-child(1):before { animation-delay: -1.1s; }
+.sk-chase-dot:nth-child(2):before { animation-delay: -1.0s; }
+.sk-chase-dot:nth-child(3):before { animation-delay: -0.9s; }
+.sk-chase-dot:nth-child(4):before { animation-delay: -0.8s; }
+.sk-chase-dot:nth-child(5):before { animation-delay: -0.7s; }
+.sk-chase-dot:nth-child(6):before { animation-delay: -0.6s; }
+
+@keyframes sk-chase {
+100% { transform: rotate(360deg); } 
+}
+
+@keyframes sk-chase-dot {
+80%, 100% { transform: rotate(360deg); } 
+}
+
+@keyframes sk-chase-dot-before {
+50% {
+    transform: scale(0.4); 
+} 100%, 0% {
+    transform: scale(1.0); 
+} 
+}
+
+
 main.backend {
     margin-top: 140px;
 }
@@ -867,6 +1014,7 @@ main.backend {
     box-shadow: var(--primary-shadow);
     background-color: var(--gray);
     font-size: 1.2rem;
+    z-index: 100;
 }
 
 .ah:before {
@@ -894,4 +1042,106 @@ main.backend {
 
 .ah__left strong {
     color: var(--burgundy);
+}
+
+.ah__right {
+    background-color: var(--burgundy);
+}
+
+/* ======================================================== */
+/*                    * Dashboard Styles *                  */
+/* ======================================================== */
+
+
+.backend section {
+    position: relative;
+    overflow: hidden;
+    font-family: Montserrat, sans-serif;
+    padding: 2rem 3rem;
+    transition: all 0.4s ease-in-out;
+}
+
+.backend section > header h2 {
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.backend section > header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.collapsable .collapse-button {
+    height: 35px;
+    width: 35px;
+    padding: 0;
+}
+
+/* ======================================================== */
+/*                    * Dashboard Tables *                  */
+/* ======================================================== */
+
+.backend section table,
+.backend section th,
+.backend section td {
+    border-collapse: collapse;
+}
+
+.backend section th {
+    background-color: var(--burgundy);
+    color: white;
+}
+
+.backend section table {
+    width: 100%;
+    box-shadow: var(--primary-shadow);
+    border-radius: 15px;
+}
+
+
+.backend section th {
+    text-align: left;
+}
+
+.backend section th,
+.backend section td {
+    padding: 1rem;
+}
+
+.backend section tr:not(:last-of-type) {
+    border-bottom: 2px solid #F8F8FA;
+}
+
+.backend .fillable {
+    transition: opacity 0.4s ease-in-out;
+    opacity: 0;
+    max-height: 0;
+}
+
+.backend .fillable.active {
+    opacity: 1;
+    max-height: inherit;
+}
+
+.backend .promote {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.4s ease-in-out;
+    color: white;
+    background: var(--burgundy);
+}
+
+.backend .promote svg {
+    padding: 0.2rem;
+}
+
+.backend .promote:hover {
+    background: #3d0000;
 }

@@ -4,7 +4,8 @@
   "description": "Stevens Esports club dashboard website",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon app.js --ignore 'public/'",
+    "proxy": "browser-sync start --proxy 'localhost:3000' --files public/**/*.css''"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
     "@khanacademy/tota11y": "^0.2.0",
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
+    "browser-sync": "^2.26.14",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
     "express-handlebars": "^5.3.1",
