@@ -119,6 +119,7 @@ router.get("/dashboard", (req, res) => {
   res.render("pages/dashboard", {
     title: "Dashboard | Stevens Esports",
     user: req.session.user,
+    isAdmin: req.session.user === "administrator",
     layout: "backend",
   });
 });

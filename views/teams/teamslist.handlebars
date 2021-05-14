@@ -1,9 +1,10 @@
-<h1>
-    {{title}}
-</h1>
-<main>
-{{#each teams}}
-    <p class="overall_team">{{this.name}}</p>
-    <a class="team_link" href='http://localhost:3000/teams/{{this._id}}'>View More Info</a>
-{{/each}}
-</main>
+<div class="page-container">
+    <div class="main">
+        {{#each teams}}
+        <div class="team">
+            <p class="overall_team">{{this.name}}</p>
+            <a class="team_link" href='http://localhost:3000/teams/{{this._id}}'>View More Info</a>
+        </div>
+        {{/each}}
+    </main>
+</div>

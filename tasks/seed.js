@@ -21,8 +21,6 @@ async function main(){
     const andrew_id = andrew._id;
 
     const team_one = await teams.addTeam("Stevens LoL Red", "Varsity", "League of Legends", [jerry_id, andrew_id]);
-    // const id = team_one._id
-    console.log(team_one)
 
     const match1 = await match.addMatch({
         opponent: "Some other team",
