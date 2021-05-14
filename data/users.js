@@ -21,6 +21,7 @@ module.exports = {
 
     // The username may be an email or username. Search for both.
     username = username.toLowerCase();
+    initCloud();
     const user = await collection.findOne({
       $or: [
         {
