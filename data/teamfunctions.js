@@ -40,6 +40,9 @@ module.exports = {
         if (typeof status !== "string" || status.trim().length === 0) {
             throw `Error: status should be a string of length greater than zero.`;
         }
+        if (status.toLowerCase().trim() !== "varsity" || status.toLowerCase().trim() !== "junior varsity") {
+            throw `Error: team status should be set to Varsity or Junior Varsity`;
+        }
         if (typeof game !== "string" || game.trim().length === 0) {
             throw `Error: game should be a string of length greater than zero.`;
         }
