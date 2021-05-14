@@ -6,7 +6,6 @@ const player = data.players;
 const mongoCollections = require('../config/mongoCollections');
 const teams = mongoCollections.teams;
 const players = mongoCollections.players;
-let { ObjectID } = require('mongodb');
 
 router.get('/', async (req, res) => {
     try {
