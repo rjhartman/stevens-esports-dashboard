@@ -15,9 +15,9 @@ async function main(){
     const game1 = await game.addGame({title: 'League of Legends',categories: ["MOBA", "Strategy"]})
     const game2 = await game.addGame({title: 'Counter-Strike: Global Offensive',categories: ["FPS", "Strategy"]})
     
-    const Jerry_user = await users.addUser('Jerry', 'Cheng', 'jcheng15@stevens.edu', '', 'jerrytd579', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is my bio');
-    const Jerry_player = await playerData.addPlayer('jcheng15@stevens.edu', 'ADC', true, false);
-    const jerry = await playerData.getPlayerByUsername('jcheng15@stevens.edu');
+    const Jerry_user = await users.addUser('Jerry', 'Cheng', 'jerrytd579', 'jcheng15@stevens.edu', '$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u', 'Jerrytd579', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is my bio');
+    const Jerry_player = await playerData.addPlayer('jerrytd579', 'ADC', true, false);
+    const jerry = await playerData.getPlayerByUsername('jerrytd579');
     const jerry_id = jerry._id;
 
     const Andrew_user = await users.addUser('Andrew', 'Chuah', 'sheathblade', 'achuah@stevens.edu', '$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u', 'Sheathblade', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is andrews bio');
