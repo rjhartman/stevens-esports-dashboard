@@ -3,14 +3,14 @@ const data = require('../data/');
 const match = data.match;
 
 const users = data.users;
-const players = data.players;
+const playerData = data.players;
 
 async function main(){
     const db = await dbConnection();
     await db.dropDatabase();
 
-    const Jerry_user = await users.addUser('Jerry', 'Cheng', 'jcheng15@stevens.edu', '', 'jerrytd579', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.pngdefault', 'This is my bio');
-    const Jerry_player = await players.addPlayer('jcheng15@stevens.edu', 'ADC', true, false);
+    const Jerry_user = await users.addUser('Jerry', 'Cheng', 'jcheng15@stevens.edu', '', 'jerrytd579', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is my bio');
+    const Jerry_player = await playerData.addPlayer('jcheng15@stevens.edu', 'ADC', true, false);
 
     const match1 = await match.addMatch({
         opponent: "Some other team",
