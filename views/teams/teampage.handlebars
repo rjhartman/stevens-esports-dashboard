@@ -12,11 +12,11 @@
       <dt class="teamGame">Game</dt>
       <dd class="teamGame">{{team.game}}</dd>
       {{/if}}
-      {{#if team.players}}
+      {{#if players}}
       <dt class="teamPlayers">Roster</dt>
       <dd class="teamPlayers">
           <ul>
-              {{#each team.players}}
+              {{#each players}}
               <li>
                   {{this}}
               </li>
@@ -25,7 +25,6 @@
       </dd>
       {{/if}}
   </dl>
-  {{!-- update this with whatever the list of teams page route is --}}
   <a href="/teams" class="teamLink">Back to All Teams</a>
 </div> 
 </main>
