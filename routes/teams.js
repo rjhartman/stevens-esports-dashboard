@@ -4,16 +4,16 @@ const data = require('../data');
 const teamData = data.teams;
 const teamFuncs = data.teamfunctions;
 // const playerData = data.players;
-const mongoCollections = require('../config/mongoCollections');
-const teams = mongoCollections.teams;
-const players = mongoCollections.players;
-let { ObjectId } = require('mongodb');
+// const mongoCollections = require('../config/mongoCollections');
+// const teams = mongoCollections.teams;
+// const players = mongoCollections.players;
+// let { ObjectId } = require('mongodb');
 
 router.get('/', async (req, res) => {
     try {
-        const teamCollection = await teams();
-        // res.render('teams/teamslist', {title: 'List of Teams', teams: teamData});
-        res.render('teams/teamslist', {title: 'List of Teams', teams: teamCollection});
+        // const teamCollection = await teams();
+        res.render('teams/teamslist', {title: 'List of Teams', teams: teamData});
+        // res.render('teams/teamslist', {title: 'List of Teams', teams: teamCollection});
     } catch (e) {
         res.status(500);
     }
@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         players = []
-        let parsedId = ObjectId(req.params.id);
+        // let parsedId = ObjectId(req.params.id);
         let id = req.params.id;
         // console.log(id)
         // const teamCollection = await teams();
