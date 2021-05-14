@@ -1,6 +1,7 @@
 const playerData = require('./players');
 const userData = require('./user');
 
+// Not mongodb implementation
 async function getPlayerById(id){
     let player = undefined;
 
