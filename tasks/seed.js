@@ -18,6 +18,11 @@ async function main(){
     const Andrew_player = await playerData.addPlayer('achuah3@stevens.edu', 'Top', true, false);
     const andrew = await playerData.getPlayerByUsername('achuah3@stevens.edu');
     const andrew_id = andrew._id;
+
+    const team_one = await teams.addTeam("Stevens LoL Red", "Varsity", "League of Legends", [jerry_id, andrew_id]);
+    // const id = team_one._id
+    console.log(team_one)
+    
     const match1 = await match.addMatch({
         opponent: "Some other team",
         game: 1,
@@ -49,9 +54,7 @@ async function main(){
         matchType: "Counter-Strike: Global Offensive"
     });
 
-    const team_one = await teams.addTeam("Stevens LoL Red", "Varsity", "League of Legends", [jerry_id, andrew_id]);
-    // const id = team_one._id
-    console.log(team_one)
+    
 
     resolved_matches = await match.get_resolved();
     console.log(resolved_matches);
