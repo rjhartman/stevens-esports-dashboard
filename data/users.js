@@ -52,7 +52,7 @@ module.exports = {
       .toArray();
     return users[0];
   },
-  async addUser(firstName, lastName, username, password, nickname, avatar, bio) {
+  async addUser(firstName, lastName, username, email, passwordDigest, nickname, avatar, bio) {
     const collection = await mongoCollections.users();
     if (typeof username !== "string")
       throw `Username/email must be a string! Received ${typeof username}`;
@@ -75,6 +75,8 @@ module.exports = {
       firstName: firstName,
       lastName: lastName,
       username: username,
+      email: email,
+      passwordDigest: passwordDigest,
       nickname: nickname,
       role: "regular",
       biography: bio,

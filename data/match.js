@@ -4,7 +4,6 @@ const games = require('./games.js');
 const teams = require('./teams.js');
 let { ObjectId } = require('mongodb');
 const cloudinary = require("cloudinary").v2;
-let { ObjectId } = require('mongodb');
 require("dotenv").config();
 
 function checkString(str, name){

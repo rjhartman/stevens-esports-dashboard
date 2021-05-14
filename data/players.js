@@ -52,13 +52,7 @@ async function addPlayer(user, position, isStarter, isCaptain){
     position = position.trim();
     position = position.toLowerCase();
 
-    //if(!userFunctions.getUser(user)) throw `Error: user not found/valid.`
-    try{
-    let test = await userFunctions.getRandomUser();
-    console.log(test)
-    } catch(e){
-        console.log(e)
-    }
+    if(!userFunctions.getUser(user)) throw `Error: user not found/valid.`
 
     const returnval = playerCollection.insertOne({
         user: user,
@@ -69,13 +63,22 @@ async function addPlayer(user, position, isStarter, isCaptain){
     return returnval;
 }
 
-async function getPersonById(id, username){
-    let player = await getPlayerById(id);
+async function getPersonByUsername(username){
     let user = await userFunctions.getUser(username);
 
-    let person = {...player, ...user};
+    // Error checking
+
+    console.log(user);
+
+    if(user == undefined){
+        throw `Error: Player not found.`
+    }
+
+    let thePlayer = await getPlayerByUsername(user.username);
+
+    let person = {...user, ...thePlayer};
     return person;
 }
 
 
-module.exports = {addPlayer, getPersonById, getPlayerByUsername, getPlayerById}
+module.exports = {addPlayer, getPersonByUsername, getPlayerByUsername, getPlayerById}
