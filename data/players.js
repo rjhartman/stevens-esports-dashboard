@@ -26,6 +26,18 @@ async function getPlayerById(id){
     return player;
 };
 
+async function getPlayerByUsername(username) {
+    stringChecker(username, 'getPlayerById username');
+    username = username.trim();
+    const playerCollection = await players();
+    const player = await playerCollection.findOne({user: username});
+    if(!player) throw `Error: player ${username} not found.`;
+
+    player._id = (player._id).toString();
+
+    return player;
+}
+
 async function addPlayer(user, position, isStarter, isCaptain){
     stringChecker(user, "addPlayer username");
     stringChecker(position, "addPlayer position");
@@ -48,12 +60,13 @@ async function addPlayer(user, position, isStarter, isCaptain){
         console.log(e)
     }
 
-    playerCollection.insertOne({
+    const returnval = playerCollection.insertOne({
         user: user,
         position: position,
         isStarter: isStarter,
         isCaptain: isCaptain
     });
+    return returnval;
 }
 
 async function getPersonById(id, username){
@@ -64,4 +77,5 @@ async function getPersonById(id, username){
     return person;
 }
 
-module.exports = {addPlayer, getPersonById}
+
+module.exports = {addPlayer, getPersonById, getPlayerByUsername, getPlayerById}

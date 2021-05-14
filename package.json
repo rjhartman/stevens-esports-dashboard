@@ -15,18 +15,6 @@
   "author": "Jerry Chen, Jerry Cheng, Andrew Chuah, Ryan Hartman, Daniel Pekata",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.21.1",
-    "express": "^4.17.1",
-    "express-handlebars": "^5.3.0",
-    "handlebars": "^4.7.7",
-    "mongo": "^0.1.0",
-    "mongodb": "^3.6.6"
-  },
-  "bugs": {
-    "url": "https://github.com/RHartman99/stevens-esports-dashboard/issues"
-  },
-  "homepage": "https://github.com/RHartman99/stevens-esports-dashboard#readme",
-  "dependencies": {
     "@khanacademy/tota11y": "^0.2.0",
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
@@ -39,5 +27,9 @@
     "express-session": "^1.17.1",
     "mongodb": "^3.6.6",
     "nodemon": "^2.0.7"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/RHartman99/stevens-esports-dashboard/issues"
+  },
+  "homepage": "https://github.com/RHartman99/stevens-esports-dashboard#readme"
 }

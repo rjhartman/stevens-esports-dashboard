@@ -3,6 +3,7 @@ const matches = mongoCollections.matches;
 const games = require('./games.js');
 const teams = require('./teams.js');
 const cloudinary = require("cloudinary").v2;
+let { ObjectId } = require('mongodb');
 require("dotenv").config();
 
 function checkString(str, name){
@@ -85,7 +86,7 @@ async function addMatch(obj){
         matchType: obj.matchType
     };
     const newInsertInformation = await matchCollection.insertOne(newMatch);
-    return await getBookById(newInsertInformation.insertedId.toString());
+    return await getMatchById(newInsertInformation.insertedId.toString());
 }
 async function getMatchById(id){
     checkString(id,'id');
