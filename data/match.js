@@ -153,7 +153,7 @@ async function get_resolved_id(id){
                 let matchObj = {
                     game: getLogo(match.matchType),
                     date: getMatchTime(match.date),
-                    team1: await teams.getTeamById(match.team),
+                    team1: match.team,
                     team2: match.opponent,
                     result: match.result,
                     teamScore: match.teamsScore,
@@ -176,7 +176,7 @@ async function get_unresolved_id(id){
                 let matchObj = {
                     game: getLogo(match.matchType),
                     date: getMatchTime(match.date),
-                    team1: await teams.getTeamById(match.team),
+                    team1: match.team,
                     team2: match.opponent,
                     result: match.result,
                     teamScore: match.teamsScore,
@@ -197,7 +197,7 @@ async function get_resolved(){
             let matchObj = {
                 game: getLogo(match.matchType),
                 date: getMatchTime(match.date),
-                team1: await teams.getTeamById(match.team),
+                team1: match.team,
                 team2: match.opponent,
                 result: match.result,
                 teamScore: match.teamsScore,
@@ -220,7 +220,7 @@ async function get_unresolved(){
             let matchObj = {
                 game: getLogo(match.matchType),
                 date: getMatchTime(d),
-                team1: await teams.getTeamById(match.team),
+                team1: match.team,
                 team2: match.opponent,
                 result: match.result,
                 teamScore: match.teamsScore,

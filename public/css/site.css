@@ -598,6 +598,7 @@ sub {
     font-weight: bolder;
     font-size: 3rem;
     margin: 0 30px;
+    white-space: nowrap;
 }
 
 .team1, .team2 {

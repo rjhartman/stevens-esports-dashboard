@@ -23,11 +23,11 @@ async function main(){
     const team_one = await teams.addTeam("Stevens LoL Red", "Varsity", "League of Legends", [jerry_id, andrew_id]);
     // const id = team_one._id
     console.log(team_one)
-    
+
     const match1 = await match.addMatch({
         opponent: "Some other team",
         game: 1,
-        team: 1,
+        team: team_one.name,
         date: new Date('April 17, 2021 3:00'),
         result: "Loss",
         opponentScore: 2,
@@ -37,7 +37,7 @@ async function main(){
     const match2 = await match.addMatch({
         opponent: "Some other team",
         game: 1,
-        team: 1,
+        team: team_one.name,
         date: new Date('June 17, 2021 3:00'),
         result: "Win",
         opponentScore: 2,
@@ -47,7 +47,7 @@ async function main(){
     const match3 = await match.addMatch({
         opponent: "Some other team",
         game: 2,
-        team: 1,
+        team: team_one.name,
         date: new Date('June 29, 2020 3:00'),
         result: "Win",
         opponentScore: 2,
