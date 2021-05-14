@@ -1,6 +1,6 @@
 const dbConnection = require('../config/mongoConnection');
-const data = rquire('../data/');
-const teams = data.teams;
+const data = require('../data/');
+const teams = data.teamfunctions;
 
 async function main() {
     const db = await dbConnection();
