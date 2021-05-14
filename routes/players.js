@@ -6,7 +6,7 @@ const playerFuncs = data.playerFunc;
 
 router.get('/', async (req, res) => {
     try {
-        res.status(400).render('player/playerNotExist', {title: ''});
+        res.redirect('/');
     } catch (e) {
         res.status(500);
     }
@@ -19,7 +19,6 @@ router.get('/:playerid', async (req, res) => {
     }
 
     if(typeof req.params.playerid != 'string'){
-        console.log(typeof req.params.playerid)
         res.status(400).render('player/error', {title: '400', error: 'Code 400: Search term is not type string.'});
         return;
     }
