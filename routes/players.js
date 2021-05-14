@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const data = require('../data');
-const playerFuncs = data.playerFunc;
+const playerFuncs = data.players;
 
 router.get('/', async (req, res) => {
     try {
@@ -20,13 +20,16 @@ router.get('/:playerid', async (req, res) => {
     }
 
     try {
-        let id = req.params.playerid;
-        const person = await playerFuncs.getPersonById(id);
+        let username = req.params.playerid;
+        const person = await playerFuncs.getPersonByUsername(username);
+        console.log(person);
         res.render('pages/profile', {title: person.nickname + " | Stevens Esports", player: person});
+        return;
     } catch (e) {
         //res.status(500).render('shows/errorpage', {title: 'Error', error: e });
         res.redirect('/');
         console.log(e);
+        return;
     }
 });
 
