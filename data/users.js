@@ -1,7 +1,6 @@
 const mongoCollections = require("../config/mongoCollections");
 const cloudinary = require("cloudinary").v2;
 const { ObjectID } = require("mongodb");
-//require('dotenv').config();
 
 const users = mongoCollections.users;
 

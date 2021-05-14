@@ -1,6 +1,7 @@
 const dbConnection = require('../config/mongoConnection');
 const data = require('../data/');
 const match = data.match;
+require(".dotenv").config();
 
 const users = data.users;
 const playerData = data.players;
