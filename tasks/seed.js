@@ -11,32 +11,34 @@ async function main(){
     const db = await dbConnection();
     await db.dropDatabase();
 
-    const Jerry_user = await users.addUser('Jerry', 'Cheng', 'jcheng15@stevens.edu', '', 'jerrytd579', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is jerry chengs bio');
+    // addUser(firstName, lastName, username, email, passwordDigest, nickname, avatar, bio)
+    // addPlayer(user, position, isStarter, isCaptain)
+    const Jerry_user = await users.addUser('Jerry', 'Cheng', 'jerrytd579', 'jcheng15@stevens.edu', '$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u', 'Jerrytd579', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is jerry chengs bio');
     const Jerry_player = await playerData.addPlayer('jcheng15@stevens.edu', 'ADC', true, false);
     const jerry = await playerData.getPlayerByUsername('jcheng15@stevens.edu');
     const jerry_id = jerry._id;
 
-    const Andrew_user = await users.addUser('Andrew', 'Chuah', 'achuah3@stevens.edu', '', 'Sheathblade', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is andrews bio');
+    const Andrew_user = await users.addUser('Andrew', 'Chuah', 'sheathblade', 'achuah@stevens.edu', '$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u', 'Sheathblade', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is andrews bio');
     const Andrew_player = await playerData.addPlayer('achuah@stevens.edu', 'Top', true, false);
     const andrew = await playerData.getPlayerByUsername('achuah@stevens.edu');
     const andrew_id = andrew._id;
 
-    const Ryan_user = await users.addUser('Ryan', 'Hartman', 'rhartman3@stevens.edu', '', 'Strider', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is ryans bio');
+    const Ryan_user = await users.addUser('Ryan', 'Hartman', 'strider', 'rhartman1@stevens.edu', '$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u', 'Strider', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is ryans bio');
     const Ryan_player = await playerData.addPlayer('rhartman1@stevens.edu', 'IGL', true, true);
     const ryan = await playerData.getPlayerByUsername('rhartman1@stevens.edu');
     const ryan_id = ryan._id;
 
-    const Dan_user = await users.addUser('Daniel', 'Pekata', 'dpekata@stevens.edu', '', 'gamble', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is dans bio');
+    const Dan_user = await users.addUser('Daniel', 'Pekata', 'gamble', 'dpekata@stevens.edu', '$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u', 'Gamble', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is dans bio');
     const Dan_player = await playerData.addPlayer('dpekata@stevens.edu', 'AWPer', true, false);
     const dan = await playerData.getPlayerByUsername('dpekata@stevens.edu');
     const dan_id = dan._id;
 
-    const Jerry_two_user = await users.addUser('Jerry', 'Chen', 'jchen103@stevens.edu', '', 'Dragoblin', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is jerry chens bio');
+    const Jerry_two_user = await users.addUser('Jerry', 'Chen', 'dragoblin', 'jchen103@stevens.edu', '$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u', 'Dragoblin', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is jerry chens bio');
     const Jerry_two_player = await playerData.addPlayer('jchen103@stevens.edu', 'Tank', true, false);
     const jerry_chen = await playerData.getPlayerByUsername('jchen103@stevens.edu');
     const jerry_chen_id = jerry_chen._id;
 
-    const Patrick_user = await users.addUser('Patrick', 'Hill', 'phill@stevens.edu', '', 'graffixnyc', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is patricks bio');
+    const Patrick_user = await users.addUser('Patrick', 'Hill', 'graffixnyc', 'phill@stevens.edu', '$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u', 'graffixnyc', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is patricks bio');
     const Patrick_player = await playerData.addPlayer('phill@stevens.edu', 'Support', true, false);
     const patrick = await playerData.getPlayerByUsername('phill@stevens.edu');
     const patrick_id = patrick._id;

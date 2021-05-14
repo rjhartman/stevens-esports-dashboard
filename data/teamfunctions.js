@@ -13,7 +13,7 @@ function checkString(str, name){
 module.exports = {
     async getTeamById(id) {
         if (!id) throw 'You must provide an id to search for';
-        let parsedId = ObjectID(id);
+        let parsedId = ObjectId(id);
         const teamCollection = await teams();
         const team_col = await teamCollection.findOne({_id: parsedId});
 
@@ -33,13 +33,13 @@ module.exports = {
         if (typeof status !== "string" || status.trim().length === 0) {
             throw `Error: status should be a string of length greater than zero.`;
         }
-        if (status.toLowerCase().trim() !== "varsity" || status.toLowerCase().trim() !== "junior varsity") {
+        if (status.toLowerCase().trim() !== "varsity" && status.toLowerCase().trim() !== "junior varsity") {
             throw `Error: team status should be set to Varsity or Junior Varsity`;
         }
         if (typeof game !== "string" || game.trim().length === 0) {
             throw `Error: game should be a string of length greater than zero.`;
         }
-        if (!Array.isArray(players) || obj.players.length == 0) {
+        if (!Array.isArray(players) || players.length == 0) {
             throw 'Error: Please make sure your players is an array.';
         }
         for (let i = 0; i < players.length; i++) {
@@ -68,7 +68,7 @@ module.exports = {
         if (typeof obj.status !== "string" || obj.status.trim().length === 0) {
             throw `Error: status should be a string of length greater than zero.`;
         }
-        if (obj.status.toLowerCase().trim() !== "varsity" || obj.status.toLowerCase().trim() !== "junior varsity") {
+        if (obj.status.toLowerCase().trim() !== "varsity" && obj.status.toLowerCase().trim() !== "junior varsity") {
             throw `Error: team status should be set to Varsity or Junior Varsity`;
         }
         if (typeof obj.game !== "string" || obj.game.trim().length === 0) {
@@ -104,7 +104,7 @@ module.exports = {
         if (typeof obj.status !== "string" || obj.status.trim().length === 0) {
             throw `Error: status should be a string of length greater than zero.`;
         }
-        if (obj.status.toLowerCase().trim() !== "varsity" || obj.status.toLowerCase().trim() !== "junior varsity") {
+        if (obj.status.toLowerCase().trim() !== "varsity" && obj.status.toLowerCase().trim() !== "junior varsity") {
             throw `Error: team status should be set to Varsity or Junior Varsity`;
         }
         if (typeof obj.game !== "string" || obj.game.trim().length === 0) {
