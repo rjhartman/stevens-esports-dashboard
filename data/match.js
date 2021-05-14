@@ -3,6 +3,7 @@ const matches = mongoCollections.matches;
 const games = require('./games.js');
 const teams = require('./teams.js');
 const cloudinary = require("cloudinary").v2;
+require("dotenv").config();
 
 function checkString(str, name){
     if (!str) throw `${name || 'provided variable'} is empty`

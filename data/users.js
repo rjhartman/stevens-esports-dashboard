@@ -1,6 +1,15 @@
 const mongoCollections = require("../config/mongoCollections");
 const cloudinary = require("cloudinary").v2;
 const { ObjectID } = require("mongodb");
+require("dotenv").config();
+
+function initCloud() {
+  cloudinary.config({
+      cloud_name: "stevens-esports",
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET
+  });
+}
 
 module.exports = {
   async getUser(username) {
@@ -46,7 +55,9 @@ module.exports = {
 
     username = username.toLowerCase();
 
-    let resultUpload = await cloudinary.uploader.upload(avatar,
+    initCloud();
+
+    let resultUpload = cloudinary.uploader.upload(avatar,
       {
         width: 200,
         height: 200,
