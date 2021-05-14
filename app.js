@@ -17,7 +17,9 @@ console.log("Cloudinary API Key", process.env.CLOUDINARY_API_KEY);
 app.use(
   session({
     name: "StevensEsportsDashboard",
-    secret: "This is a secret.. shhh don't tell anyone",
+    secret: process.env.SESSION_SECRET
+      ? process.env.SESSION_SECRET
+      : "t@FBc924fCnkUy#LDFzKtV7Ea92S",
     saveUninitialized: true,
     resave: false,
     cookie: { maxAge: 60000000 },
@@ -44,7 +46,15 @@ app.use("/dashboard", (req, res, next) => {
 // Ensure users who try to use certain actions in the dashboard have
 // sufficient permissions.
 app.use("/dashboard/admin", (req, res, next) => {
-  if (req.session.user.role !== "administrator") res.status(401).send();
+  if (req.session.user.role !== "administrator") return res.status(401).send();
+  next();
+});
+
+// Ensure users who request information from the API have the
+// sufficient permissions.
+app.use("/api", (req, res, next) => {
+  if (req.session.user.role !== "administrator") return res.status(401).send();
+  next();
 });
 
 configRoutes(app);
