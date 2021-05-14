@@ -43,6 +43,9 @@ async function main(){
         matchType: "Counter-Strike: Global Offensive"
     });
 
+    const team_one = await teams.addTeam("Stevens LoL Red", "Varsity", "League of Legends", ["Jerry Cheng", "Andrew Chuah"]);
+    const id = team_one._id;
+
     resolved_matches = await match.get_resolved();
     console.log(resolved_matches);
     console.log('Done seeding database');

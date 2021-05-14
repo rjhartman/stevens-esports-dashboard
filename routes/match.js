@@ -31,6 +31,23 @@ router.post("/", async function (req, res) {
   }
 });
 
+router.put('/:id', async (req, res) => {
+  try {
+      await match.getMatchById(req.params.id);
+  } catch(e){
+      res.sendStatus(404);
+  }
+  let matchInfo = req.body;
+  try {
+      checkMatchObj(matchInfo);
+      const updatedMatch = await match.updateMatch(req.params.id,matchInfo);
+      res.sendStatus(200);
+  } catch(e){
+      // console.log(e);
+      res.status(400).json({ error: e });
+  }
+});
+
 router.get("/", async function (req, res) {
     try {
         let unresolved = await match.get_unresolved();
