@@ -120,7 +120,6 @@ module.exports = {
             let parsedId = ObjectId(obj.players[i]);
         }
         const team = await getTeamById(id);
-        const teamCollection = await teams();
         let updatedTeam = {
             name: obj.name,
             status: obj.status,
