@@ -57,6 +57,21 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.put('/:id', async (req, res) => {
+    try {
+      // console.log(req.params.id);
+        const team1 = await team.getTeamById(req.params.id);
+    } catch(e) {
+        res.sendStatus(404);
+    }
+    let teamInfo = req.body;
+    try {
+        const updatedTeam = await teams.updateTeam(req.params.id, teamInfo);
+        res.sendStatus(200);
+    } catch(e){
+        res.status(400).json({ error: e });
+    }
+});
 
 module.exports = router;
 

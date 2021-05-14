@@ -1,7 +1,7 @@
 const mongoCollections = require("../config/mongoCollections");
 const matches = mongoCollections.matches;
 const games = require('./games.js');
-const teams = require('./teams.js');
+const teams = require('./teamfunctions.js');
 let { ObjectId } = require('mongodb');
 const cloudinary = require("cloudinary").v2;
 require("dotenv").config();
@@ -97,6 +97,7 @@ async function addMatch(obj){
         matchType: obj.matchType
     };
     const newInsertInformation = await matchCollection.insertOne(newMatch);
+    if(newInsertInformation.insertedCount === 0) throw "Error: Could not add match!";
     return await getMatchById(newInsertInformation.insertedId.toString());
 }
 async function getMatchById(id){
@@ -152,7 +153,7 @@ async function get_resolved_id(id){
                 let matchObj = {
                     game: getLogo(match.matchType),
                     date: getMatchTime(match.date),
-                    team1: await getTeam(match.team),
+                    team1: match.team,
                     team2: match.opponent,
                     result: match.result,
                     teamScore: match.teamsScore,
@@ -175,7 +176,7 @@ async function get_unresolved_id(id){
                 let matchObj = {
                     game: getLogo(match.matchType),
                     date: getMatchTime(match.date),
-                    team1: await getTeam(match.team),
+                    team1: match.team,
                     team2: match.opponent,
                     result: match.result,
                     teamScore: match.teamsScore,
@@ -196,7 +197,7 @@ async function get_resolved(){
             let matchObj = {
                 game: getLogo(match.matchType),
                 date: getMatchTime(match.date),
-                team1: await getTeam(match.team),
+                team1: match.team,
                 team2: match.opponent,
                 result: match.result,
                 teamScore: match.teamsScore,
@@ -219,7 +220,7 @@ async function get_unresolved(){
             let matchObj = {
                 game: getLogo(match.matchType),
                 date: getMatchTime(d),
-                team1: await getTeam(match.team),
+                team1: match.team,
                 team2: match.opponent,
                 result: match.result,
                 teamScore: match.teamsScore,

@@ -1,50 +1,30 @@
-// const teamData = require('./teams');
 const mongoCollections = require('../config/mongoCollections');
 const teams = mongoCollections.teams;
 let { ObjectId } = require('mongodb');
 
+function checkString(str, name){
+    if (!str) throw `${name || 'provided variable'} is empty`
+    if (typeof str !== 'string') throw `${name || 'provided variable'} is not a string`
+    let s = str.trim();
+    if (s === '') throw `${name || 'provided variable'} is an empty string`
+}
+
+
 module.exports = {
     async getTeamById(id) {
         if (!id) throw 'You must provide an id to search for';
-        let parsedId = ObjectId(id);
-        let team = undefined;
+        let parsedId = ObjectID(id);
         const teamCollection = await teams();
-        const team_col = await teamCollection.find({}).toArray();
-        for (i = 0; i < team_col.length; i++) {
-            if (team_col[i]._id === parsedId) {
-                team = team_col[i];
-            }
-        }
-        if (team === undefined) {
-            throw `Error: Team not found`;
-        }
-        return team;
+        const team_col = await teamCollection.findOne({_id: parsedId});
+
+        if (!team_col) throw `Error: Team not found`;
+        return team_col;
     },
     async getAllTeams() {
-        teams_list = []
         const teamCollection = await teams();
         const team_col = await teamCollection.find({}).toArray();
-        console.log(team_col);
-        for (i = 0; i < team_col.length; i++) {
-            teams_list.push(team_col[i])
-        }
-        return teams_list;
+        return team_col;
     },
-    // // hardcode version
-    // async getTeamById(id) {
-    //     if (!id) throw 'You must provide an id to search for';
-    //     let team = undefined;
-    //     let trueId = Number(id)
-    //     for (i = 0; i < teamData.length; i++) {
-    //         if (teamData[i]._id === trueId) {
-    //             team = teamData[i];
-    //         }
-    //     }
-    //     if (team === undefined) {
-    //         throw `Error: Team not found`;
-    //     }
-    //     return team;
-    // },
     async addTeam(name, status, game, players) {
         const teamCollection = await teams();
         if (typeof name !== "string" || name.trim().length === 0) {
@@ -53,10 +33,13 @@ module.exports = {
         if (typeof status !== "string" || status.trim().length === 0) {
             throw `Error: status should be a string of length greater than zero.`;
         }
+        if (status.toLowerCase().trim() !== "varsity" || status.toLowerCase().trim() !== "junior varsity") {
+            throw `Error: team status should be set to Varsity or Junior Varsity`;
+        }
         if (typeof game !== "string" || game.trim().length === 0) {
             throw `Error: game should be a string of length greater than zero.`;
         }
-        if (!Array.isArray(players)) {
+        if (!Array.isArray(players) || obj.players.length == 0) {
             throw 'Error: Please make sure your players is an array.';
         }
         for (let i = 0; i < players.length; i++) {
@@ -71,7 +54,86 @@ module.exports = {
             game: game,
             players: players
         };
-        const team_insert = teamCollection.insertOne(newTeam);
-        return team_insert;
+        const team_insert = await teamCollection.insertOne(newTeam);
+        if(team_insert.insertedCount === 0) throw `Error: Could not add team!`;
+
+        const insertedTeam = await this.getTeamById(team_insert.insertedId.toString());
+        return insertedTeam;
+    },
+    async addMatch(obj){
+        const teamCollection = await teams();
+        if (typeof obj.name !== "string" || obj.name.trim().length === 0) {
+            throw `Error: name should be a string of length greater than zero.`;
+        }
+        if (typeof obj.status !== "string" || obj.status.trim().length === 0) {
+            throw `Error: status should be a string of length greater than zero.`;
+        }
+        if (obj.status.toLowerCase().trim() !== "varsity" || obj.status.toLowerCase().trim() !== "junior varsity") {
+            throw `Error: team status should be set to Varsity or Junior Varsity`;
+        }
+        if (typeof obj.game !== "string" || obj.game.trim().length === 0) {
+            throw `Error: game should be a string of length greater than zero.`;
+        }
+        if (!Array.isArray(obj.players) || obj.players.length == 0) {
+            throw 'Error: Please make sure your players is an array.';
+        }
+        for (let i = 0; i < players.length; i++) {
+            // if (typeof players[i] !== 'string' || players[i].trim().length == 0) {
+            //     throw 'Error: players should all be strings of length greater than zero.';
+            // }
+            let parsedId = ObjectId(obj.players[i]);
+        }
+        let newTeam = {
+            name: obj.name,
+            status: obj.status,
+            game: obj.game,
+            players: obj.players
+        };
+        const newInsertInformation = await teamCollection.insertOne(newTeam);
+        if(newInsertInformation.insertedCount === 0) throw "Error: Could not add match!";
+        return await getTeamById(newInsertInformation.insertedId.toString());
+    }, 
+
+    async updateTeam(id, obj){
+        checkString(id,'id');
+        let parsedId = ObjectId(id);
+        const teamCollection = await teams();
+        if (typeof obj.name !== "string" || obj.name.trim().length === 0) {
+            throw `Error: name should be a string of length greater than zero.`;
+        }
+        if (typeof obj.status !== "string" || obj.status.trim().length === 0) {
+            throw `Error: status should be a string of length greater than zero.`;
+        }
+        if (obj.status.toLowerCase().trim() !== "varsity" || obj.status.toLowerCase().trim() !== "junior varsity") {
+            throw `Error: team status should be set to Varsity or Junior Varsity`;
+        }
+        if (typeof obj.game !== "string" || obj.game.trim().length === 0) {
+            throw `Error: game should be a string of length greater than zero.`;
+        }
+        if (!Array.isArray(obj.players) || obj.players.length == 0) {
+            throw 'Error: Please make sure your players is an array.';
+        }
+        for (let i = 0; i < players.length; i++) {
+            // if (typeof players[i] !== 'string' || players[i].trim().length == 0) {
+            //     throw 'Error: players should all be strings of length greater than zero.';
+            // }
+            let parsedId = ObjectId(obj.players[i]);
+        }
+        const team = await getTeamById(id);
+        const teamCollection = await teams();
+        let updatedTeam = {
+            name: obj.name,
+            status: obj.status,
+            game: obj.game,
+            players: obj.players
+        };
+        const updatedInfo = await teamCollection.updateOne(
+            { _id: parsedId },
+            { $set: updatedTeam }
+        );
+        if (updatedInfo.modifiedCount === 0) {
+            throw 'could not update team successfully';
+        }
+        return await getTeamById(id);
     }
 };

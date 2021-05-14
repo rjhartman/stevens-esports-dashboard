@@ -54,13 +54,16 @@ async function addPlayer(user, position, isStarter, isCaptain){
 
     if(!userFunctions.getUser(user)) throw `Error: user not found/valid.`
 
-    const returnval = playerCollection.insertOne({
+    const returnval = await playerCollection.insertOne({
         user: user,
         position: position,
         isStarter: isStarter,
         isCaptain: isCaptain
     });
-    return returnval;
+
+    if(returnval.insertedCount === 0) throw "Error: Could not add player!";
+    let player = await this.getPlayerById(returnval.insertedId.toString());
+    return player;
 }
 
 async function getPersonByUsername(username){
