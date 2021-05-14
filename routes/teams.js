@@ -22,6 +22,7 @@ router.get('/', async (req, res) => {
 
             for(let j = 0; j < teams_list[i].players.length; j++){
                 let filtered = foundPlayers.filter(r => r._id.toString() === teams_list[i].players[j])
+                console.log(filtered)
                 temp_array.push(filtered);
             }
             players_array.push(temp_array);
