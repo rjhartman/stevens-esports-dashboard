@@ -2,10 +2,11 @@
   "name": "stevens-esports",
   "version": "1.0.0",
   "description": "Stevens Esports club dashboard website",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "nodemon app.js --ignore 'public/'",
-    "proxy": "browser-sync start --proxy 'localhost:3000' --files public/**/*.css''"
+    "proxy": "browser-sync start --proxy 'localhost:3000' --files public/**/*.css''",
+    "seed": "node ./tasks/seed.js"
   },
   "repository": {
     "type": "git",

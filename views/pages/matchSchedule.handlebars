@@ -1,18 +1,18 @@
 <div class="page-container">
-    <img id="landing-banner" src="/public/assets/Promo_Photos_A/6.jpg" alt='Stevens Esports Banner'>
+    <img id="landing-banner" src="https://res.cloudinary.com/stevens-esports/image/upload/v1620963771/Promo_Photos_A/6.jpg" alt='Stevens Esports Banner'>
     <div class="main"
         style="background-image: none; margin-top: -500px; background-color: white; padding-top: 0;">
         <div class="team-filters">
             <div class="banner_container">
-                <a class="team_filter" href="/schedule"><img src="/public/assets/Logos/all_logo.png" alt="All Matches"></a>
-                <a class="team_filter" href="/schedule/1"><img src="/public/assets/Logos/league_logo_2.png" alt="League of Legends Matches"></a>
-                <a class="team_filter" href="/schedule/2"><img src="/public/assets/Logos/csgo_logo.png" alt="Counter-Strike: Global Offensive Matches"></a>
-                <a class="team_filter" href="/schedule/3"><img src="/public/assets/Logos/valorant_logo.png" alt="Valorant Matches"></a>
-                <a class="team_filter" href="/schedule/4"><img src="/public/assets/Logos/overwatch_logo.png" alt="Overwatch Matches"></a>
-                <a class="team_filter" href="/schedule/5"><img src="/public/assets/Logos/hearthstone_logo.png" alt="Hearthstone Matches"></a>
-                <a class="team_filter" href="/schedule/6"><img src="/public/assets/Logos/rocket_league_logo.png" alt="Rocket League Matches"></a>
-                <a class="team_filter" href="/schedule/7"><img src="/public/assets/Logos/r6_logo.png" alt="Rainbow Six: Siege Matches"></a>
-                <a class="team_filter" href="/schedule/8"><img src="/public/assets/Logos/cod_logo.png" alt="Call of Duty Matches"></a>
+                <a class="team_filter" href="/schedule"><img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620962778/logos/all_logo.png" alt="All Matches"></a>
+                <a class="team_filter" href="/schedule/1"><img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620962778/logos/league_logo_2.png" alt="League of Legends Matches"></a>
+                <a class="team_filter" href="/schedule/2"><img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620962777/logos/csgo_logo.png" alt="Counter-Strike: Global Offensive Matches"></a>
+                <a class="team_filter" href="/schedule/3"><img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620962778/logos/valorant_logo.png" alt="Valorant Matches"></a>
+                <a class="team_filter" href="/schedule/4"><img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620962777/logos/overwatch_logo.png" alt="Overwatch Matches"></a>
+                <a class="team_filter" href="/schedule/5"><img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620962777/logos/hearthstone_logo.png" alt="Hearthstone Matches"></a>
+                <a class="team_filter" href="/schedule/6"><img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620962777/logos/rocket_league_logo.png" alt="Rocket League Matches"></a>
+                <a class="team_filter" href="/schedule/7"><img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620962777/logos/r6_logo.png" alt="Rainbow Six: Siege Matches"></a>
+                <a class="team_filter" href="/schedule/8"><img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620962777/logos/cod_logo.png" alt="Call of Duty Matches"></a>
             </div>
         </div>
         <div class="body_content">
@@ -35,8 +35,7 @@
                         match link would take you to a vod if available or it could be another page with more detailed
                         info --}}
                         <span class="match_icon">
-                            {{!-- <img src={{this.icon_image}}></img> --}}
-                            {{this.game}}
+                            <img src={{this.game}}>
                         </span>
                         <span class="match_date">{{this.date}}</span>
                         <div class="match_info">
@@ -60,9 +59,8 @@
                         match info would have names of both teams in the match
                         match link would take you to a vod if available --}}
                         <span class="match_icon">
-                            {{!-- <img src={{this.icon_image}}> --}}
-                            {{this.game}}
-                        </img></span>
+                            <img src={{this.game}}>
+                        </span>
                         <span class="match_date">{{this.date}}</span>
                         <div class="match_info">
                             <span class="team1">{{this.team1}}</span>

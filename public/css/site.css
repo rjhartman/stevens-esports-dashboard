@@ -387,7 +387,7 @@ sub {
 .page-container .main {
     position: relative;
     padding: 40px 0;
-    background-image: url('/public/assets/intro_bg.jpg');
+    background-image: url('https://res.cloudinary.com/stevens-esports/image/upload/v1620966288/intro_bg.jpg');
     background-size: 140% 250%;
     background-repeat: no-repeat;
     background-position: left top 100%;
@@ -1099,7 +1099,6 @@ main.backend {
     content: " *";
     color: var(--bright-red);
 }
-
 .ah__right {
     background-color: var(--burgundy);
 }
