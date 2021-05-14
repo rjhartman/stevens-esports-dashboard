@@ -84,6 +84,40 @@ async function addMatch(obj){
         matchType: obj.matchType
     };
     const newInsertInformation = await matchCollection.insertOne(newMatch);
+    return await getBookById(newInsertInformation.insertedId.toString());
+}
+async function getMatchById(id){
+    checkString(id,'id');
+    let parsedId = ObjectId(id);
+    const matchCollection = await matches();
+    const match = await matchCollection.findOne({ _id: parsedId });
+    if (match === null) throw 'No match with that id';
+    return match;
+}
+async function updateMatch(id,obj){
+    checkString(id,'id');
+    let parsedId = ObjectId(id);
+    checkMatchObj(obj);
+    const match = await getMatchById(id);
+    const matchCollection = await matches();
+    let updatedMatch = {
+        opponent: obj.opponent,
+        game: obj.game,
+        team: obj.team,
+        date: obj.date,
+        result: obj.result,
+        opponentScore: obj.opponentScore,
+        teamsScore: obj.teamsScore,
+        matchType: obj.matchType
+    };
+    const updatedInfo = await matchCollection.updateOne(
+        { _id: parsedId },
+        { $set: updatedMatch }
+    );
+    if (updatedInfo.modifiedCount === 0) {
+        throw 'could not update book successfully';
+    }
+    return await getMatchById(id);
 }
 
 async function getTeam(id){
