@@ -17,7 +17,7 @@ module.exports = [
         // Number
         teamsScore: 1,
         // String
-        matchType: "LoL"
+        matchType: "League of Legends"
     },
     {
         // Object ID of the match
@@ -37,7 +37,7 @@ module.exports = [
         // Number
         teamsScore: 3,
         // String
-        matchType: "LoL"
+        matchType: "League of Legends"
     },
     {
         // Object ID of the match
@@ -57,6 +57,6 @@ module.exports = [
         // Number
         teamsScore: 3,
         // String
-        matchType: "CSGO"
+        matchType: "Counter-Strike: Global Offensive"
     }
 ];

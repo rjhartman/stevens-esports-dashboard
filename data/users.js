@@ -50,7 +50,8 @@ module.exports = {
         width: 200,
         height: 200,
         x: 0, y: 0,
-        crop: "limit"
+        crop: "limit",
+        folder: "avatars",
       });
 
     collection.insertOne({
