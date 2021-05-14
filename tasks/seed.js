@@ -13,6 +13,7 @@ async function main(){
     await db.dropDatabase();
 
     const game1 = await game.addGame({title: 'League of Legends',categories: ["MOBA", "Strategy"]})
+    const game2 = await game.addGame({title: 'Counter-Strike: Global Offensive',categories: ["FPS", "Strategy"]})
     
     const Jerry_user = await users.addUser('Jerry', 'Cheng', 'jcheng15@stevens.edu', '', 'jerrytd579', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is my bio');
     const Jerry_player = await playerData.addPlayer('jcheng15@stevens.edu', 'ADC', true, false);
@@ -45,12 +46,12 @@ async function main(){
     const patrick_id = patrick._id;
 
     const team_one = await teams.addTeam("Stevens LoL Red", "Varsity", "League of Legends", [jerry_id, andrew_id]);
-    const team_two = await teams.addTeam("Stevens CSGO Red", "Varsity", "Counter Strike Global Offenseive", [ryan_id, dan_id]);
+    const team_two = await teams.addTeam("Stevens CSGO Red", "Varsity", "Counter Strike Global Offensive", [ryan_id, dan_id]);
     const team_three = await teams.addTeam("Stevens Overwatch Gray", "Junior Varsity", "Overwatch", [jerry_chen_id, patrick_id]);
 
     const match1 = await match.addMatch({
         opponent: "Some other team",
-        game: 1,
+        game: game1._id,
         team: team_one.name,
         date: new Date('April 17, 2021 3:00'),
         result: "Loss",
@@ -60,7 +61,7 @@ async function main(){
     });
     const match2 = await match.addMatch({
         opponent: "Some other team",
-        game: 1,
+        game: game1._id,
         team: team_one.name,
         date: new Date('June 17, 2021 3:00'),
         result: "Win",
@@ -70,7 +71,7 @@ async function main(){
     });
     const match3 = await match.addMatch({
         opponent: "Some other team",
-        game: 2,
+        game: game2._id,
         team: team_one.name,
         date: new Date('June 29, 2020 3:00'),
         result: "Win",
