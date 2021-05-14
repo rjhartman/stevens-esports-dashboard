@@ -67,11 +67,12 @@ async function addPlayer(user, position, isStarter, isCaptain){
 }
 
 async function getPersonByUsername(username){
+
+    stringChecker(username, 'username');
+
     let user = await userFunctions.getUser(username);
 
-    // Error checking
-
-    console.log(user);
+    //console.log(user);
 
     if(user == undefined){
         throw `Error: Player not found.`
