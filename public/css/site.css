@@ -1098,6 +1098,7 @@ main.backend {
 #register-form .required:after {
     content: " *";
     color: var(--bright-red);
+}
 .ah__right {
     background-color: var(--burgundy);
 }
