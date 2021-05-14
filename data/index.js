@@ -1,11 +1,13 @@
 const usersData = require("./users");
-const playerFuncData = require("./playerFunctions");
 const playerData = require("./players");
 const matchData = require("./match");
+const gameData = require("./game");
+const teamData = require("./teamfunctions");
 
 module.exports = {
   users: usersData,
-  playerFunc: playerFuncData,
   players: playerData,
-  match: matchData
+  match: matchData,
+  teams: teamData,
+  game: gameData
 };

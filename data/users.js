@@ -1,7 +1,6 @@
 const mongoCollections = require("../config/mongoCollections");
 const cloudinary = require("cloudinary").v2;
 const { ObjectID } = require("mongodb");
-//require('dotenv').config();
 
 const users = mongoCollections.users;
 
@@ -23,6 +22,7 @@ module.exports = {
 
     // The username may be an email or username. Search for both.
     username = username.toLowerCase();
+    
     const user = await collection.findOne({
       $or: [
         {
@@ -35,9 +35,28 @@ module.exports = {
     });
 
     const userList = await collection.find({}).toArray();
-    console.log(userList)
-    console.log(user)
+    //console.log(userList)
+    //console.log(user)
     if (!user) throw `User with username ${username} not found.`;
+    return user;
+  },
+  async getUserById(id) {
+    const collection = await users();
+    if (typeof id !== "string")
+      throw `ID must be a string! Received ${typeof id}`;
+    if (!id || !(id = id.trim()))
+      throw `ID cannot be empty.`;
+
+    let parsedId = ObjectID(id);
+    
+    const user = await collection.findOne({
+      _id: parsedId
+    });
+
+    if(!user) throw `Error: player ${id} not found.`;
+
+    user._id = (user._id).toString();
+
     return user;
   },
   async getRandomUser() {
@@ -52,7 +71,7 @@ module.exports = {
       .toArray();
     return users[0];
   },
-  async addUser(firstName, lastName, username, password, nickname, avatar, bio) {
+  async addUser(firstName, lastName, username, email, passwordDigest, nickname, avatar, bio) {
     const collection = await mongoCollections.users();
     if (typeof username !== "string")
       throw `Username/email must be a string! Received ${typeof username}`;
@@ -71,15 +90,20 @@ module.exports = {
         crop: "limit"
       });
 
-    collection.insertOne({
+    const returnVal = await collection.insertOne({
       firstName: firstName,
       lastName: lastName,
       username: username,
+      email: email,
+      passwordDigest: passwordDigest,
       nickname: nickname,
       role: "regular",
       biography: bio,
       avatar: resultUpload.secure_url
     });
+
+    if(returnVal.insertedCount === 0) throw "Error: Could not add user!";
+    return await this.getUserById(returnVal.insertedId.toString());
   },
   async getAllUsers(sanitize = false) {
     const collection = await mongoCollections.users();

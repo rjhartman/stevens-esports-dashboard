@@ -20,7 +20,7 @@ function checkMatchObj(obj){
 }
 
 router.post("/", async function (req, res) {
-  if (!req.body) throw `gameid required`;
+  if (!req.body) throw `match info required`;
   let matchInfo = req.body;
   try {
       // checkMatchObj(matchInfo);
@@ -28,6 +28,23 @@ router.post("/", async function (req, res) {
       res.sendStatus(200);
   } catch (e) {
     res.status(400).json({ error: e });
+  }
+});
+
+router.put('/:id', async (req, res) => {
+  try {
+    // console.log(req.params.id);
+      const match1 = await match.getMatchById(req.params.id);
+  } catch(e){
+      res.sendStatus(404);
+  }
+  let matchInfo = req.body;
+  try {
+      checkMatchObj(matchInfo);
+      const updatedMatch = await match.updateMatch(req.params.id,matchInfo);
+      res.sendStatus(200);
+  } catch(e){
+      res.status(400).json({ error: e });
   }
 });
 

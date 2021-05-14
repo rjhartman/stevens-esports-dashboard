@@ -1,7 +1,8 @@
 const mongoCollections = require("../config/mongoCollections");
 const matches = mongoCollections.matches;
 const games = require('./games.js');
-const teams = require('./teams.js');
+const teams = require('./teamfunctions.js');
+let { ObjectId } = require('mongodb');
 const cloudinary = require("cloudinary").v2;
 require("dotenv").config();
 
@@ -62,7 +63,18 @@ function getLogo(matchType) {
             return cloudinary.url("logos/r6_logo_red.png");
     }
 }
-
+async function getMatchById(id){
+    // console.log(id);
+    checkString(id,'id');
+    
+    let parsedId = ObjectId(id);
+    const matchCollection = await matches();
+    // console.log(id);
+    const match = await matchCollection.findOne({ _id: parsedId });
+    if (match === null) throw 'No match with that id';
+    // console.log(match);
+    return match;
+}
 async function addMatch(obj){
     checkMatchObj(obj);
     const matchCollection = await matches();
@@ -85,6 +97,42 @@ async function addMatch(obj){
         matchType: obj.matchType
     };
     const newInsertInformation = await matchCollection.insertOne(newMatch);
+    if(newInsertInformation.insertedCount === 0) throw "Error: Could not add match!";
+    return await getMatchById(newInsertInformation.insertedId.toString());
+}
+async function getMatchById(id){
+    checkString(id,'id');
+    let parsedId = ObjectId(id);
+    const matchCollection = await matches();
+    const match = await matchCollection.findOne({ _id: parsedId });
+    if (match === null) throw 'No match with that id';
+    return match;
+}
+
+async function updateMatch(id,obj){
+    checkString(id,'id');
+    let parsedId = ObjectId(id);
+    checkMatchObj(obj);
+    const match = await getMatchById(id);
+    const matchCollection = await matches();
+    let updatedMatch = {
+        opponent: obj.opponent,
+        game: obj.game,
+        team: obj.team,
+        date: obj.date,
+        result: obj.result,
+        opponentScore: obj.opponentScore,
+        teamsScore: obj.teamsScore,
+        matchType: obj.matchType
+    };
+    const updatedInfo = await matchCollection.updateOne(
+        { _id: parsedId },
+        { $set: updatedMatch }
+    );
+    if (updatedInfo.modifiedCount === 0) {
+        throw 'could not update book successfully';
+    }
+    return await getMatchById(id);
 }
 
 async function getTeam(id){
@@ -105,7 +153,7 @@ async function get_resolved_id(id){
                 let matchObj = {
                     game: getLogo(match.matchType),
                     date: getMatchTime(match.date),
-                    team1: await getTeam(match.team),
+                    team1: match.team,
                     team2: match.opponent,
                     result: match.result,
                     teamScore: match.teamsScore,
@@ -128,7 +176,7 @@ async function get_unresolved_id(id){
                 let matchObj = {
                     game: getLogo(match.matchType),
                     date: getMatchTime(match.date),
-                    team1: await getTeam(match.team),
+                    team1: match.team,
                     team2: match.opponent,
                     result: match.result,
                     teamScore: match.teamsScore,
@@ -149,7 +197,7 @@ async function get_resolved(){
             let matchObj = {
                 game: getLogo(match.matchType),
                 date: getMatchTime(match.date),
-                team1: await getTeam(match.team),
+                team1: match.team,
                 team2: match.opponent,
                 result: match.result,
                 teamScore: match.teamsScore,
@@ -172,7 +220,7 @@ async function get_unresolved(){
             let matchObj = {
                 game: getLogo(match.matchType),
                 date: getMatchTime(d),
-                team1: await getTeam(match.team),
+                team1: match.team,
                 team2: match.opponent,
                 result: match.result,
                 teamScore: match.teamsScore,
@@ -188,5 +236,7 @@ module.exports = {
     get_resolved_id,
     get_unresolved,
     get_unresolved_id,
-    addMatch
+    addMatch,
+    updateMatch,
+    getMatchById
 };
