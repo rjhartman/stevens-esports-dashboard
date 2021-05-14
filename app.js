@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const static = express.static(__dirname + "/public");
@@ -10,6 +11,8 @@ const e = require("express");
 
 app.use("/public", static);
 app.use(express.json());
+
+console.log("Cloudinary API Key", process.env.CLOUDINARY_API_KEY);
 
 app.use(
   session({
