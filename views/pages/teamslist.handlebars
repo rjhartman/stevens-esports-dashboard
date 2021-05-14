@@ -3,24 +3,23 @@
         <div class="team-grid">
             {{#each teams}}
             <div class="team">
-                {{!--#if teams.name}}
-                <h1>{{teams.name}}</h1> 
-                {{/if--}}
-                <h1>Stevens LoL Red</h1>
+                {{#if this.name}}
+                <h1>{{this.name}}</h1> 
+                {{/if}}
                 <dl>
-                    {{!--#if team.status--}}
+                    {{#if this.status}}
                     <dt class="teamStatus">Varsity Status</dt>
-                    <dd class="teamStatus">{{!--team.status--}}JV</dd>
-                    {{!--/if--}}
-                    {{!--#if team.game--}}
-                    <dt class="teamGame">Game</dt>
-                    <dd class="teamGame">{{team.game}}</dd>
+                    <dd class="teamStatus">{{this.status}}JV</dd>
                     {{/if}}
-                    {{#if team.players}}
+                    {{#if this.game}}
+                    <dt class="teamGame">Game</dt>
+                    <dd class="teamGame">{{this.game}}</dd>
+                    {{/if}}
+                    {{#if players.}}
                     <dt class="teamPlayers">Roster</dt>
                     <dd class="teamPlayers">
                         <ul>
-                            {{#each team.players}}
+                            {{#each this.players}}
                             <li>
                                 {{this}}
                             </li>

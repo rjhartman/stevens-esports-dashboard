@@ -6,28 +6,30 @@ const player = data.players;
 const mongoCollections = require('../config/mongoCollections');
 const teams = mongoCollections.teams;
 const players = mongoCollections.players;
-let { ObjectId } = require('mongodb');
+let { ObjectID } = require('mongodb');
 
 router.get('/', async (req, res) => {
     try {
-        let players_array = [[]]
-        const team_list = await teamFuncs.getAllTeams();
+        let players_array = [];
+        let temp_array = [];
+        const teams_list = await teamFuncs.getAllTeams();
         const playerCollection = await players();
-        for (i = 0; i < teams_list.length; i++) { // for each team in database
-            // if it doesn't work, try setting the players_array with a variable size
-            players_array[i] = teams_list[i].name
-            for (j = 0; j < teams_list[i].players.length; j++) { // for each player in team
-                for (k = 0; k < playerCollection.length; k++) { // for each player in collection
-                    let player_k = await player.getPlayerById(playerCollection[k]._id);
-                    if (player_k._id == team.players[j]._id) {
-                        players_array[i].push[player_k.user]
-                    }
-                }
+
+        const foundPlayers = await playerCollection.find({}).toArray();
+
+        for(let i = 0; i < teams_list.length; i++){
+            temp_array.push(teams_list[i].name);
+
+            for(let j = 0; j < teams_list[i].players.length; j++){
+                let filtered = foundPlayers.filter(r => r._id.toString() === teams_list[i].players[j])
+                temp_array.push(filtered);
             }
+            players_array.push(temp_array);
+            temp_array = [];
         }
-        console.log(team_list)
-        console.log(players_array)
-        res.render('teams/teamslist', {title: 'List of Teams', teams: team_list, players: players_array});
+        console.log(players_array);
+
+        res.render('pages/teamslist', {title: 'Rosters | Stevens Esports', teams: teams_list, players: players_array});
     } catch (e) {
         res.status(500);
     }
