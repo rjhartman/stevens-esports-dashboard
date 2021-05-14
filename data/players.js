@@ -79,6 +79,7 @@ async function getPersonByUsername(username){
 
     let thePlayer = await getPlayerByUsername(user.username);
 
+
     let person = {...user, ...thePlayer};
     return person;
 }

@@ -35,8 +35,8 @@ module.exports = {
     });
 
     const userList = await collection.find({}).toArray();
-    console.log(userList)
-    console.log(user)
+    //console.log(userList)
+    //console.log(user)
     if (!user) throw `User with username ${username} not found.`;
     return user;
   },

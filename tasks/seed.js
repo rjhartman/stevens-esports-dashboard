@@ -14,33 +14,33 @@ async function main(){
     // addUser(firstName, lastName, username, email, passwordDigest, nickname, avatar, bio)
     // addPlayer(user, position, isStarter, isCaptain)
     const Jerry_user = await users.addUser('Jerry', 'Cheng', 'jerrytd579', 'jcheng15@stevens.edu', '$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u', 'Jerrytd579', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is jerry chengs bio');
-    const Jerry_player = await playerData.addPlayer('jcheng15@stevens.edu', 'ADC', true, false);
-    const jerry = await playerData.getPlayerByUsername('jcheng15@stevens.edu');
+    const Jerry_player = await playerData.addPlayer('jerrytd579', 'ADC', true, false);
+    const jerry = await playerData.getPlayerByUsername('jerrytd579');
     const jerry_id = jerry._id;
 
     const Andrew_user = await users.addUser('Andrew', 'Chuah', 'sheathblade', 'achuah@stevens.edu', '$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u', 'Sheathblade', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is andrews bio');
-    const Andrew_player = await playerData.addPlayer('achuah@stevens.edu', 'Top', true, false);
-    const andrew = await playerData.getPlayerByUsername('achuah@stevens.edu');
+    const Andrew_player = await playerData.addPlayer('sheathblade', 'Top', true, false);
+    const andrew = await playerData.getPlayerByUsername('sheathblade');
     const andrew_id = andrew._id;
 
     const Ryan_user = await users.addUser('Ryan', 'Hartman', 'strider', 'rhartman1@stevens.edu', '$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u', 'Strider', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is ryans bio');
-    const Ryan_player = await playerData.addPlayer('rhartman1@stevens.edu', 'IGL', true, true);
-    const ryan = await playerData.getPlayerByUsername('rhartman1@stevens.edu');
+    const Ryan_player = await playerData.addPlayer('strider', 'IGL', true, true);
+    const ryan = await playerData.getPlayerByUsername('strider');
     const ryan_id = ryan._id;
 
     const Dan_user = await users.addUser('Daniel', 'Pekata', 'gamble', 'dpekata@stevens.edu', '$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u', 'Gamble', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is dans bio');
-    const Dan_player = await playerData.addPlayer('dpekata@stevens.edu', 'AWPer', true, false);
-    const dan = await playerData.getPlayerByUsername('dpekata@stevens.edu');
+    const Dan_player = await playerData.addPlayer('gamble', 'AWPer', true, false);
+    const dan = await playerData.getPlayerByUsername('gamble');
     const dan_id = dan._id;
 
     const Jerry_two_user = await users.addUser('Jerry', 'Chen', 'dragoblin', 'jchen103@stevens.edu', '$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u', 'Dragoblin', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is jerry chens bio');
-    const Jerry_two_player = await playerData.addPlayer('jchen103@stevens.edu', 'Tank', true, false);
-    const jerry_chen = await playerData.getPlayerByUsername('jchen103@stevens.edu');
+    const Jerry_two_player = await playerData.addPlayer('dragoblin', 'Tank', true, false);
+    const jerry_chen = await playerData.getPlayerByUsername('dragoblin');
     const jerry_chen_id = jerry_chen._id;
 
     const Patrick_user = await users.addUser('Patrick', 'Hill', 'graffixnyc', 'phill@stevens.edu', '$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u', 'graffixnyc', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is patricks bio');
-    const Patrick_player = await playerData.addPlayer('phill@stevens.edu', 'Support', true, false);
-    const patrick = await playerData.getPlayerByUsername('phill@stevens.edu');
+    const Patrick_player = await playerData.addPlayer('graffixnyc', 'Support', true, false);
+    const patrick = await playerData.getPlayerByUsername('graffixnyc');
     const patrick_id = patrick._id;
 
     const team_one = await teams.addTeam("Stevens LoL Red", "Varsity", "League of Legends", [jerry_id, andrew_id]);
