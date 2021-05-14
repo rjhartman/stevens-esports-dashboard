@@ -1,6 +1,7 @@
 const dbConnection = require('../config/mongoConnection');
 const data = require('../data/');
 const match = data.match;
+const game = data.game;
 const teams = data.teams;
 const users = data.users;
 const playerData = data.players;
@@ -11,6 +12,8 @@ async function main(){
     const db = await dbConnection();
     await db.dropDatabase();
 
+    const game1 = await game.addGame({title: 'League of Legends',categories: ["MOBA", "Strategy"]})
+    
     const Jerry_user = await users.addUser('Jerry', 'Cheng', 'jcheng15@stevens.edu', '', 'jerrytd579', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is my bio');
     const Jerry_player = await playerData.addPlayer('jcheng15@stevens.edu', 'ADC', true, false);
     const jerry = await playerData.getPlayerByUsername('jcheng15@stevens.edu');
