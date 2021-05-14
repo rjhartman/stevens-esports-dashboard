@@ -1,7 +1,25 @@
-const matches = require('./matches.js');
+const mongoCollections = require("../config/mongoCollections");
+const matches = mongoCollections.matches;
 const games = require('./games.js');
 const teams = require('./teams.js');
 const cloudinary = require("cloudinary").v2;
+
+function checkString(str, name){
+    if (!str) throw `${name || 'provided variable'} is empty`
+    if (typeof str !== 'string') throw `${name || 'provided variable'} is not a string`
+    let s = str.trim();
+    if (s === '') throw `${name || 'provided variable'} is an empty string`
+}
+
+function checkMatchObj(obj){
+    checkString(obj.opponent,'opponent');
+    //Need some function to check the game and team objectIDs are valid when they're set up
+    if (typeof(obj.opponentScore) != 'number') throw `score should be a number`
+    if (obj.opponentScore < 0) throw `score can't be negative`
+    if (typeof(obj.teamsScore) != 'number') throw `team score should be a number`
+    if (obj.teamsScore < 0) throw `score can't be negative`
+    checkString(obj.matchType,'match type')
+}
 
 function getMatchTime(d){
     let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -44,6 +62,30 @@ function getLogo(matchType) {
     }
 }
 
+async function addMatch(obj){
+    checkMatchObj(obj);
+    const matchCollection = await matches();
+    let newMatch = {
+        // String
+        opponent: obj.opponent,
+        // Object ID of the game
+        game: obj.game,
+        // Object ID of the team competing
+        team: obj.team,
+        // Date Field
+        date: obj.date,
+        // String, NA for unresolved matches
+        result: obj.result,
+        // Number
+        opponentScore: obj.opponentScore,
+        // Number
+        teamsScore: obj.teamsScore,
+        // String
+        matchType: obj.matchType
+    };
+    const newInsertInformation = await matchCollection.insertOne(newMatch);
+}
+
 async function getTeam(id){
     for (let team of teams){
         if (team._id == id){
@@ -52,9 +94,11 @@ async function getTeam(id){
     }
 }
 async function get_resolved_id(id){
-    if (!id) throw `no id provided`
+    if (!id) throw `no id provided`;
     let res = [];
-    for (let match of matches){
+    const matchCollection = await matches();
+    const matchList = await matchCollection.find({}).toArray();
+    for (let match of matchList){
         if (match.date < new Date()){
             if (match.game == id){
                 let matchObj = {
@@ -73,9 +117,11 @@ async function get_resolved_id(id){
     return res;
 }
 async function get_unresolved_id(id){
-    if (!id) throw `no id provided`
+    if (!id) throw `no id provided`;
     let res = [];
-    for (let match of matches){
+    const matchCollection = await matches();
+    const matchList = await matchCollection.find({}).toArray();
+    for (let match of matchList){
         if (match.date > new Date()){
             if (match.game == id){
                 let matchObj = {
@@ -95,7 +141,9 @@ async function get_unresolved_id(id){
 }
 async function get_resolved(){
     let res = [];
-    for (let match of matches){
+    const matchCollection = await matches();
+    const matchList = await matchCollection.find({}).toArray();
+    for (let match of matchList){
         if (match.date < new Date()){
             let matchObj = {
                 game: getLogo(match.matchType),
@@ -115,7 +163,9 @@ async function get_resolved(){
 }
 async function get_unresolved(){
     let res = [];
-    for (let match of matches){
+    const matchCollection = await matches();
+    const matchList = await matchCollection.find({}).toArray();
+    for (let match of matchList){
         let d = match.date;
         if (d > new Date()){
             let matchObj = {
@@ -136,5 +186,6 @@ module.exports = {
     get_resolved,
     get_resolved_id,
     get_unresolved,
-    get_unresolved_id
+    get_unresolved_id,
+    addMatch
 };
