@@ -1,5 +1,6 @@
 const mongoCollections = require("../config/mongoCollections");
 const cloudinary = require("cloudinary").v2;
+const { ObjectID } = require("mongodb");
 
 module.exports = {
   async getUser(username) {
@@ -62,5 +63,35 @@ module.exports = {
       biography: bio,
       avatar: resultUpload.secure_url
     });
-  }
+  },
+  async getAllUsers(sanitize = false) {
+    const collection = await mongoCollections.users();
+    // The username may be an email or username. Search for both.
+    const users = await collection.find({}).toArray();
+    return sanitize
+      ? users.map((user) => {
+          delete user.passwordDigest;
+          return user;
+        })
+      : users;
+  },
+  async setRole(id, role) {
+    const collection = await mongoCollections.users();
+    if (typeof id !== "string")
+      throw `ID must be a string. Received ${typeof id}`;
+    if (!id || !(id = id.trim())) throw `ID cannot be empty.`;
+    if (!ObjectID.isValid(id)) throw `ID is not a valid BSON ID.`;
+
+    if (typeof role !== "string")
+      throw `Role must be a string. Receieved ${typeof role}`;
+    if (!role || !(role = role.trim())) throw `Role cannot be empty.`;
+
+    const objId = ObjectID(id);
+    const { modifiedCount } = await collection.updateOne(
+      { _id: objId },
+      { $set: { role: role } }
+    );
+    if (modifiedCount === 0) throw `Could not update a user with id ${id}`;
+    return true;
+  },
 };
