@@ -1,7 +1,9 @@
 const mongoCollections = require("../config/mongoCollections");
 const cloudinary = require("cloudinary").v2;
 const { ObjectID } = require("mongodb");
-require("dotenv").config();
+//require('dotenv').config();
+
+const users = mongoCollections.users;
 
 function initCloud() {
   cloudinary.config({
@@ -13,7 +15,7 @@ function initCloud() {
 
 module.exports = {
   async getUser(username) {
-    const collection = await mongoCollections.users();
+    const collection = await users();
     if (typeof username !== "string")
       throw `Username/email must be a string! Received ${typeof username}`;
     if (!username || !(username = username.trim()))
@@ -31,6 +33,10 @@ module.exports = {
         },
       ],
     });
+
+    const userList = await collection.find({}).toArray();
+    console.log(userList)
+    console.log(user)
     if (!user) throw `User with username ${username} not found.`;
     return user;
   },
@@ -57,13 +63,12 @@ module.exports = {
 
     initCloud();
 
-    let resultUpload = cloudinary.uploader.upload(avatar,
+    let resultUpload = await cloudinary.uploader.upload(avatar,
       {
         width: 200,
         height: 200,
         x: 0, y: 0,
-        crop: "limit",
-        folder: "avatars",
+        crop: "limit"
       });
 
     collection.insertOne({

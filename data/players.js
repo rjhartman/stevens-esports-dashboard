@@ -30,6 +30,8 @@ async function addPlayer(user, position, isStarter, isCaptain){
     stringChecker(user, "addPlayer username");
     stringChecker(position, "addPlayer position");
 
+    const playerCollection = await players();
+
     if(typeof(isStarter) != 'boolean') throw `Error: input ${isStarter} for isStarter is not a boolean.`;
     if(typeof(isCaptain) != 'boolean') throw `Error: input ${isCaptain} for isCaptain is not a boolean.`;
 
@@ -38,9 +40,15 @@ async function addPlayer(user, position, isStarter, isCaptain){
     position = position.trim();
     position = position.toLowerCase();
 
-    if(!userFunctions.getUser(user)) throw `Error: user not found/valid.`
+    //if(!userFunctions.getUser(user)) throw `Error: user not found/valid.`
+    try{
+    let test = await userFunctions.getRandomUser();
+    console.log(test)
+    } catch(e){
+        console.log(e)
+    }
 
-    mongoCollections.insertOne({
+    playerCollection.insertOne({
         user: user,
         position: position,
         isStarter: isStarter,
@@ -56,13 +64,4 @@ async function getPersonById(id, username){
     return person;
 }
 
-module.exports = [
-    {
-        _id: 1,
-        user: 1,
-        position: "Top Lane",
-        isStarter: true,
-        isCaptain: false
-    },
-    addPlayer, getPersonById
-]
+module.exports = {addPlayer, getPersonById}
