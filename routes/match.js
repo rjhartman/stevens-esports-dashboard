@@ -17,8 +17,8 @@ router.get("/", async function (req, res) {
     }
 });
 router.get("/:gameid", async function (req, res) {
-    if (!req.params.gameid) throw `gameid required`
-    let gameid = req.params.gameid
+    if (!req.params.gameid) throw `gameid required`;
+    let gameid = req.params.gameid;
     try {
         let unresolved = await match.get_unresolved_id(gameid);
         let resolved = await match.get_resolved_id(gameid);

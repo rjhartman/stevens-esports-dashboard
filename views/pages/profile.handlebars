@@ -1,0 +1,23 @@
+<div class="page-container">
+    <div class="main">
+        <div class="player-profile">
+            <div class="profile-info">
+                <img class="profile-pic" style="padding: 0;" src="https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/default-player.png">
+                <h2 class="nickname">Sheathblade</h2>
+                {{#if player.isCaptain}}
+                <h3 class="captain">Team Captain</h3>
+                {{/if}}
+                {{#unless player.isStarter}}
+                <h3 class="sub">Substitute Player</h3>
+                {{/unless}}
+                {{#if player.position}}
+                <p class="position">Position: </p>
+                <p class="position">{{player.position}}</p>
+                <br>
+                {{/if}}
+                <p class="bio">Biography: </p>
+                <p class="bio">{{player.biography}}</p>
+            </div>
+        </div>
+    </div>
+</div>

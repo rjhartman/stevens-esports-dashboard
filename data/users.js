@@ -1,10 +1,11 @@
 const mongoCollections = require("../config/mongoCollections");
+const cloudinary = require("cloudinary").v2;
 
 module.exports = {
   async getUser(username) {
     const collection = await mongoCollections.users();
     if (typeof username !== "string")
-      throw `Username/email must be a string! Recieved ${typeof username}`;
+      throw `Username/email must be a string! Received ${typeof username}`;
     if (!username || !(username = username.trim()))
       throw `Username/email cannot be empty.`;
 
@@ -35,4 +36,31 @@ module.exports = {
       .toArray();
     return users[0];
   },
+  async addUser(firstName, lastName, username, password, nickname, avatar, bio) {
+    const collection = await mongoCollections.users();
+    if (typeof username !== "string")
+      throw `Username/email must be a string! Received ${typeof username}`;
+    if (!username || !(username = username.trim()))
+      throw `Username/email cannot be empty.`;
+
+    username = username.toLowerCase();
+
+    let resultUpload = await cloudinary.uploader.upload(avatar,
+      {
+        width: 200,
+        height: 200,
+        x: 0, y: 0,
+        crop: "limit"
+      });
+
+    collection.insertOne({
+      firstName: firstName,
+      lastName: lastName,
+      username: username,
+      nickname: nickname,
+      role: "regular",
+      biography: bio,
+      avatar: resultUpload.secure_url
+    });
+  }
 };

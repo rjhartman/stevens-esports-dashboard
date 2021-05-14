@@ -24,7 +24,7 @@ body {
     --bright-red: #ff2929;
     --burgundy: #810000;
     --gray: #E3E7EB;
-    --dark-gray: #A9A9A9;
+    --dark-gray: #767676;
 
     --primary-transition: all 0.4s ease-in-out;
 
@@ -133,9 +133,9 @@ sub {
     bottom: -0.25em;
 }
 
-/*
-    Reuseable Elements
-*/
+/* ======================================================== */
+/*                 * Reuseable Elements *                   */
+/* ======================================================== */
 .container {
     width: 100%;
     margin: 0 auto;
@@ -160,9 +160,9 @@ sub {
     max-width: 1026px;
 }
 
-/*
-    Header
-*/
+/* ======================================================== */
+/*                        * Header *                        */
+/* ======================================================== */
 #header {
     background: linear-gradient(to bottom, #767676, #76767600);
     color: #FFFFFF;
@@ -312,9 +312,9 @@ sub {
     }
 }
 
-/*
-    Body
-*/
+/* ======================================================== */
+/*                        * Body *                          */
+/* ======================================================== */
 #landing-banner {
     width: 100%;
     position: relative;
@@ -450,7 +450,7 @@ sub {
     letter-spacing: 0.4px;
     text-transform: uppercase;
     text-shadow: 0 2px 4px #555555;
-    padding: 0 10px;
+    padding: 10px;
     overflow: hidden;
     transition: 0.25s;
 }
@@ -583,9 +583,9 @@ sub {
     }
 }
 
-/*
-    Footer
-*/
+/* ======================================================== */
+/*                       * Footer *                         */
+/* ======================================================== */
 #footer {
     position: absolute;
     left: 0;
@@ -749,6 +749,15 @@ sub {
     font-weight: bold;
 }
 
+.form__row textarea {
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05);
+    padding: 1rem;
+    outline: none;
+    border: none;
+    min-width: 300px;
+    min-height: 200px;
+}
+
 .form__row .error {
     overflow: hidden;
     color: var(--primary);
@@ -894,4 +903,51 @@ main.backend {
 
 .ah__left strong {
     color: var(--burgundy);
+}
+
+/* ======================================================== */
+/*                        * Profile *                       */
+/* ======================================================== */
+
+.profile-info {
+    font-family: Montserrat, sans-serif !important;
+    margin: 8rem 0;
+    background-color: rgba(255,255,255,0.8);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 8rem;
+    max-width: 500px;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05);
+}
+
+.profile-info h2.nickname {
+    color: var(--primary);
+}
+
+.player-profile {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;    
+}
+
+.profile-info img.profile-pic {
+    object-fit: cover;
+    border: 2px solid var(--bright-red);
+}
+
+.profile-info p {
+    text-align: left;
+}
+
+/* ======================================================== */
+/*                    * Register Form *                     */
+/* ======================================================== */
+#register-form .required:after {
+    content: " *";
+    color: var(--bright-red);
 }
