@@ -104,9 +104,9 @@ module.exports = {
         if (typeof obj.status !== "string" || obj.status.trim().length === 0) {
             throw `Error: status should be a string of length greater than zero.`;
         }
-        if (obj.status.toLowerCase().trim() !== "varsity" || obj.status.toLowerCase().trim() !== "junior varsity") {
-            throw `Error: team status should be set to Varsity or Junior Varsity`;
-        }
+        // if (obj.status.toLowerCase().trim() !== "varsity" || obj.status.toLowerCase().trim() !== "junior varsity") {
+        //     throw `Error: team status should be set to Varsity or Junior Varsity`;
+        // }
         if (typeof obj.game !== "string" || obj.game.trim().length === 0) {
             throw `Error: game should be a string of length greater than zero.`;
         }
@@ -120,7 +120,6 @@ module.exports = {
             let parsedId = ObjectId(obj.players[i]);
         }
         const team = await getTeamById(id);
-        const teamCollection = await teams();
         let updatedTeam = {
             name: obj.name,
             status: obj.status,
