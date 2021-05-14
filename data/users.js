@@ -22,7 +22,7 @@ module.exports = {
 
     // The username may be an email or username. Search for both.
     username = username.toLowerCase();
-    initCloud();
+    
     const user = await collection.findOne({
       $or: [
         {
@@ -38,6 +38,25 @@ module.exports = {
     console.log(userList)
     console.log(user)
     if (!user) throw `User with username ${username} not found.`;
+    return user;
+  },
+  async getUserById(id) {
+    const collection = await users();
+    if (typeof id !== "string")
+      throw `ID must be a string! Received ${typeof id}`;
+    if (!id || !(id = id.trim()))
+      throw `ID cannot be empty.`;
+
+    let parsedId = ObjectID(id);
+    
+    const user = await collection.findOne({
+      _id: parsedId
+    });
+
+    if(!user) throw `Error: player ${id} not found.`;
+
+    user._id = (user._id).toString();
+
     return user;
   },
   async getRandomUser() {
@@ -71,7 +90,7 @@ module.exports = {
         crop: "limit"
       });
 
-    collection.insertOne({
+    const returnVal = await collection.insertOne({
       firstName: firstName,
       lastName: lastName,
       username: username,
@@ -80,6 +99,9 @@ module.exports = {
       biography: bio,
       avatar: resultUpload.secure_url
     });
+
+    if(returnVal.insertedCount === 0) throw "Error: Could not add user!";
+    return await this.getUserById(returnVal.insertedId.toString());
   },
   async getAllUsers(sanitize = false) {
     const collection = await mongoCollections.users();
