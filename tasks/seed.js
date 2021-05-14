@@ -1,8 +1,8 @@
 const dbConnection = require('../config/mongoConnection');
 const data = require('../data/');
+const { getPlayerByUsername } = require('../data/players');
 const match = data.match;
-require(".dotenv").config();
-
+const teams = data.teams;
 const users = data.users;
 const playerData = data.players;
 
@@ -12,7 +12,12 @@ async function main(){
 
     const Jerry_user = await users.addUser('Jerry', 'Cheng', 'jcheng15@stevens.edu', '', 'jerrytd579', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is my bio');
     const Jerry_player = await playerData.addPlayer('jcheng15@stevens.edu', 'ADC', true, false);
-
+    const jerry = await playerData.getPlayerByUsername('jcheng15@stevens.edu');
+    const jerry_id = jerry._id;
+    const Andrew_user = await users.addUser('Andrew', 'Chuah', 'achuah3@stevens.edu', '', 'Sheathblade', 'https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png', 'This is andrews bio');
+    const Andrew_player = await playerData.addPlayer('achuah3@stevens.edu', 'Top', true, false);
+    const andrew = await playerData.getPlayerByUsername('achuah3@stevens.edu');
+    const andrew_id = andrew._id;
     const match1 = await match.addMatch({
         opponent: "Some other team",
         game: 1,
@@ -44,8 +49,9 @@ async function main(){
         matchType: "Counter-Strike: Global Offensive"
     });
 
-    const team_one = await teams.addTeam("Stevens LoL Red", "Varsity", "League of Legends", ["Jerry Cheng", "Andrew Chuah"]);
-    const id = team_one._id;
+    const team_one = await teams.addTeam("Stevens LoL Red", "Varsity", "League of Legends", [jerry_id, andrew_id]);
+    // const id = team_one._id
+    console.log(team_one)
 
     resolved_matches = await match.get_resolved();
     console.log(resolved_matches);

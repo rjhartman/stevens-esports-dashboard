@@ -33,7 +33,8 @@ router.post("/", async function (req, res) {
 
 router.put('/:id', async (req, res) => {
   try {
-      await match.getMatchById(req.params.id);
+    // console.log(req.params.id);
+      const match1 = await match.getMatchById(req.params.id);
   } catch(e){
       res.sendStatus(404);
   }
