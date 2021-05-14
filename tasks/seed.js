@@ -1,10 +1,11 @@
 const dbConnection = require('../config/mongoConnection');
 const data = require('../data/');
-const { getPlayerByUsername } = require('../data/players');
 const match = data.match;
 const teams = data.teams;
 const users = data.users;
 const playerData = data.players;
+
+require("dotenv").config();
 
 async function main(){
     const db = await dbConnection();

@@ -97,6 +97,7 @@ async function addMatch(obj){
         matchType: obj.matchType
     };
     const newInsertInformation = await matchCollection.insertOne(newMatch);
+    if(newInsertInformation.insertedCount === 0) throw "Error: Could not add match!";
     return await getMatchById(newInsertInformation.insertedId.toString());
 }
 async function getMatchById(id){
