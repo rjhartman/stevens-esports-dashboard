@@ -1,34 +1,21 @@
-// const teamData = require('./teams');
 const mongoCollections = require('../config/mongoCollections');
 const teams = mongoCollections.teams;
-let { ObjectId } = require('mongodb');
+let { ObjectID } = require('mongodb');
 
 module.exports = {
     async getTeamById(id) {
         if (!id) throw 'You must provide an id to search for';
-        let parsedId = ObjectId(id);
-        let team = undefined;
+        let parsedId = ObjectID(id);
         const teamCollection = await teams();
-        const team_col = await teamCollection.find({}).toArray();
-        for (i = 0; i < team_col.length; i++) {
-            if (team_col[i]._id === parsedId) {
-                team = team_col[i];
-            }
-        }
-        if (team === undefined) {
-            throw `Error: Team not found`;
-        }
-        return team;
+        const team_col = await teamCollection.findOne({_id: parsedId});
+
+        if (!team_col) throw `Error: Team not found`;
+        return team_col;
     },
     async getAllTeams() {
-        teams_list = []
         const teamCollection = await teams();
         const team_col = await teamCollection.find({}).toArray();
-        console.log(team_col);
-        for (i = 0; i < team_col.length; i++) {
-            teams_list.push(team_col[i])
-        }
-        return teams_list;
+        return team_col;
     },
     // // hardcode version
     // async getTeamById(id) {
@@ -66,7 +53,7 @@ module.exports = {
             // if (typeof players[i] !== 'string' || players[i].trim().length == 0) {
             //     throw 'Error: players should all be strings of length greater than zero.';
             // }
-            let parsedId = ObjectId(players[i]);
+            let parsedId = ObjectID(players[i]);
         }
         let newTeam = {
             name: name,
@@ -74,7 +61,10 @@ module.exports = {
             game: game,
             players: players
         };
-        const team_insert = teamCollection.insertOne(newTeam);
-        return team_insert;
+        const team_insert = await teamCollection.insertOne(newTeam);
+        if(team_insert.insertedCount === 0) throw `Error: Could not add team!`;
+
+        const insertedTeam = await this.getTeamById(team_insert.insertedId.toString());
+        return insertedTeam;
     }
 };
