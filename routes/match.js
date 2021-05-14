@@ -44,7 +44,6 @@ router.put('/:id', async (req, res) => {
       const updatedMatch = await match.updateMatch(req.params.id,matchInfo);
       res.sendStatus(200);
   } catch(e){
-      // console.log(e);
       res.status(400).json({ error: e });
   }
 });
