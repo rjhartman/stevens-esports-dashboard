@@ -32,4 +32,30 @@ router.get("/:gameid", async function (req, res) {
       res.sendStatus(500);
     }
 });
+function checkString(str, name){
+  if (!str) throw `${name || 'provided variable'} is empty`
+  if (typeof str !== 'string') throw `${name || 'provided variable'} is not a string`
+  let s = str.trim();
+  if (s === '') throw `${name || 'provided variable'} is an empty string`
+}
+function checkMatchObj(obj){
+  checkString(obj.opponent,'opponent');
+  //Need some function to check the game and team objectIDs are valid when they're set up
+  if (typeof(obj.opponentScore) != 'number') throw `score should be a number`
+  if (obj.opponentScore < 0) throw `score can't be negative`
+  if (typeof(obj.teamsScore) != 'number') throw `team score should be a number`
+  if (obj.teamsScore < 0) throw `score can't be negative`
+  checkString(obj.matchType,'match type')
+}
+router.post("/", async function (req, res) {
+  if (!req.body) throw `gameid required`
+  let matchInfo = req.body;
+  try {
+      // checkMatchObj(matchInfo);
+      const newMatch = await match.addMatch(matchInfo);
+      res.sendStatus(200);
+  } catch (e) {
+    res.status(400).json({ error: e });
+  }
+});
 module.exports = router;
