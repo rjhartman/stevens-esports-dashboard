@@ -1,0 +1,28 @@
+<div class="page-container">
+    <div class="main">
+        <div class="login">
+            <form method="POST" id="password-form" action="/change-password" class="form">
+                <h1>Change Password</h1>
+                {{#if error}}
+                    <p class="error">{{error}}</p>
+                {{/if}}
+                <div class="form__row">
+                    <label for="cur_password" class="required" required>Current Password</label>
+                    <input type="password" id="cur_password" name="cur_password" placeholder="Current Password">
+                    <p class="error"></p>
+                </div>
+                <div class="form__row">
+                    <label for="new_password" class="required" required>New Password</label>
+                    <input type="password" id="new_password" name="new_password" placeholder="New Password">
+                    <p class="error"></p>
+                </div>
+                <div class="form__row">
+                    <label for="confirm_password" class="required" required>Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password">
+                    <p class="error"></p>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>

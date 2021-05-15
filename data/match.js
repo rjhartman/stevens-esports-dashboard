@@ -145,9 +145,9 @@ async function updateMatch(id, obj) {
     { $set: updatedMatch }
   );
   if (updatedInfo.modifiedCount === 0) {
-    throw "could not update book successfully";
+    throw "could not update match successfully";
   }
-  return await getMatchById(id);
+  return match;
 }
 
 async function getTeam(id) {

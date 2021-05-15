@@ -6,6 +6,37 @@ const player = data.players;
 const mongoCollections = require('../config/mongoCollections');
 const teams = mongoCollections.teams;
 const players = mongoCollections.players;
+const cloudinary = require("cloudinary").v2;
+
+function initCloud() {
+    cloudinary.config({
+        cloud_name: "stevens-esports",
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET,
+    });
+}
+
+function getLogo(gameType) {
+    initCloud();
+    switch (gameType) {
+        case "League of Legends":
+            return cloudinary.url("logos/league_logo_2_red.png");
+        case "Counter-Strike: Global Offensive":
+            return cloudinary.url("logos/csgo_logo_red.png");
+        case "Overwatch":
+            return cloudinary.url("logos/overwatch_logo_red.png");
+        case "Rocket League":
+            return cloudinary.url("logos/rocket_league_logo_red.png");
+        case "Valorant":
+            return cloudinary.url("logos/valorant_logo_red.png");
+        case "Hearthstone":
+            return cloudinary.url("logos/hearthstone_logo_red.png");
+        case "Call of Duty":
+            return cloudinary.url("logos/cod_logo_red.png");
+        case "Rainbow Six: Siege":
+            return cloudinary.url("logos/r6_logo_red.png");
+    }
+}
 
 router.get('/', async (req, res) => {
     try {
@@ -23,7 +54,9 @@ router.get('/', async (req, res) => {
                     }
                 }
             }
+            teams_list[i]["logo"] = getLogo(teams_list[i].game);
         }
+
         res.render('pages/teamslist', {title: 'Rosters | Stevens Esports', teams: teams_list});
     } catch (e) {
         res.status(500);

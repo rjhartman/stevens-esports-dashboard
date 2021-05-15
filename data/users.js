@@ -11,7 +11,13 @@ function initCloud() {
     api_secret: process.env.CLOUDINARY_API_SECRET,
   });
 }
-
+function checkString(str, name) {
+  if (!str) throw `${name || "provided variable"} is empty`;
+  if (typeof str !== "string")
+    throw `${name || "provided variable"} is not a string`;
+  let s = str.trim();
+  if (s === "") throw `${name || "provided variable"} is an empty string`;
+}
 module.exports = {
   async getUser(username) {
     const collection = await users();
@@ -34,9 +40,6 @@ module.exports = {
       ],
     });
 
-    const userList = await collection.find({}).toArray();
-    //console.log(userList)
-    //console.log(user)
     if (!user) throw `User with username ${username} not found.`;
     return user;
   },
@@ -71,7 +74,7 @@ module.exports = {
     return users[0];
   },
   async addUser(
-    // ERror handling
+    // Error handling
     firstName,
     lastName,
     username,
@@ -145,4 +148,41 @@ module.exports = {
     if (modifiedCount === 0) throw `Could not update a user with id ${id}`;
     return true;
   },
+  async updateUser(id,userObj){
+    console.log('0');
+    checkString(id, "id");
+    console.log('1');
+    let parsedId = ObjectID(id);
+    checkString(userObj.firstName, "firstName");
+    checkString(userObj.lastName, "lastName");
+    checkString(userObj.username, "userName");
+    checkString(userObj.nickname, "nickName");
+    checkString(userObj.email, "email");
+    checkString(userObj.passwordDigest, "passwordDigest");
+    checkString(userObj.role, "roleName");
+    checkString(userObj.biography, "biography");
+    checkString(userObj.avatar, "avatar");
+    console.log('1');
+    const user = await this.getUserById(id);
+    const userCollection = await users();
+    let updatedUser = {
+      firstName: userObj.firstName,
+      lastName: userObj.lastName,
+      username: userObj.username,
+      nickname: userObj.nickname,
+      email: userObj.email,
+      passwordDigest: userObj.passwordDigest,
+      role: userObj.role,
+      biography: userObj.biography,
+      avatar: userObj.avatar
+    };
+    const updatedInfo = await userCollection.updateOne(
+      { _id: parsedId },
+      { $set: updatedUser }
+    );
+    if (updatedInfo.modifiedCount === 0) {
+      throw "could not update user successfully";
+    }
+    return user;
+  }
 };

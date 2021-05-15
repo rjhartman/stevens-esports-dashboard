@@ -213,6 +213,24 @@ router.get("/team-sign-up", async (req, res) => {
   });
 });
 
+router.get("/user-profile", async (req, res) => {
+  res.render("pages/userProfile", {
+    title: "My Profile | Stevens Esports"
+  });
+});
+
+router.get("/edit-profile", async (req, res) => {
+  res.render("pages/editProfile", {
+    title: "Edit Profile | Stevens Esports"
+  });
+});
+
+router.get("/change-password", async (req, res) => {
+  res.render("pages/changePW", {
+    title: "Change Password | Stevens Esports"
+  });
+});
+
 router.get("/dashboard", (req, res) => {
   res.render("pages/dashboard", {
     title: "Dashboard | Stevens Esports",

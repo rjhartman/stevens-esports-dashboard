@@ -12,8 +12,6 @@ const e = require("express");
 app.use("/public", static);
 app.use(express.json());
 
-console.log("Cloudinary API Key", process.env.CLOUDINARY_API_KEY);
-
 app.use(
   session({
     name: "StevensEsportsDashboard",
