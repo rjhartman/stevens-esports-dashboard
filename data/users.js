@@ -18,6 +18,20 @@ function checkString(str, name) {
   let s = str.trim();
   if (s === "") throw `${name || "provided variable"} is an empty string`;
 }
+async function checkUserObj(userObj){
+    checkString(userObj.firstName, "firstName");
+    checkString(userObj.lastName, "lastName");
+    checkString(userObj.username, "userName");
+    checkString(userObj.nickname, "nickName");
+    checkString(userObj.email, "email");
+    if(!(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(userObj.email))){
+      throw `Email not valid format.`
+    }
+    checkString(userObj.passwordDigest, "passwordDigest");
+    checkString(userObj.role, "roleName");
+    checkString(userObj.biography, "biography");
+    checkString(userObj.avatar, "avatar");
+}
 module.exports = {
   async getUser(username) {
     const collection = await users();
@@ -149,9 +163,7 @@ module.exports = {
     return true;
   },
   async updateUser(id,userObj){
-    console.log('0');
     checkString(id, "id");
-    console.log('1');
     let parsedId = ObjectID(id);
     checkString(userObj.firstName, "firstName");
     checkString(userObj.lastName, "lastName");
@@ -162,7 +174,7 @@ module.exports = {
     checkString(userObj.role, "roleName");
     checkString(userObj.biography, "biography");
     checkString(userObj.avatar, "avatar");
-    console.log('1');
+    checkUserObj(userObj);
     const user = await this.getUserById(id);
     const userCollection = await users();
     let updatedUser = {
@@ -172,7 +184,8 @@ module.exports = {
       nickname: userObj.nickname,
       email: userObj.email,
       passwordDigest: userObj.passwordDigest,
-      role: userObj.role,
+      //can't change role through update user method
+      role: user.role,
       biography: userObj.biography,
       avatar: userObj.avatar
     };

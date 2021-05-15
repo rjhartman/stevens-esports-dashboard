@@ -125,7 +125,148 @@ router.put('/:id', async (req, res) => {
     }
   });
 router.patch('/:id', async (req, res) => {
-
+    var user;
+    try {
+      // console.log(req.params.id);
+        user = await users.getUserById(req.params.id);
+    
+    } catch(e){
+        
+        res.sendStatus(404);
+    }
+    let inputObj = req.body;
+    console.log(inputObj);
+    let errorMessage = "";
+    if ('firstName' in inputObj){
+        firstName = inputObj.firstName;
+        if(firstName == undefined || firstName.trim() == ''){
+            errorMessage = 'First name field cannot be empty.';
+            //change the render page to the edit-profile page
+            res.status(400).render('pages/editProfile', {title: "Edit Profile | Stevens Esports",
+                                                      scripts: ["/public/js/forms.js"],
+                                                      error: errorMessage
+                                                    });
+            return;
+          }
+        user.firstName = firstName;
+    }
+    if ('lastName' in inputObj){
+        lastName = inputObj.lastName;
+        if(lastName == undefined || lastName.trim() == ''){
+            errorMessage = 'Last name field cannot be empty.';
+            //change the render page to the edit-profile page
+            res.status(400).render('pages/editProfile', {title: "Edit Profile | Stevens Esports",
+                                                      scripts: ["/public/js/forms.js"],
+                                                      error: errorMessage
+                                                    });
+            return;
+          }
+        user.lastName = lastName;
+    }
+    if ('userame' in inputObj){
+        userame = inputObj.userame;
+        if(userame == undefined || userame.trim() == ''){
+            errorMessage = 'Username field cannot be empty.';
+            //change the render page to the edit-profile page
+            res.status(400).render('pages/editProfile', {title: "Edit Profile | Stevens Esports",
+                                                      scripts: ["/public/js/forms.js"],
+                                                      error: errorMessage
+                                                    });
+            return;
+          }
+        try{
+            await users.getUser(username);
+            errorMessage = 'Username already taken. Please choose another one.';
+            res.status(400).render('pages/editProfile', {title: "Account Registration | Stevens Esports",
+                                                      scripts: ["/public/js/forms.js"],
+                                                      error: errorMessage
+                                                    });
+            return;
+        } catch(e){   
+            // Don't do anything
+        }
+        user.userame = userame;
+    }
+    if ('email' in inputObj){
+        email = inputObj.email;
+        if(email == undefined || email.trim() == ''){
+            errorMessage = 'Email field cannot be empty.';
+            //change the render page to the edit-profile page
+            res.status(400).render('pages/editProfile', {title: "Edit Profile | Stevens Esports",
+                                                      scripts: ["/public/js/forms.js"],
+                                                      error: errorMessage
+                                                    });
+            return;
+          }
+        // Test if email is valid format
+        if(!(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email))){
+            errorMessage = 'Email not valid format.'
+            res.status(400).render('pages/editProfile', {title: "Edit Profile | Stevens Esports",
+                                                    scripts: ["/public/js/forms.js"],
+                                                    error: errorMessage
+                                                    });
+            return;     
+        }
+        try{
+            await users.getUser(email);
+            errorMessage = 'Email already used. Please choose another one.';
+            res.status(400).render('pages/editProfile', {title: "Edit Profile | Stevens Esports",
+                                                      scripts: ["/public/js/forms.js"],
+                                                      error: errorMessage
+                                                    });
+            return;
+          } catch(e){
+            // Don't do anything
+          }
+        user.email = email;
+    }
+    if ('nickname' in inputObj){
+        nickname = inputObj.nickname;
+        if(nickname == undefined || nickname.trim() == ''){
+            errorMessage = 'Last name field cannot be empty.';
+            //change the render page to the edit-profile page
+            res.status(400).render('pages/editProfile', {title: "Edit Profile | Stevens Esports",
+                                                      scripts: ["/public/js/forms.js"],
+                                                      error: errorMessage
+                                                    });
+            return;
+          }
+        user.nickname = nickname;
+    }
+    if ('biography' in inputObj){
+        biography = inputObj.biography;
+        user.biography = biography;
+    }
+    if ('avatar' in inputObj){
+        avatar = inputObj.avatar;
+        if(avatar == undefined || avatar.trim() == ''){
+            errorMessage = 'Avatar field cannot be empty.';
+            //change the render page to the edit-profile page
+            res.status(400).render('pages/editProfile', {title: "Edit Profile | Stevens Esports",
+                                                      scripts: ["/public/js/forms.js"],
+                                                      error: errorMessage
+                                                    });
+            return;
+          }
+        user.avatar = avatar;
+    }
+    userInfo = {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        username: user.username,
+        email: user.email,
+        passwordDigest: user.passwordDigest,
+        nickname: user.nickname,
+        role: user.role,
+        biography: user.biography,
+        avatar: user.avatar,
+    }
+    try{
+        const updatedUser = await users.updateUser(req.params.id,userInfo);
+        res.sendStatus(200);
+    } catch(e){
+        res.status(400).json({ error: e });
+    }
 });
 
 module.exports = router;
