@@ -69,7 +69,8 @@ router.get("/", async function (req, res) {
         res.render("pages/matchSchedule", {
             title: "Match Schedule | Stevens Esports", 
             umatch: unresolved,
-            rmatch : resolved
+            rmatch : resolved,
+            user: req.session.user
             });
     } catch (e) {
       res.sendStatus(500);
