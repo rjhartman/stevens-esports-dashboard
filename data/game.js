@@ -19,6 +19,7 @@ function checkGameObj(obj) {
   for (let c of obj.categories) {
     checkString(c);
   }
+  checkString(obj.img, "image");
 }
 async function getGameById(id) {
   checkString(id, "id");
@@ -35,6 +36,7 @@ async function addGame(obj) {
   let newGame = {
     title: obj.title,
     categories: obj.categories,
+    img: obj.img
   };
   const newInsertInformation = await gameCollection.insertOne(newGame);
   if (newInsertInformation.insertedCount === 0)
