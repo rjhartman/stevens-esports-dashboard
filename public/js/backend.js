@@ -1,7 +1,111 @@
 const promoteIcon = `<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user-plus" class="svg-inline--fa fa-user-plus fa-w-20" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M624 208h-64v-64c0-8.8-7.2-16-16-16h-32c-8.8 0-16 7.2-16 16v64h-64c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h64v64c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16v-64h64c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm-400 48c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg>`;
 const demoteIcon = `<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user-minus" class="svg-inline--fa fa-user-minus fa-w-20" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M624 208H432c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h192c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm-400 48c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg>`;
+const editIcon = `<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="edit" class="svg-inline--fa fa-edit fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"></path></svg>`;
 
-async function bindAccordions() {
+function getMatchFormElements() {
+  return {
+    form: document.getElementById("match-form"),
+    date: document.getElementById("m-date"),
+    team: document.getElementById("m-team"),
+    game: document.getElementById("m-game"),
+    opponent: document.getElementById("m-opponent"),
+    result: document.getElementById("m-result"),
+    stevensScore: document.getElementById("m-teams-score"),
+    opponentsScore: document.getElementById("m-opponent-score"),
+  };
+}
+
+function addError(input, error) {
+  const errorEl = input.closest(".row").querySelector(".error");
+  errorEl.innerText = error;
+  errorEl.classList.add("active");
+}
+
+function removeError(input) {
+  const errorEl = input.closest(".row").querySelector(".error");
+  errorEl.classList.remove("active");
+}
+
+function validateMatchForm() {
+  const { stevensScore, opponentsScore } = getMatchFormElements();
+  stevensScoreVal = parseInt(stevensScore.value);
+  opponentsScoreVal = parseInt(opponentsScore.value);
+  let valid = true;
+
+  document
+    .getElementById("match-form")
+    .querySelectorAll("input, select, textarea")
+    .forEach((el) => {
+      if (!el.checkValidity()) {
+        addError(el, el.validationMessage);
+        valid = false;
+      } else {
+        removeError(el);
+      }
+    });
+
+  return valid;
+}
+
+function disableMatchForm() {
+  document.getElementById("match-form").classList.remove("visible");
+}
+function enableMatchForm() {
+  document.getElementById("match-form").classList.add("visible");
+}
+
+function fillMatchForm(options) {
+  enableMatchForm();
+  const form = document.getElementById("match-form");
+  form.querySelector("h2").innerText = options.create
+    ? "Create Match"
+    : "Edit Match";
+  form.action = options.endpoint;
+
+  Object.values(getMatchFormElements()).forEach(
+    (el) => (el.required = options.create === true)
+  );
+  // Select team:
+  const team = document.getElementById("m-team");
+  let i = 0;
+  for (option of team.children) {
+    if (option.innerText === options.team) break;
+    i++;
+  }
+  team.selectedIndex = i < team.children.length ? i : 0;
+
+  // Fill opponent:
+  const opponent = document.getElementById("m-opponent");
+  opponent.value = options.opponent ? options.opponent : "";
+
+  // Select game:
+  const game = document.getElementById("m-game");
+  const selectedGame = game.querySelector(`option[value='${options.game}']`);
+  game.selectedIndex = selectedGame
+    ? Array.from(game.children).indexOf(selectedGame)
+    : 0;
+
+  // Select date:
+  try {
+    document.getElementById("m-date").valueAsDate = new Date(options.date);
+  } catch (e) {
+    console.warn("Error when trying to fill match form's date field:", e);
+  }
+
+  // Select result:
+  const result = document.getElementById("m-result");
+  options.result = options.result && options.result.toLowerCase();
+  result.selectedIndex =
+    options.result === "win" ? 0 : options.result === "loss" ? 1 : 2;
+
+  // Fill scores:
+  const stevensScore = document.getElementById("m-teams-score");
+  const opponentsScore = document.getElementById("m-opponent-score");
+  stevensScore.value = options.teamsScore ? options.teamsScore : null;
+  opponentsScore.value = options.opponentScore ? options.opponentScore : null;
+}
+
+function bindAccordions() {
   const collapsables = document.querySelectorAll(".collapsable");
   collapsables.forEach((section) => {
     const button = section.querySelector(".collapse-button");
@@ -16,6 +120,51 @@ async function bindAccordions() {
           : null;
       });
     }
+  });
+}
+
+function submitMatchForm(e) {
+  e.preventDefault();
+  if (validateMatchForm()) {
+    const { form } = getMatchFormElements();
+
+    // Get form data in JSON format
+    const data = {};
+    new FormData(form).forEach((value, key) => (data[key] = value));
+
+    $.ajax({
+      url: form.action,
+      method: "PATCH",
+      data: data,
+      complete: () => {
+        console.log("here");
+        disableMatchForm();
+        fillMatchesTable();
+      },
+      error: (xhr, status, e) => console.error(e),
+    });
+  } else console.log("Error with inputs");
+}
+
+function bindForms() {
+  const matchesFormButton = document
+    .getElementById("match-form")
+    .querySelector("button:not(.close)");
+  matchesFormButton.addEventListener("click", submitMatchForm);
+  document
+    .getElementById("match-form")
+    .addEventListener("submit", submitMatchForm);
+  document
+    .getElementById("match-form")
+    .querySelector("button.close")
+    .addEventListener("click", (e) => {
+      e.preventDefault();
+      disableMatchForm();
+    });
+  document.getElementById("add-match-button").addEventListener("click", (e) => {
+    fillMatchForm({
+      create: true,
+    });
   });
 }
 
@@ -40,14 +189,15 @@ function changeUserPermissions(user) {
     });
 }
 
-async function fillUsersTable(table) {
-  // setTimeout(() => {
+function fillUsersTable(table) {
   // Get the field names based on the data-name attributes
   // in the table headers.
 
   // Clear existing entries
-  body = table.querySelector("tbody");
-  body.querySelectorAll("tr").forEach((el) => el.parentElement.removeChild(el));
+  fBody = table.querySelector("tbody");
+  fBody
+    .querySelectorAll("tr")
+    .forEach((el) => el.parentElement.removeChild(el));
   const fields = Array.from(table.querySelectorAll("th[data-name]")).map(
     (header) => header.dataset.name
   );
@@ -86,7 +236,7 @@ async function fillUsersTable(table) {
         column.appendChild(button);
         row.id = user._id;
         row.appendChild(column);
-        body.appendChild(row);
+        fBody.appendChild(row);
       } else {
         console.warn(`
             User table: Did not add user ${user._id}, no fields matched the table headers.
@@ -95,14 +245,88 @@ async function fillUsersTable(table) {
     });
   });
   const loader = table.closest("section").querySelector(".loader");
-  loader.parentElement.removeChild(loader);
+  if (loader) loader.parentElement.removeChild(loader);
   table.classList.add("active");
-  // }, 2000);
+}
+
+function fillMatchesTable() {
+  const table = document.getElementById("matches");
+  const fBody = table.querySelector("tbody");
+  fBody
+    .querySelectorAll("tr")
+    .forEach((el) => el.parentElement.removeChild(el));
+  const fields = Array.from(table.querySelectorAll("th[data-name]")).map(
+    (header) => header.dataset.name
+  );
+  $.get("api/matches", (data) =>
+    data.forEach((match) => {
+      const row = document.createElement("tr");
+      fields.forEach((field) => {
+        const column = document.createElement("td");
+        if (field === "date") {
+          column.innerText = moment(match.date).format("LL");
+        } else if (match[field]) {
+          column.innerText = match[field];
+        } else if (field === "game.title") {
+          column.innerText = match.game ? match.game.title : "N/A";
+        } else if (field === "score") {
+          column.innerText =
+            typeof match.teamsScore === "number" &&
+            typeof match.opponentScore === "number"
+              ? `${match.teamsScore} - ${match.opponentScore}`
+              : `N/A`;
+        } else
+          console.warn(
+            `Matches table: Header contained name ${field} which could not be found for the match ${match._id}.`
+          );
+
+        if (column.innerText) row.appendChild(column);
+      });
+
+      if (row.children) {
+        // Make and append a button to edit this match
+        const column = document.createElement("td");
+        const button = document.createElement("button");
+        column.classList.add("center");
+
+        button.classList.add("promote");
+        button.innerHTML = editIcon;
+
+        button.addEventListener("click", () => {
+          fillMatchForm({
+            team: match.team,
+            opponent: match.opponent,
+            game: match.game._id,
+            date: match.date,
+            result: match.result,
+            teamsScore: match.teamsScore,
+            opponentScore: match.opponentScore,
+            endpoint: `api/matches/${match._id}/update`,
+            method: "PUT",
+          });
+        });
+
+        column.appendChild(button);
+        row.appendChild(column);
+        row.id = match._id;
+        fBody.appendChild(row);
+      }
+    })
+  );
+
+  const loader = table.closest("section").querySelector(".loader");
+  if (loader) loader.parentElement.removeChild(loader);
+  table.classList.add("active");
 }
 
 $(document).ready(() => {
   bindAccordions();
+  bindForms();
 
   const users = document.getElementById("users");
   if (users) fillUsersTable(users);
+  // if (users) setTimeout(() => fillUsersTable(users), 2000);
+
+  const matches = document.getElementById("matches");
+  if (matches) fillMatchesTable(matches);
 });
