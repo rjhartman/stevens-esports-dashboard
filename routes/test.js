@@ -67,13 +67,10 @@ router.get("/register", async (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-  // Check that username and email are not taken
-  // Check that the password / confirmation match
-  // Hash the password with bcrypt.hash, 16 salts, store it in password digest 
-  // if you can get the user by username or email, then those are taken, those are already written
+  // TODO: Hash the password with bcrypt.hash, 16 salts, store it in password digest 
 
   if (req.session.user) return res.redirect("/dashboard");
-  let { firstName, lastName, nickname, username, password, confirm_password, email } = req.body;
+  let { firstName, lastName, nickname, username, password, confirm_password, email, biography} = req.body;
   let errorMessage = "";
 
   // Test if first name field is filled in or not
@@ -192,17 +189,11 @@ router.post("/register", async (req, res) => {
     return;
   }
 
+  password = password.trim();
+  hashedPassword = await bcrypt.hash(password, 16);
 
+  /*
   try {
-    if (!username || !(username = username.trim())) {
-      errorMessage = "Username was empty.";
-      throw errorMessage;
-    }
-    if (!password || !(password = password.trim())) {
-      errorMessage = "Password was empty.";
-      throw errorMessage;
-    }
-
     let user;
     try {
       user = await users.getUser(username);
@@ -230,6 +221,21 @@ router.post("/register", async (req, res) => {
       scripts: ["/public/js/forms.js"],
     });
   }
+  */
+
+  await users.addUser(
+    firstName,
+    lastName,
+    username,
+    email,
+    hashedPassword,
+    nickname,
+    "https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png",
+    biography
+  )
+
+  res.status(200).redirect('/login');
+  return;
 });
 
 router.get("/team-sign-up", async (req, res) => {
