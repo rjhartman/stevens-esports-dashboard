@@ -11,12 +11,14 @@
                 <h3 class="sub">Substitute Player</h3>
                 {{/unless}}
                 {{#if player.position}}
-                <p class="position">Position: </p>
-                <p class="position">{{player.position}}</p>
-                <br>
+                <h3 class="position">Position: {{player.position}}</h3>
                 {{/if}}
-                <p class="bio">Biography: </p>
+                <h3 class="bio">Biography: </h3>
+                {{#if player.biography}}
                 <p class="bio">{{player.biography}}</p>
+                {{else}}
+                <p class="bio">No biography.</p>
+                {{/if}}
             </div>
         </div>
     </div>
