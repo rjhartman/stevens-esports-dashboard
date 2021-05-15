@@ -1,4 +1,6 @@
 const mongoCollections = require("../config/mongoCollections");
+const fs = require('fs');
+const streamifier = require('streamifier');
 const cloudinary = require("cloudinary").v2;
 const { ObjectID } = require("mongodb");
 
@@ -18,6 +20,27 @@ function checkString(str, name) {
   let s = str.trim();
   if (s === "") throw `${name || "provided variable"} is an empty string`;
 }
+
+let uploadImage = (avatar) => {
+  return new Promise((resolve, reject) => {
+    let stream = cloudinary.uploader.upload_stream({
+      width: 200,
+      height: 200,
+      x: 0,
+      y: 0,
+      crop: "limit",
+      folder: "avatars/"
+    },
+    function(e,r) {
+      if(r)
+        resolve(r);
+      else
+        reject(e);
+    });
+    streamifier.createReadStream(avatar).pipe(stream);
+  });
+};
+
 async function checkUserObj(userObj){
     checkString(userObj.firstName, "firstName");
     checkString(userObj.lastName, "lastName");
@@ -113,20 +136,14 @@ module.exports = {
     // checkString(userObj.role, "roleName");
     checkString(bio, "biography");
     username = username.toLowerCase();
-    var avatar
-    if (!avatar || avatar.trim() === ""){
+    
+    if (!avatar){
       avatar = "https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png";
     }
     else{
       initCloud();
 
-      let resultUpload = await cloudinary.uploader.upload(avatar, {
-        width: 200,
-        height: 200,
-        x: 0,
-        y: 0,
-        crop: "limit",
-      });
+      let resultUpload = await uploadImage(avatar);
       avatar = resultUpload.secure_url;
     }
     

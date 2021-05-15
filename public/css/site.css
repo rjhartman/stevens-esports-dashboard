@@ -1344,6 +1344,7 @@ main.backend {
 
 .team-grid .teamPlayers {
     margin-top: -30px;
+    text-align: center;
 }
 
 /* ======================================================== */

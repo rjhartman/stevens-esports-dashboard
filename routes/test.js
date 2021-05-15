@@ -1,4 +1,6 @@
 const express = require("express");
+const multer = require("multer");
+const upload = multer();
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const users = require("../data/users");
@@ -69,7 +71,7 @@ router.get("/register", async (req, res) => {
   });
 });
 
-router.post("/register", async (req, res) => {
+router.post("/register", upload.single('avatar'), async (req, res) => {
   // TODO: Hash the password with bcrypt.hash, 16 salts, store it in password digest
 
   if (req.session.user) return res.redirect("/dashboard");
@@ -81,7 +83,6 @@ router.post("/register", async (req, res) => {
     password,
     confirm_password,
     email,
-    avatar,
     biography,
   } = req.body;
   let errorMessage = "";
@@ -227,7 +228,7 @@ router.post("/register", async (req, res) => {
     email,
     hashedPassword,
     nickname,
-    "https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png",
+    req.file.buffer,
     biography
   );
 
