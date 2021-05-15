@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const xss = require('xss');
 const data = require('../data');
 const playerFuncs = data.players;
 
