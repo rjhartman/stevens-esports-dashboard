@@ -9,24 +9,7 @@ const players = mongoCollections.players;
 
 router.get('/', async (req, res) => {
     try {
-        let players_array = [];
-        let temp_array = [];
         const teams_list = await teamFuncs.getAllTeams();
-        const playerCollection = await players();
-
-        const foundPlayers = await playerCollection.find({}).toArray();
-
-        // for(let i = 0; i < teams_list.length; i++){
-        //     temp_array.push(teams_list[i].name);
-
-        //     for(let j = 0; j < teams_list[i].players.length; j++){
-        //         let filtered = foundPlayers.filter(r => r._id.toString() === teams_list[i].players[j])
-        //         console.log(filtered)
-        //         temp_array.push(filtered);
-        //     }
-        //     players_array.push(temp_array);
-        //     temp_array = [];
-        // }
         const playernames = await player.getAllPlayers();
         for (i = 0; i < teams_list.length; i++) { // for each team
             for (j = 0; j < teams_list[i].players.length; j++) { // for each player in each team
@@ -41,12 +24,7 @@ router.get('/', async (req, res) => {
                 }
             }
         }
-        // for (i = 0; i < teams_list.length; i++) {
-        //     str = JSON.stringify(teams_list[i].players);
-        //     console.log(str)
-        // }
         res.render('pages/teamslist', {title: 'Rosters | Stevens Esports', teams: teams_list});
-        // res.render('pages/teamslist', {title: 'Rosters | Stevens Esports', teams: teams_list, players: players_array});
     } catch (e) {
         res.status(500);
     }
