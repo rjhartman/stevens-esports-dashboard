@@ -30,6 +30,7 @@ async function checkUserObj(userObj){
     checkString(userObj.passwordDigest, "passwordDigest");
     checkString(userObj.role, "roleName");
     checkString(userObj.biography, "biography");
+    if (!userObj.avatar) throw `no input for avatar`
     if (typeof userObj.avatar !== "string") throw `avatar is not a string`;
 }
 module.exports = {
@@ -176,12 +177,13 @@ module.exports = {
     const user = await this.getUserById(id);
     username = userObj.username.toLowerCase();
 
-    initCloud();
+    
     var avatar
-    if (!userObj.avatar || userObj.avatar.trim() === ""){
+    if (userObj.avatar.trim() === ""){
       avatar = user.avatar;
     }
     else{
+      initCloud();
       let resultUpload = await cloudinary.uploader.upload(avatar, {
         width: 200,
         height: 200,
