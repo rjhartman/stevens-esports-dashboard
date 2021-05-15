@@ -40,27 +40,24 @@ function getLogo(gameType) {
 
 router.get('/', async (req, res) => {
     try {
-        let players_array = [];
-        let temp_array = [];
         const teams_list = await teamFuncs.getAllTeams();
-        const playerCollection = await players();
-
-        const foundPlayers = await playerCollection.find({}).toArray();
-
-        for(let i = 0; i < teams_list.length; i++){
-            temp_array.push(teams_list[i].name);
-
-            for(let j = 0; j < teams_list[i].players.length; j++){
-                let filtered = foundPlayers.filter(r => r._id.toString() === teams_list[i].players[j])
-                console.log(filtered)
-                temp_array.push(filtered);
+        const playernames = await player.getAllPlayers();
+        for (i = 0; i < teams_list.length; i++) { // for each team
+            for (j = 0; j < teams_list[i].players.length; j++) { // for each player in each team
+                for (h = 0; h < playernames.length; h++) { // for the list of players
+                    if (teams_list[i].players[j] == playernames[h]._id.toString()) { // compare ids
+                        if (playernames[h]._id === "undefined") {
+                            continue;
+                        }
+                        // if they are the same, overwrite the stored id with an object of the id and the name
+                        teams_list[i].players[j] = { id: teams_list[i].players[j], name: playernames[h].user};
+                    }
+                }
             }
             players_array.push(temp_array);
             temp_array = [];
             teams_list[i]["logo"] = getLogo(teams_list[i].game);
         }
-        console.log(players_array);
-        console.log(teams_list);
 
         res.render('pages/teamslist', {title: 'Rosters | Stevens Esports', teams: teams_list, players: players_array});
     } catch (e) {
@@ -110,7 +107,7 @@ router.put('/:id', async (req, res) => {
     }
     let teamInfo = req.body;
     try {
-        const updatedTeam = await teams.updateTeam(req.params.id, teamInfo);
+        const updatedTeam = await team.updateTeam(req.params.id, teamInfo);
         res.sendStatus(200);
     } catch(e){
         res.status(400).json({ error: e });

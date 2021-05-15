@@ -71,6 +71,7 @@ module.exports = {
     return users[0];
   },
   async addUser(
+    // ERror handling
     firstName,
     lastName,
     username,

@@ -67,19 +67,133 @@ router.get("/register", async (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-  if (req.session.user) return res.redirect("/dashboard");
-  let { username, password } = req.body;
-  let errorMessage = "Invalid username/password.";
-  try {
-    if (!username || !(username = username.trim())) {
-      errorMessage = "Username was empty.";
-      throw errorMessage;
-    }
-    if (!password || !(password = password.trim())) {
-      errorMessage = "Password was empty.";
-      throw errorMessage;
-    }
+  // TODO: Hash the password with bcrypt.hash, 16 salts, store it in password digest 
 
+  if (req.session.user) return res.redirect("/dashboard");
+  let { firstName, lastName, nickname, username, password, confirm_password, email, biography} = req.body;
+  let errorMessage = "";
+
+  // Test if first name field is filled in or not
+  if(firstName == undefined || firstName.trim() == ''){
+    errorMessage = 'First name field cannot be empty.';
+    res.status(400).render('pages/register', {title: "Account Registration | Stevens Esports",
+                                              scripts: ["/public/js/forms.js"],
+                                              error: errorMessage
+                                            });
+    return;
+  }
+
+  // Test if last name field is filled in or not
+  if(lastName == undefined || lastName.trim() == ''){
+    errorMessage = 'Last name field cannot be empty.';
+    res.status(400).render('pages/register', {title: "Account Registration | Stevens Esports",
+                                              scripts: ["/public/js/forms.js"],
+                                              error: errorMessage
+                                              });
+    return;
+  }
+
+  // Test if nickname field is filled in or not
+  if(nickname == undefined || nickname.trim() == ''){
+    errorMessage = 'Nickname field cannot be empty.';
+    res.status(400).render('pages/register', {title: "Account Registration | Stevens Esports",
+                                              scripts: ["/public/js/forms.js"],
+                                              error: errorMessage
+                                              });
+    return;   
+  }
+
+  // Test if email field is filled in or not
+  if(email == undefined || email.trim() == ''){
+    errorMessage = 'Email field cannot be empty.';
+    res.status(400).render('pages/register', {title: "Account Registration | Stevens Esports",
+                                              scripts: ["/public/js/forms.js"],
+                                              error: errorMessage
+                                              });
+    return;       
+  }
+
+  // Test if email is valid format
+  if(!(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email))){
+    errorMessage = 'Email not valid format.'
+    res.status(400).render('pages/register', {title: "Account Registration | Stevens Esports",
+                                              scripts: ["/public/js/forms.js"],
+                                              error: errorMessage
+                                              });
+    return;     
+  }
+
+  // Test if username field is filled in or not
+  if(username == undefined || username.trim() == ''){
+    errorMessage = 'Username field cannot be empty.';
+    res.status(400).render('pages/register', {title: "Account Registration | Stevens Esports",
+                                              scripts: ["/public/js/forms.js"],
+                                              error: errorMessage
+                                              });
+    return;       
+  }
+
+  // Test if password field is filled in or not
+  if(password == undefined || password.trim() == ''){
+    errorMessage = 'Password field cannot be empty.';
+    res.status(400).render('pages/register', {title: "Account Registration | Stevens Esports",
+                                              scripts: ["/public/js/forms.js"],
+                                              error: errorMessage
+                                              });
+    return;       
+  }
+
+  // Test if confirm password field is filled in or not
+  if(confirm_password == undefined || confirm_password.trim() == ''){
+    errorMessage = 'Confirm password field cannot be empty.';
+    res.status(400).render('pages/register', {title: "Account Registration | Stevens Esports",
+                                              scripts: ["/public/js/forms.js"],
+                                              error: errorMessage
+                                              });
+    return;           
+  }
+
+  // Test if username already exists
+  try{
+    await users.getUser(username);
+    errorMessage = 'Username already taken. Please choose another one.';
+    res.status(400).render('pages/register', {title: "Account Registration | Stevens Esports",
+                                              scripts: ["/public/js/forms.js"],
+                                              error: errorMessage
+                                            });
+    return;
+  } catch(e){   
+    // Don't do anything
+  }
+
+  // Test if email already exists
+  try{
+    await users.getUser(email);
+    errorMessage = 'Email already used. Please choose another one.';
+    res.status(400).render('pages/register', {title: "Account Registration | Stevens Esports",
+                                              scripts: ["/public/js/forms.js"],
+                                              error: errorMessage
+                                            });
+    return;
+  } catch(e){
+    // Don't do anything
+  }
+
+  // Test if password box and confirm password box matches
+  if(password !== confirm_password){
+    errorMessage = 'Password fields do not match.';
+    res.status(400).render('pages/register', {title: "Account Registration | Stevens Esports",
+                                              scripts: ["/public/js/forms.js"],
+                                              error: errorMessage
+                                            });
+    return;
+  }
+
+  password = password.trim();
+  hashedPassword = await bcrypt.hash(password, 16);
+
+  /*
+  try {
     let user;
     try {
       user = await users.getUser(username);
@@ -107,6 +221,21 @@ router.post("/register", async (req, res) => {
       scripts: ["/public/js/forms.js"],
     });
   }
+  */
+
+  await users.addUser(
+    firstName,
+    lastName,
+    username,
+    email,
+    hashedPassword,
+    nickname,
+    "https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png",
+    biography
+  )
+
+  res.status(200).redirect('/login');
+  return;
 });
 
 router.get("/team-sign-up", async (req, res) => {
