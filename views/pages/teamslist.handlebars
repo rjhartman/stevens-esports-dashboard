@@ -1,11 +1,13 @@
 <div class="page-container">
-    <div class="main">
+    <img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620963762/Promo_Photos_A/11.jpg" id="landing-banner" alt="Stevens Esports Banner">
+    <div class="main" style="margin-top: -550px; padding-top: 0;">
         <div class="team-grid">
             {{#each teams}}
             <div class="team">
                 {{#if this.name}}
                 <h1>{{this.name}}</h1> 
                 {{/if}}
+                <img style="width: 200px;" src={{this.logo}} alt={{this.game}}>
                 <dl>
                     {{#if this.status}}
                     <dt class="teamStatus">Varsity Status</dt>
