@@ -11,7 +11,27 @@ function initCloud() {
     api_secret: process.env.CLOUDINARY_API_SECRET,
   });
 }
-
+function checkString(str, name) {
+  if (!str) throw `${name || "provided variable"} is empty`;
+  if (typeof str !== "string")
+    throw `${name || "provided variable"} is not a string`;
+  let s = str.trim();
+  if (s === "") throw `${name || "provided variable"} is an empty string`;
+}
+async function checkUserObj(userObj){
+    checkString(userObj.firstName, "firstName");
+    checkString(userObj.lastName, "lastName");
+    checkString(userObj.username, "userName");
+    checkString(userObj.nickname, "nickName");
+    checkString(userObj.email, "email");
+    if(!(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(userObj.email))){
+      throw `Email not valid format.`
+    }
+    checkString(userObj.passwordDigest, "passwordDigest");
+    checkString(userObj.role, "roleName");
+    checkString(userObj.biography, "biography");
+    if (typeof userObj.avatar !== "string") throw `avatar is not a string`;
+}
 module.exports = {
   async getUser(username) {
     const collection = await users();
@@ -34,9 +54,6 @@ module.exports = {
       ],
     });
 
-    const userList = await collection.find({}).toArray();
-    //console.log(userList)
-    //console.log(user)
     if (!user) throw `User with username ${username} not found.`;
     return user;
   },
@@ -71,6 +88,7 @@ module.exports = {
     return users[0];
   },
   async addUser(
+    // Error handling
     firstName,
     lastName,
     username,
@@ -88,16 +106,23 @@ module.exports = {
       throw `Username/email cannot be empty.`;
 
     username = username.toLowerCase();
+    var avatar
+    if (!avatar || avatar.trim() === ""){
+      avatar = "https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png";
+    }
+    else{
+      initCloud();
 
-    initCloud();
-
-    let resultUpload = await cloudinary.uploader.upload(avatar, {
-      width: 200,
-      height: 200,
-      x: 0,
-      y: 0,
-      crop: "limit",
-    });
+      let resultUpload = await cloudinary.uploader.upload(avatar, {
+        width: 200,
+        height: 200,
+        x: 0,
+        y: 0,
+        crop: "limit",
+      });
+      avatar = resultUpload.secure_url;
+    }
+    
 
     const returnVal = await collection.insertOne({
       firstName: firstName,
@@ -108,7 +133,7 @@ module.exports = {
       nickname: nickname,
       role: role,
       biography: bio,
-      avatar: resultUpload.secure_url,
+      avatar: avatar,
     });
 
     if (returnVal.insertedCount === 0) throw "Error: Could not add user!";
@@ -144,4 +169,49 @@ module.exports = {
     if (modifiedCount === 0) throw `Could not update a user with id ${id}`;
     return true;
   },
+  async updateUser(id,userObj){
+    checkString(id, "id");
+    let parsedId = ObjectID(id);
+    checkUserObj(userObj);
+    const user = await this.getUserById(id);
+    username = userObj.username.toLowerCase();
+
+    initCloud();
+    var avatar
+    if (!userObj.avatar || userObj.avatar.trim() === ""){
+      avatar = user.avatar;
+    }
+    else{
+      let resultUpload = await cloudinary.uploader.upload(avatar, {
+        width: 200,
+        height: 200,
+        x: 0,
+        y: 0,
+        crop: "limit",
+      });
+      avatar = resultUpload.secure_url;
+    }
+  
+    const userCollection = await users();
+    let updatedUser = {
+      firstName: userObj.firstName,
+      lastName: userObj.lastName,
+      username: username,
+      nickname: userObj.nickname,
+      email: userObj.email,
+      passwordDigest: userObj.passwordDigest,
+      //can't change role through update user method
+      role: user.role,
+      biography: userObj.biography,
+      avatar: avatar
+    };
+    const updatedInfo = await userCollection.updateOne(
+      { _id: parsedId },
+      { $set: updatedUser }
+    );
+    if (updatedInfo.modifiedCount === 0) {
+      throw "could not update user successfully";
+    }
+    return user;
+  }
 };

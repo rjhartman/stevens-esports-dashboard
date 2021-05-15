@@ -158,7 +158,7 @@ async function updateMatch(id, obj) {
   if (updatedInfo.modifiedCount === 0) {
     throw "Could not update match.";
   }
-  return await getMatchById(id);
+  return match;
 }
 
 async function getTeam(id) {

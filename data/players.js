@@ -85,5 +85,22 @@ async function getPersonByUsername(username){
     return person;
 }
 
+async function getAllPlayers(transform = true) {
+    const collection = await players();
+    let playerList = await collection.find({}).toArray();
+    transform
+        ? await Promise.all(
+            playerList.map(async (player) => {
+                try {
+                    const player_cringe = await this.getPlayerById(player._id.toString());
+                } catch (e) {
+                    console.warn("Player could not be transformed.", e);
+                    player_cringe = null;
+                }
+            })
+        )
+    : playerList;
+    return playerList;
+}
 
-module.exports = {addPlayer, getPersonByUsername, getPlayerByUsername, getPlayerById}
+module.exports = {addPlayer, getPersonByUsername, getPlayerByUsername, getPlayerById, getAllPlayers}

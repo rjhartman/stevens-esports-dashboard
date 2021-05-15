@@ -60,7 +60,7 @@ module.exports = {
         const insertedTeam = await this.getTeamById(team_insert.insertedId.toString());
         return insertedTeam;
     },
-    // async addMatch(obj){
+    // async addTeam(obj){
     //     const teamCollection = await teams();
     //     if (typeof obj.name !== "string" || obj.name.trim().length === 0) {
     //         throw `Error: name should be a string of length greater than zero.`;
@@ -134,5 +134,5 @@ module.exports = {
             throw 'could not update team successfully';
         }
         return await getTeamById(id);
-    }
+    },
 };

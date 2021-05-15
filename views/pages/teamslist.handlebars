@@ -1,0 +1,30 @@
+<div class="page-container">
+    <img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620963762/Promo_Photos_A/11.jpg" id="landing-banner" alt="Stevens Esports Banner">
+    <div class="main" style="margin-top: -550px; padding-top: 0;">
+        <div class="team-grid">
+            {{#each teams}}
+            <div class="team">
+                {{#if this.name}}
+                <h1>{{this.name}}</h1> 
+                {{/if}}
+                <img style="width: 200px;" src={{this.logo}} alt={{this.game}}>
+                {{#if this.status}}
+                <h2 class="teamStatus">Varsity Status: {{this.status}}</h2>
+                {{/if}}
+                {{#if this.players}}
+                <h2>Roster</h2>
+                <ul class="teamPlayers">
+                    {{#each this.players}}
+                    <li>
+                        <a href="/player/{{this.name}}">
+                            <span class="text">{{this.name}}</span>
+                        </a>
+                    </li>
+                    {{/each}}
+                </ul>
+                {{/if}}
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
