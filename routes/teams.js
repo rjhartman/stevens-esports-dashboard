@@ -54,12 +54,10 @@ router.get('/', async (req, res) => {
                     }
                 }
             }
-            players_array.push(temp_array);
-            temp_array = [];
             teams_list[i]["logo"] = getLogo(teams_list[i].game);
         }
 
-        res.render('pages/teamslist', {title: 'Rosters | Stevens Esports', teams: teams_list, players: players_array});
+        res.render('pages/teamslist', {title: 'Rosters | Stevens Esports', teams: teams_list});
     } catch (e) {
         res.status(500);
     }

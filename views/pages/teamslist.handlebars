@@ -8,28 +8,21 @@
                 <h1>{{this.name}}</h1> 
                 {{/if}}
                 <img style="width: 200px;" src={{this.logo}} alt={{this.game}}>
-                <dl>
-                    {{#if this.status}}
-                    <dt class="teamStatus">Varsity Status</dt>
-                    <dd class="teamStatus">{{this.status}}</dd>
-                    {{/if}}
-                    {{#if this.game}}
-                    <dt class="teamGame">Game</dt>
-                    <dd class="teamGame">{{this.game}}</dd>
-                    {{/if}}
-                    {{#if this.players}}
-                    <dt class="teamPlayers">Roster</dt>
-                    <dd class="teamPlayers">
-                        <ul>
-                            {{#each this.players}}
-                            <li>
-                                <a href="/player/{{this.name}}">{{this.name}}</a>
-                            </li>
-                            {{/each}}
-                        </ul>
-                    </dd>
-                    {{/if}}
-                </dl>
+                {{#if this.status}}
+                <h2 class="teamStatus">Varsity Status: {{this.status}}</h2>
+                {{/if}}
+                {{#if this.players}}
+                <h2>Roster</h2>
+                <ul class="teamPlayers">
+                    {{#each this.players}}
+                    <li>
+                        <a href="/player/{{this.name}}">
+                            <span class="text">{{this.name}}</span>
+                        </a>
+                    </li>
+                    {{/each}}
+                </ul>
+                {{/if}}
             </div>
             {{/each}}
         </div>
