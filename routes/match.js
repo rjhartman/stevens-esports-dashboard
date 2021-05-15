@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const match = require("./../data/match.js");
 const xss = require("xss");
+const games = require("./../data/game.js");
+const { game } = require("../data/index.js");
 function checkString(str, name){
   if (!str) throw `${name || 'provided variable'} is empty`
   if (typeof str !== 'string') throw `${name || 'provided variable'} is not a string`
@@ -12,6 +14,8 @@ function checkString(str, name){
 function checkMatchObj(obj){
   checkString(obj.opponent,'opponent');
   //Need some function to check the game and team objectIDs are valid when they're set up
+
+  checkString(obj.team,'team');
   if (typeof(obj.opponentScore) != 'number') throw `score should be a number`
   if (obj.opponentScore < 0) throw `score can't be negative`
   if (typeof(obj.teamsScore) != 'number') throw `team score should be a number`
@@ -20,10 +24,14 @@ function checkMatchObj(obj){
 }
 
 router.post("/", async function (req, res) {
+    xss(req.body.name);
+    xss(req.body.description);
   if (!req.body) throw `match info required`;
   let matchInfo = req.body;
   try {
-      // checkMatchObj(matchInfo);
+      checkMatchObj(matchInfo);
+      //check if gameid exist
+      await games.getGameById(String(matchInfo.game));
       const newMatch = await match.addMatch(matchInfo);
       res.sendStatus(200);
   } catch (e) {
@@ -32,6 +40,8 @@ router.post("/", async function (req, res) {
 });
 
 router.put('/:id', async (req, res) => {
+    xss(req.body.name);
+    xss(req.body.description);
   try {
     // console.log(req.params.id);
       const match1 = await match.getMatchById(req.params.id);
@@ -41,6 +51,7 @@ router.put('/:id', async (req, res) => {
   let matchInfo = req.body;
   try {
       checkMatchObj(matchInfo);
+      await games.getGameById(String(matchInfo.game));
       const updatedMatch = await match.updateMatch(req.params.id,matchInfo);
       res.sendStatus(200);
   } catch(e){
@@ -49,6 +60,8 @@ router.put('/:id', async (req, res) => {
 });
 
 router.get("/", async function (req, res) {
+    xss(req.body.name);
+    xss(req.body.description);
     try {
         let unresolved = await match.get_unresolved();
         let resolved = await match.get_resolved();
@@ -56,13 +69,16 @@ router.get("/", async function (req, res) {
         res.render("pages/matchSchedule", {
             title: "Match Schedule | Stevens Esports", 
             umatch: unresolved,
-            rmatch : resolved
+            rmatch : resolved,
+            user: req.session.user
             });
     } catch (e) {
       res.sendStatus(500);
     }
 });
 router.get("/:gameid", async function (req, res) {
+    xss(req.body.name);
+    xss(req.body.description);
     if (!req.params.gameid) throw `gameid required`;
     let gameid = req.params.gameid;
     try {

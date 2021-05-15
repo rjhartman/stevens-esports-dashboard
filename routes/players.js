@@ -5,6 +5,8 @@ const data = require('../data');
 const playerFuncs = data.players;
 
 router.get('/', async (req, res) => {
+    xss(req.body.name);
+    xss(req.body.description);
     try {
         res.redirect('/');
     } catch (e) {
@@ -13,6 +15,8 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:playerid', async (req, res) => {
+    xss(req.body.name);
+    xss(req.body.description);
     if(req.params.playerid == undefined || typeof req.params.playerid != 'string'){
         res.redirect('/');
         return;
