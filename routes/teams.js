@@ -3,9 +3,6 @@ const router = express.Router();
 const data = require('../data');
 const teamFuncs = data.teams;
 const player = data.players;
-const mongoCollections = require('../config/mongoCollections');
-const teams = mongoCollections.teams;
-const players = mongoCollections.players;
 const cloudinary = require("cloudinary").v2;
 const xss = require('xss');
 
@@ -173,4 +170,3 @@ router.post("/", async ( req, res) => {
     }
 });
 module.exports = router;
-
