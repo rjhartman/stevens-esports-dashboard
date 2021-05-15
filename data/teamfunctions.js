@@ -134,5 +134,5 @@ module.exports = {
             throw 'could not update team successfully';
         }
         return await getTeamById(id);
-    }
+    },
 };
