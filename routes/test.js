@@ -256,6 +256,7 @@ router.get("/edit-profile", async (req, res) => {
   if(!req.session.user) return res.redirect('/');
   res.render("pages/editProfile", {
     title: "Edit Profile | Stevens Esports",
+    user: req.session.user
   });
 });
 
@@ -263,6 +264,7 @@ router.get("/change-password", async (req, res) => {
   if(!req.session.user) return res.redirect('/');
   res.render("pages/changePW", {
     title: "Change Password | Stevens Esports",
+    user: req.session.user
   });
 });
 
