@@ -44,6 +44,22 @@ function onSubmit(e) {
   if (!checkValidity(form)) {
     e.preventDefault();
   }
+  else if(form.attr("method", "POST")){
+    // Construct formData object and send that in for POST route
+    const uploadData = new FormData(form);
+    const request = new XMLHttpRequest();
+    request.open("POST", "/register", true);
+    request.send(uploadData);
+    e.preventDefault();
+  }
+  else if(form.attr("method", "PUT")){
+    // Construct formData object and send that in for POST route
+    const uploadData = new FormData(form);
+    const request = new XMLHttpRequest();
+    request.open("POST", "/register", true);
+    request.send(uploadData);
+    e.preventDefault();
+  }
 }
 
 $(document).ready(() => {

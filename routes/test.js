@@ -1,4 +1,6 @@
 const express = require("express");
+const multer = require("multer");
+const upload = multer();
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const users = require("../data/users");
@@ -68,7 +70,7 @@ router.get("/register", async (req, res) => {
   });
 });
 
-router.post("/register", async (req, res) => {
+router.post("/register", upload.single('avatar'), async (req, res) => {
   // TODO: Hash the password with bcrypt.hash, 16 salts, store it in password digest
 
   if (req.session.user) return res.redirect("/dashboard");
@@ -80,7 +82,6 @@ router.post("/register", async (req, res) => {
     password,
     confirm_password,
     email,
-    avatar,
     biography,
   } = req.body;
   let errorMessage = "";
@@ -248,7 +249,7 @@ router.post("/register", async (req, res) => {
     email,
     hashedPassword,
     nickname,
-    avatar,
+    req.file.buffer,
     biography
   );
 
@@ -280,7 +281,7 @@ router.get("/change-password", async (req, res) => {
   });
 });
 
-router.get("/dashboard", (req, res) => {
+router.get("/dashboard", async (req, res) => {
   res.render("pages/dashboard", {
     title: "Dashboard | Stevens Esports",
     user: req.session.user,

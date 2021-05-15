@@ -1,7 +1,7 @@
 <div class="page-container">
     <div class="main">
         <div class="login">
-            <form method="POST" id="register-form" action="/register" class="form">
+            <form method="POST" id="register-form" action="/register" class="form" enctype="multipart/form-data">
                 <h1>Register</h1>
                 {{#if error}}
                     <p class="error">{{error}}</p>

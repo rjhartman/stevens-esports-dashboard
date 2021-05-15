@@ -24,11 +24,3 @@ $("#upcoming").click(function(event){
     $("#results").css("color", "rgb(204, 29, 29)");
     $(".unresolved_matches").show();
 });
-
-window.onclick = function(e) {
-    if(!e.target.matches('.dropdownButton')){
-        let dropdown = document.getElementById("team-list");
-        if(dropdown.classList.contains("show"))
-            dropdown.classList.remove("show");
-    }
-}
