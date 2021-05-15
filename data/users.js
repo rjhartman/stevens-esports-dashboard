@@ -194,20 +194,12 @@ module.exports = {
     const user = await this.getUserById(id);
     username = userObj.username.toLowerCase();
 
-    
-    var avatar
-    if (userObj.avatar.trim() === ""){
+    if (userObj.avatar === ""){
       avatar = user.avatar;
     }
     else{
       initCloud();
-      let resultUpload = await cloudinary.uploader.upload(avatar, {
-        width: 200,
-        height: 200,
-        x: 0,
-        y: 0,
-        crop: "limit",
-      });
+      let resultUpload = await uploadImage(avatar);
       avatar = resultUpload.secure_url;
     }
   

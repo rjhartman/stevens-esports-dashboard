@@ -52,11 +52,19 @@ function onSubmit(e) {
     request.send(uploadData);
     e.preventDefault();
   }
-  else if(form.attr("method", "PUT")){
-    // Construct formData object and send that in for POST route
+  else if(form.attr("method", "PATCH") && form.attr("action", "/editinfo")){
+    // Construct formData object and send that in for PATCH route
     const uploadData = new FormData(form);
     const request = new XMLHttpRequest();
-    request.open("POST", "/register", true);
+    request.open("PATCH", "/edit-info", true);
+    request.send(uploadData);
+    e.preventDefault();
+  }
+  else if(form.attr("method", "PATCH") && form.attr("action", "/password")){
+    // Construct formData object and send that in for PATCH route
+    const uploadData = new FormData(form);
+    const request = new XMLHttpRequest();
+    request.open("PATCH", "/change-password", true);
     request.send(uploadData);
     e.preventDefault();
   }

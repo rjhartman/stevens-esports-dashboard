@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const users = require("./../data/users.js");
 const bcrypt = require("bcrypt");
+const multer = require("multer");
+const upload = multer();
 const xss = require("xss")
 
 // router.put('/:id', async (req, res) => {
@@ -126,7 +128,7 @@ const xss = require("xss")
 //         res.status(400).json({ error: e });
 //     }
 //   });
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', upload.single('avatar'), async (req, res) => {
     var user;
     try {
       // console.log(req.params.id);
@@ -165,9 +167,9 @@ router.patch('/:id', async (req, res) => {
           }
         user.lastName = lastName;
     }
-    if ('userame' in inputObj){
-        userame = inputObj.userame;
-        if(userame == undefined || userame.trim() == ''){
+    if ('username' in inputObj){
+        username = inputObj.username;
+        if(username == undefined || username.trim() == ''){
             errorMessage = 'Username field cannot be empty.';
             //change the render page to the edit-profile page
             res.status(400).render('pages/editProfile', {title: "Edit Profile | Stevens Esports",
@@ -239,8 +241,8 @@ router.patch('/:id', async (req, res) => {
         biography = inputObj.biography;
         user.biography = biography;
     }
-    if ('avatar' in inputObj){
-        avatar = inputObj.avatar;
+    if (typeof req.files !== 'undefined' && req.files.length > 0){
+        // avatar = inputObj.avatar;
         // if(avatar == undefined || avatar.trim() == ''){
         //     errorMessage = 'Avatar field cannot be empty.';
         //     //change the render page to the edit-profile page
@@ -250,7 +252,7 @@ router.patch('/:id', async (req, res) => {
         //                                             });
         //     return;
         //   }
-        user.avatar = avatar;
+        user.avatar = req.file.buffer;
     }
     else{
         user.avatar = "";
@@ -274,6 +276,7 @@ router.patch('/:id', async (req, res) => {
         res.status(400).json({ error: e });
     }
 });
+
 router.patch('/password/:id', async (req, res) => {
     // requires the fields current password, new password, and confirm password
     var user;
