@@ -6,7 +6,6 @@ const player = data.players;
 const mongoCollections = require('../config/mongoCollections');
 const teams = mongoCollections.teams;
 const players = mongoCollections.players;
-let { ObjectID } = require('mongodb');
 
 router.get('/', async (req, res) => {
     try {
@@ -22,6 +21,7 @@ router.get('/', async (req, res) => {
 
             for(let j = 0; j < teams_list[i].players.length; j++){
                 let filtered = foundPlayers.filter(r => r._id.toString() === teams_list[i].players[j])
+                console.log(filtered)
                 temp_array.push(filtered);
             }
             players_array.push(temp_array);
