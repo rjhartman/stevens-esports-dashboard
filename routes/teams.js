@@ -37,9 +37,6 @@ function getLogo(gameType) {
 }
 
 router.get('/', async (req, res) => {
-    //xss(request.body.name), xss(request.body.description)
-    xss(req.body.name);
-    xss(req.body.description);
     try {
         const teams_list = await teamFuncs.getAllTeams();
         const playernames = await player.getAllPlayers();
@@ -66,7 +63,9 @@ router.get('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     xss(req.body.name);
-    xss(req.body.description);
+    xss(req.body.status);
+    xss(req.body.game);
+    xss(req.body.players);
     try {
       // console.log(req.params.id);
         const team1 = await team.getTeamById(req.params.id);
@@ -105,7 +104,9 @@ router.put('/:id', async (req, res) => {
 
 router.post("/", async ( req, res) => {
     xss(req.body.name);
-    xss(req.body.description);
+    xss(req.body.status);
+    xss(req.body.game);
+    xss(req.body.players);
     if (!req.body) throw `team info required`;
     let teamInfo = req.body;
     if (typeof teamInfo.name !== "string" || teamInfo.name.trim().length === 0) {
