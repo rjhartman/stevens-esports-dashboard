@@ -106,14 +106,14 @@ module.exports = {
       throw `Username/email cannot be empty.`;
 
     username = username.toLowerCase();
-    var avatar
+    
     if (!avatar || avatar.trim() === ""){
       avatar = "https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png";
     }
     else{
       initCloud();
 
-      let resultUpload = await cloudinary.uploader.upload(avatar, {
+      let resultUpload = cloudinary.uploader.upload(avatar, {
         width: 200,
         height: 200,
         x: 0,

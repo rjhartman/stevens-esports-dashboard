@@ -199,7 +199,7 @@ router.post("/register", async (req, res) => {
     email,
     hashedPassword,
     nickname,
-    "https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png",
+    avatar,
     biography
   )
 
