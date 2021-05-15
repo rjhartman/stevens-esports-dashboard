@@ -1,0 +1,24 @@
+<div class="page-container">
+    <div class="main">
+        <div class="player-profile">
+            <div class="profile-info">
+                <img class="profile-pic" style="padding: 0;" src="https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png">
+                <h2 class="nickname">{{user.nickname}}</h2>
+                <h2 class="firstName">First Name: {{user.firstName}}</h2>
+                <h2 class="lastName">Last Name: {{user.lastName}}</h2>
+                <h3 class="email">Email:</h3>
+                <p class="email">{{user.email}}</p>
+                <h3 class="username">Username:</h3>
+                <p class="username">{{user.username}}</p>
+                <h3 class="bio">Biography: </h3>
+                {{#if user.biography}}
+                <p class="bio">{{user.biography}}</p>
+                {{else}}
+                <p class="bio">No biography.</p>
+                {{/if}}
+                <a class="edit" href="/edit-profile">Edit Profile Information</a>
+                <a class="edit" href="/change-password">Change Password</a>
+            </div>
+        </div>
+    </div>
+</div>
