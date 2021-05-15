@@ -24,10 +24,16 @@ function checkMatchObj(obj){
 }
 
 router.post("/", async function (req, res) {
-    xss(req.body.name);
-    xss(req.body.description);
   if (!req.body) throw `match info required`;
   let matchInfo = req.body;
+  xss(req.body.opponent);
+  xss(req.body.game);
+  xss(req.body.team);
+  xss(req.body.date);
+  xss(req.body.result);
+  xss(req.body.opponentScore);
+  xss(req.body.teamScore);
+  xss(req.body.matchType);
   try {
       checkMatchObj(matchInfo);
       //check if gameid exist
@@ -40,8 +46,14 @@ router.post("/", async function (req, res) {
 });
 
 router.put('/:id', async (req, res) => {
-    xss(req.body.name);
-    xss(req.body.description);
+    xss(req.body.opponent);
+    xss(req.body.game);
+    xss(req.body.team);
+    xss(req.body.date);
+    xss(req.body.result);
+    xss(req.body.opponentScore);
+    xss(req.body.teamScore);
+    xss(req.body.matchType);
   try {
     // console.log(req.params.id);
       const match1 = await match.getMatchById(req.params.id);

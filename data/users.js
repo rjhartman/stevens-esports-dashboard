@@ -124,11 +124,17 @@ module.exports = {
     role = "regular"
   ) {
     const collection = await mongoCollections.users();
-    if (typeof username !== "string")
-      throw `Username/email must be a string! Received ${typeof username}`;
-    if (!username || !(username = username.trim()))
-      throw `Username/email cannot be empty.`;
-
+    checkString(firstName, "firstName");
+    checkString(lastName, "lastName");
+    checkString(username, "userName");
+    checkString(nickname, "nickName");
+    checkString(email, "email");
+    if(!(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email))){
+      throw `Email not valid format.`
+    }
+    checkString(passwordDigest, "passwordDigest");
+    // checkString(userObj.role, "roleName");
+    checkString(bio, "biography");
     username = username.toLowerCase();
     
     if (!avatar){
@@ -136,7 +142,6 @@ module.exports = {
     }
     else{
       initCloud();
-
       let resultUpload = await uploadImage(avatar);
       avatar = resultUpload.secure_url;
     }
@@ -194,7 +199,7 @@ module.exports = {
     const user = await this.getUserById(id);
     username = userObj.username.toLowerCase();
 
-    if (userObj.avatar === ""){
+    if(typeof userObj.avatar === "string"){
       avatar = user.avatar;
     }
     else{

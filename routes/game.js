@@ -2,11 +2,12 @@ const express = require("express");
 const router = express.Router();
 const game = require("./../data/game.js");
 const xss = require("xss");
+
 router.post("/", async function (req, res) {
-    xss(req.body.name);
-    xss(req.body.description);
     if (!req.body) throw `game info required`;
     let gameInfo = req.body;
+    xss(req.body.title);
+    xss(req.body.categories);
     try {
         // checkMatchObj(matchInfo);
         const newGame = await game.addGame(gameInfo);
@@ -16,8 +17,6 @@ router.post("/", async function (req, res) {
     }
   });
 router.delete('/:id', async (req, res) => {
-    xss(req.body.name);
-    xss(req.body.description);
     try{
         await game.deleteGame(req.params.id);
         res.sendStatus(200);
