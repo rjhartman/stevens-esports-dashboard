@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const users = require("./../data/users.js");
+const bcrypt = require("bcrypt");
 
 router.put('/:id', async (req, res) => {
     //all field except for password
@@ -135,7 +136,7 @@ router.patch('/:id', async (req, res) => {
         res.sendStatus(404);
     }
     let inputObj = req.body;
-    console.log(inputObj);
+    // console.log(inputObj);
     let errorMessage = "";
     if ('firstName' in inputObj){
         firstName = inputObj.firstName;
@@ -263,10 +264,83 @@ router.patch('/:id', async (req, res) => {
     }
     try{
         const updatedUser = await users.updateUser(req.params.id,userInfo);
+        //prob want to send the user back to profile page 
         res.sendStatus(200);
     } catch(e){
         res.status(400).json({ error: e });
     }
 });
+router.patch('/password/:id', async (req, res) => {
+    // requires the fields current password, new password, and confirm password
+    var user;
+    try {
+      // console.log(req.params.id);
+        user = await users.getUserById(req.params.id);
+    
+    } catch(e){
+        
+        res.sendStatus(404);
+    }
+    let inputObj = req.body;
+    let errorMessage = "";
+    let curr_password = inputObj.currentPassword;
+    if (!(await bcrypt.compare(curr_password, user.passwordDigest))){
+        errorMessage = 'Current Password is incorrect.';
+        res.status(400).render('pages/changePW', {title: "Password Change | Stevens Esports",
+                                                scripts: ["/public/js/forms.js"],
+                                                error: errorMessage
+                                                });
+        return;  
+    }
+    // Test if password field is filled in or not
+    let password = inputObj.newPassword
+    if(password == undefined || password.trim() == ''){
+        errorMessage = 'New Password field cannot be empty.';
+        res.status(400).render('pages/changePW', {title: "Password Change | Stevens Esports",
+                                                scripts: ["/public/js/forms.js"],
+                                                error: errorMessage
+                                                });
+        return;       
+    }
+    // Test if confirm password field is filled in or not
+    let confirm_password = inputObj.confirmPassword
+    if(confirm_password == undefined || confirm_password.trim() == ''){
+        errorMessage = 'Confirm password field cannot be empty.';
+        res.status(400).render('pages/changePW', {title: "Password Change | Stevens Esports",
+                                                scripts: ["/public/js/forms.js"],
+                                                error: errorMessage
+                                                });
+        return;           
+    }
+    if(password !== confirm_password){
+        errorMessage = 'Password fields do not match.';
+        res.status(400).render('pages/changePW', {title: "Password Change | Stevens Esports",
+                                                  scripts: ["/public/js/forms.js"],
+                                                  error: errorMessage
+                                                });
+        return;
+    }
 
+    password = password.trim();
+    hashedPassword = await bcrypt.hash(password, 16);
+    //nothing should be changed aside from password
+    let userInfo = {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        username: user.username,
+        email: user.email,
+        passwordDigest: hashedPassword,
+        nickname: user.nickname,
+        role: user.role,
+        biography: user.biography,
+        avatar: user.avatar,
+    };
+    
+    try{
+        const updatedUser = await users.updateUser(req.params.id,userInfo);
+        res.sendStatus(200);
+    } catch(e){
+        res.status(400).json({ error: e });
+    }
+});
 module.exports = router;
