@@ -168,7 +168,7 @@ async function main() {
   const match3 = await match.addMatch({
     opponent: "Some other team",
     game: game2._id,
-    team: team_one.name,
+    team: "Stevens CSGO Red",
     date: new Date("June 29, 2020 3:00"),
     result: "Win",
     opponentScore: 2,

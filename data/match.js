@@ -1,9 +1,11 @@
 const mongoCollections = require("../config/mongoCollections");
 const matches = mongoCollections.matches;
 const games = require("./games.js");
+const gameData = require("./game.js");
 const teams = require("./teamfunctions.js");
 let { ObjectId } = require("mongodb");
 const cloudinary = require("cloudinary").v2;
+const { game } = require(".");
 require("dotenv").config();
 
 function checkString(str, name) {
@@ -14,14 +16,28 @@ function checkString(str, name) {
   if (s === "") throw `${name || "provided variable"} is an empty string`;
 }
 
-function checkMatchObj(obj) {
-  checkString(obj.opponent, "opponent");
+function checkMatchObj(obj, strict = true) {
+  if (obj.opponent !== undefined || strict)
+    checkString(obj.opponent, "opponent");
   //Need some function to check the game and team objectIDs are valid when they're set up
-  if (typeof obj.opponentScore != "number") throw `score should be a number`;
-  if (obj.opponentScore < 0) throw `score can't be negative`;
-  if (typeof obj.teamsScore != "number") throw `team score should be a number`;
-  if (obj.teamsScore < 0) throw `score can't be negative`;
-  checkString(obj.matchType, "match type");
+  if (
+    (obj.opponentScore !== undefined || strict) &&
+    typeof obj.opponentScore != "number"
+  )
+    throw `score should be a number`;
+  if ((obj.opponentScore !== undefined || strict) && obj.opponentScore < 0)
+    throw `score can't be negative`;
+  if (
+    (obj.teamsScore !== undefined || strict) &&
+    typeof obj.teamsScore != "number"
+  )
+    throw `team score should be a number`;
+  if ((obj.teamsScore !== undefined || strict) && obj.teamsScore < 0)
+    throw `score can't be negative`;
+  if (obj.matchType !== undefined || strict) {
+    console.log(obj.matchType);
+    checkString(obj.matchType, "match type");
+  }
 }
 
 function getMatchTime(d) {
@@ -127,25 +143,20 @@ async function getMatchById(id) {
 async function updateMatch(id, obj) {
   checkString(id, "id");
   let parsedId = ObjectId(id);
-  checkMatchObj(obj);
+  checkMatchObj(obj, false);
   const match = await getMatchById(id);
   const matchCollection = await matches();
-  let updatedMatch = {
-    opponent: obj.opponent,
-    game: obj.game,
-    team: obj.team,
-    date: obj.date,
-    result: obj.result,
-    opponentScore: obj.opponentScore,
-    teamsScore: obj.teamsScore,
-    matchType: obj.matchType,
-  };
+  const updatedMatch = {};
+  for ([key, value] of Object.entries(obj)) {
+    updatedMatch[key] = value;
+  }
+
   const updatedInfo = await matchCollection.updateOne(
     { _id: parsedId },
     { $set: updatedMatch }
   );
   if (updatedInfo.modifiedCount === 0) {
-    throw "could not update book successfully";
+    throw "Could not update match.";
   }
   return await getMatchById(id);
 }
@@ -246,9 +257,34 @@ async function get_unresolved() {
   return res;
 }
 
-async function getAllMatches() {
+/**
+ *
+ * Gets all matches from Mongo, with optional transformations.
+ *
+ * @param   {bool}  transform If true, objectIDs will be transformed into their corresponding documents.
+ * @returns {Array}           The array of matches found
+ */
+async function getAllMatches(transform = true) {
   const collection = await matches();
-  return await collection.find({}).toArray();
+  let matchesList = await collection.find({}).toArray();
+
+  // If called with transform flag,
+  // go through each match and get the document for
+  // each game.
+  return transform
+    ? await Promise.all(
+        matchesList.map(async (match) => {
+          try {
+            const game = await gameData.getGameById(match.game.toString());
+            match.game = game;
+          } catch (e) {
+            console.warn("Game could not be transformed.", e);
+            match.game = null;
+          }
+          return match;
+        })
+      )
+    : matchesList;
 }
 
 module.exports = {

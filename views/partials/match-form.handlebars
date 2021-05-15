@@ -3,7 +3,72 @@
     <h2>Manage Matches</h2>
     <button class="collapse-button button">&minus;</button>
   </header>
-  <form>
-    {{> loader }}
+  <button class="add-match button" id="add-match-button">Add Match</button>
+  {{> loader }}
+  <form id="match-form">
+    <button class="close button">&times;</button>
+    <h2>Edit Match</h2>
+    <div class="row">
+      <label for="m-team">Team</label>
+      <select name="team" id="m-team">
+        {{#each teams }}
+          <option value="{{this.name}}">{{this.name}}</option>
+        {{/each}}
+      </select>
+      <p class="error">Error</p>
+    </div>
+    <div class="row">
+      <label for="m-opponent">Opponent</label>
+      <input type="text" name="opponent" id="m-opponent"/>
+      <p class="error">Error</p>
+    </div>
+    <div class="row">
+      <label for="m-game">Game</label>
+      <select name="game" id="m-game">
+        {{#each games }}
+          <option value="{{this._id}}">{{this.title}}</option>
+        {{/each}}
+      </select>
+      <p class="error">Error</p>
+    </div>
+    <div class="row">
+      <label for="m-date">Date</label>
+      <input type="date" id="m-date" name="date" />
+      <p class="error">Error</p>
+    </div>
+    <div class="row">
+      <label for="m-result">Result</label>
+      <select id="m-result" name="result">
+        <option value="win">Win</option>
+        <option value="loss">Loss</option>
+        <option value="">N/A</option>
+      </select>
+      <p class="error">Error</p>
+    </div>
+    <div class="row">
+      <label for="m-teams-score" >Stevens Score</label>
+      <input name="teamsScore" type="number" min="0" id="m-teams-score" />
+      <p class="error">Error</p>
+    </div>
+    <div class="row">
+      <label for="m-opponent-score" name="opponentScore">Opponent's Score</label>
+      <input name="opponentScore" type="number" id="m-opponent-score" />
+      <p class="error">Error</p>
+    </div>
+    <button class="button rounded">SUBMIT</button>
   </form>
+  <table id="matches" class="fillable">
+    <thead>
+      <tr>
+        <th data-name="team">Team</th>
+        <th data-name="opponent">Opponent</th>
+        <th data-name="game.title">Game</th>
+        <th data-name="date">Date</th>
+        <th data-name="result">Result</th>
+        <th data-name="score">Score</th>
+        <th data-name="edit">Edit</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 </section>

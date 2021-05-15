@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const users = require("../data/users");
+const games = require("../data/game");
+const teams = require("../data/teamFunctions");
 
 router.get("/", async (req, res) => {
   return res.render("pages/landing", { title: "Home | Stevens Esports" });
@@ -115,10 +117,12 @@ router.get("/team-sign-up", async (req, res) => {
   });
 });
 
-router.get("/dashboard", (req, res) => {
+router.get("/dashboard", async (req, res) => {
   res.render("pages/dashboard", {
     title: "Dashboard | Stevens Esports",
     user: req.session.user,
+    games: await games.getAllGames(),
+    teams: await teams.getAllTeams(),
     layout: "backend",
   });
 });
