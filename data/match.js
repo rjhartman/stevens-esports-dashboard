@@ -1,6 +1,5 @@
 const mongoCollections = require("../config/mongoCollections");
 const matches = mongoCollections.matches;
-const games = require("./games.js");
 const gameData = require("./game.js");
 const teams = require("./teamfunctions.js");
 let { ObjectId } = require("mongodb");
@@ -16,10 +15,22 @@ function checkString(str, name) {
   if (s === "") throw `${name || "provided variable"} is an empty string`;
 }
 
-function checkMatchObj(obj, strict = true) {
+async function checkMatchObj(obj, strict = true) {
   if (obj.opponent !== undefined || strict)
     checkString(obj.opponent, "opponent");
   //Need some function to check the game and team objectIDs are valid when they're set up
+  if (obj.game !== undefined || strict){
+    let parsedGameId = String(obj.game);
+    checkString(parsedGameId,"game");
+    try {
+        await gameData.getGameById(parsedGameId);
+    } catch(e){
+        throw `gameid doesn't exist`
+    }
+  }
+  if (obj.team !== undefined || strict){
+      checkString(obj.team,"team");
+  }
   if (
     (obj.opponentScore !== undefined || strict) &&
     typeof obj.opponentScore != "number"
@@ -106,7 +117,7 @@ async function getMatchById(id) {
   return match;
 }
 async function addMatch(obj) {
-  checkMatchObj(obj);
+  await checkMatchObj(obj);
   const matchCollection = await matches();
   let newMatch = {
     // String
@@ -143,7 +154,7 @@ async function getMatchById(id) {
 async function updateMatch(id, obj) {
   checkString(id, "id");
   let parsedId = ObjectId(id);
-  checkMatchObj(obj, false);
+  await checkMatchObj(obj, false);
   const match = await getMatchById(id);
   const matchCollection = await matches();
   const updatedMatch = {};
@@ -161,13 +172,6 @@ async function updateMatch(id, obj) {
   return match;
 }
 
-async function getTeam(id) {
-  for (let team of teams) {
-    if (team._id == id) {
-      return team.name + " " + team.status;
-    }
-  }
-}
 async function get_resolved_id(id) {
   if (!id) throw `no id provided`;
   let res = [];
