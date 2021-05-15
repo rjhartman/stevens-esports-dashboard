@@ -70,7 +70,7 @@ router.post("/register", async (req, res) => {
   // TODO: Hash the password with bcrypt.hash, 16 salts, store it in password digest 
 
   if (req.session.user) return res.redirect("/dashboard");
-  let { firstName, lastName, nickname, username, password, confirm_password, email, biography} = req.body;
+  let { firstName, lastName, nickname, username, password, confirm_password, email, avatar, biography} = req.body;
   let errorMessage = "";
 
   // Test if first name field is filled in or not
@@ -191,37 +191,6 @@ router.post("/register", async (req, res) => {
 
   password = password.trim();
   hashedPassword = await bcrypt.hash(password, 16);
-
-  /*
-  try {
-    let user;
-    try {
-      user = await users.getUser(username);
-    } catch {
-      // Even though we don't have to do an expensive compare,
-      // do one anyway to throttle attempts to brute force, and
-      // not allow an attacker to know when a username or password is
-      // incorrect based on load times.
-      const random = await users.getRandomUser();
-      await bcrypt.compare(password, random.passwordDigest);
-      throw errorMessage;
-    }
-    if (!(await bcrypt.compare(password, user.passwordDigest)))
-      throw errorMessage;
-
-    // Don't return the password's hash!
-    delete user.passwordDigest;
-    user.isAdmin = user.role === "administrator";
-    req.session.user = user;
-    return res.redirect("/dashboard");
-  } catch (e) {
-    return res.status(401).render("pages/register", {
-      title: "Account Registration | Stevens Esports",
-      error: errorMessage,
-      scripts: ["/public/js/forms.js"],
-    });
-  }
-  */
 
   await users.addUser(
     firstName,
