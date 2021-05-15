@@ -6,6 +6,7 @@ const games = require("../data/game");
 const teams = require("../data/teamFunctions");
 
 router.get("/", async (req, res) => {
+  if(req.session.user) return res.render('pages/landing', {title: "Home | Stevens Esports", user: req.session.user})
   return res.render("pages/landing", { title: "Home | Stevens Esports" });
 });
 
@@ -235,12 +236,15 @@ router.post("/register", async (req, res) => {
 });
 
 router.get("/team-sign-up", async (req, res) => {
+  if(!req.session.user) return res.redirect('/');
+  if(req.session.user) return res.render('pages/teamRegistration', {title: "Home | Stevens Esports", user: req.session.user})
   return res.render("pages/teamRegistration", {
     title: "Team Registration | Stevens Esports",
   });
 });
 
 router.get("/user-profile", async (req, res) => {
+  if(!req.session.user) return res.redirect('/');
   res.render("pages/userProfile", {
     title: "My Profile | Stevens Esports",
     user: req.session.user,
@@ -248,18 +252,21 @@ router.get("/user-profile", async (req, res) => {
 });
 
 router.get("/edit-profile", async (req, res) => {
+  if(!req.session.user) return res.redirect('/');
   res.render("pages/editProfile", {
     title: "Edit Profile | Stevens Esports",
   });
 });
 
 router.get("/change-password", async (req, res) => {
+  if(!req.session.user) return res.redirect('/');
   res.render("pages/changePW", {
     title: "Change Password | Stevens Esports",
   });
 });
 
 router.get("/dashboard", async (req, res) => {
+  if(!req.session.user) return res.redirect('/');
   res.render("pages/dashboard", {
     title: "Dashboard | Stevens Esports",
     user: req.session.user,
