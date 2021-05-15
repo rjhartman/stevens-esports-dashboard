@@ -243,6 +243,7 @@ router.get("/team-sign-up", async (req, res) => {
 router.get("/user-profile", async (req, res) => {
   res.render("pages/userProfile", {
     title: "My Profile | Stevens Esports",
+    user: req.session.user,
   });
 });
 
