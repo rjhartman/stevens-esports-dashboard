@@ -58,7 +58,7 @@ router.get('/', async (req, res) => {
             teams_list[i]["logo"] = getLogo(teams_list[i].game);
         }
 
-        res.render('pages/teamslist', {title: 'Rosters | Stevens Esports', teams: teams_list});
+        res.render('pages/teamslist', {title: 'Rosters | Stevens Esports', teams: teams_list, user: req.session.user});
     } catch (e) {
         res.status(500);
     }
