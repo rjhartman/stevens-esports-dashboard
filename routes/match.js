@@ -20,6 +20,8 @@ function checkMatchObj(obj){
 }
 
 router.post("/", async function (req, res) {
+    xss(req.body.name);
+    xss(req.body.description);
   if (!req.body) throw `match info required`;
   let matchInfo = req.body;
   try {
@@ -32,6 +34,8 @@ router.post("/", async function (req, res) {
 });
 
 router.put('/:id', async (req, res) => {
+    xss(req.body.name);
+    xss(req.body.description);
   try {
     // console.log(req.params.id);
       const match1 = await match.getMatchById(req.params.id);
@@ -49,6 +53,8 @@ router.put('/:id', async (req, res) => {
 });
 
 router.get("/", async function (req, res) {
+    xss(req.body.name);
+    xss(req.body.description);
     try {
         let unresolved = await match.get_unresolved();
         let resolved = await match.get_resolved();
@@ -63,6 +69,8 @@ router.get("/", async function (req, res) {
     }
 });
 router.get("/:gameid", async function (req, res) {
+    xss(req.body.name);
+    xss(req.body.description);
     if (!req.params.gameid) throw `gameid required`;
     let gameid = req.params.gameid;
     try {

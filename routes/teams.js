@@ -118,5 +118,17 @@ router.put('/:id', async (req, res) => {
     }
 });
 
+router.post("/", async ( req, res) => {
+    xss(req.body.name);
+    xss(req.body.description);
+    if (!req.body) throw `team info required`;
+    let teamInfo = req.body;
+    try {
+        const newTeam = await teamFuncs.addTeam(teamInfo);
+        res.sendStatus(200);
+    } catch (e) {
+      res.status(400).json({ error: e });
+    }
+});
 module.exports = router;
 
