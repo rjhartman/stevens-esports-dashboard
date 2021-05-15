@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const users = require("./../data/users.js");
 const bcrypt = require("bcrypt");
+const xss = require("xss")
 
 router.put('/:id', async (req, res) => {
     //all field except for password

@@ -135,7 +135,7 @@ async function main() {
   const team_two = await teams.addTeam(
     "Stevens CSGO Red",
     "Varsity",
-    "Counter Strike Global Offensive",
+    "Counter-Strike: Global Offensive",
     [ryan_id, dan_id]
   );
   const team_three = await teams.addTeam(

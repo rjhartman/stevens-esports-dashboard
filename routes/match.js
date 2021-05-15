@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const match = require("./../data/match.js");
-
+const xss = require("xss");
 function checkString(str, name){
   if (!str) throw `${name || 'provided variable'} is empty`
   if (typeof str !== 'string') throw `${name || 'provided variable'} is not a string`

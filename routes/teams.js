@@ -7,6 +7,7 @@ const mongoCollections = require('../config/mongoCollections');
 const teams = mongoCollections.teams;
 const players = mongoCollections.players;
 const cloudinary = require("cloudinary").v2;
+const xss = require('xss');
 
 function initCloud() {
     cloudinary.config({
@@ -39,6 +40,9 @@ function getLogo(gameType) {
 }
 
 router.get('/', async (req, res) => {
+    //xss(request.body.name), xss(request.body.description)
+    xss(req.body.name);
+    xss(req.body.description);
     try {
         const teams_list = await teamFuncs.getAllTeams();
         const playernames = await player.getAllPlayers();
@@ -97,6 +101,8 @@ router.get('/', async (req, res) => {
 // });
 
 router.put('/:id', async (req, res) => {
+    xss(req.body.name);
+    xss(req.body.description);
     try {
       // console.log(req.params.id);
         const team1 = await team.getTeamById(req.params.id);
