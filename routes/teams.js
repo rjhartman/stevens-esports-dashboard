@@ -110,6 +110,27 @@ router.put('/:id', async (req, res) => {
         res.sendStatus(404);
     }
     let teamInfo = req.body;
+    if (typeof teamInfo.name !== "string" || teamInfo.name.trim().length === 0) {
+        throw `Error: name should be a string of length greater than zero.`;
+    }
+    if (typeof teamInfo.status !== "string" || teamInfo.status.trim().length === 0) {
+        throw `Error: status should be a string of length greater than zero.`;
+    }
+    if (teamInfo.status.toLowerCase().trim() !== "varsity" && teamInfo.status.toLowerCase().trim() !== "junior varsity") {
+        throw `Error: team status should be set to Varsity or Junior Varsity`;
+    }
+    if (typeof teamInfo.game !== "string" || teamInfo.game.trim().length === 0) {
+        throw `Error: game should be a string of length greater than zero.`;
+    }
+    if (!Array.isArray(teamInfo.players) || teamInfo.players.length == 0) {
+        throw 'Error: Please make sure your players is an array.';
+    }
+    for (let i = 0; i < players.length; i++) {
+        // if (typeof players[i] !== 'string' || players[i].trim().length == 0) {
+        //     throw 'Error: players should all be strings of length greater than zero.';
+        // }
+        let parsedId = ObjectId(teamInfo.players[i]);
+    }
     try {
         const updatedTeam = await team.updateTeam(req.params.id, teamInfo);
         res.sendStatus(200);
@@ -123,6 +144,27 @@ router.post("/", async ( req, res) => {
     xss(req.body.description);
     if (!req.body) throw `team info required`;
     let teamInfo = req.body;
+    if (typeof teamInfo.name !== "string" || teamInfo.name.trim().length === 0) {
+        throw `Error: name should be a string of length greater than zero.`;
+    }
+    if (typeof teamInfo.status !== "string" || teamInfo.status.trim().length === 0) {
+        throw `Error: status should be a string of length greater than zero.`;
+    }
+    if (teamInfo.status.toLowerCase().trim() !== "varsity" && teamInfo.status.toLowerCase().trim() !== "junior varsity") {
+        throw `Error: team status should be set to Varsity or Junior Varsity`;
+    }
+    if (typeof teamInfo.game !== "string" || teamInfo.game.trim().length === 0) {
+        throw `Error: game should be a string of length greater than zero.`;
+    }
+    if (!Array.isArray(teamInfo.players) || teamInfo.players.length == 0) {
+        throw 'Error: Please make sure your players is an array.';
+    }
+    for (let i = 0; i < players.length; i++) {
+        // if (typeof players[i] !== 'string' || players[i].trim().length == 0) {
+        //     throw 'Error: players should all be strings of length greater than zero.';
+        // }
+        let parsedId = ObjectId(teamInfo.players[i]);
+    }
     try {
         const newTeam = await teamFuncs.addTeam(teamInfo);
         res.sendStatus(200);
