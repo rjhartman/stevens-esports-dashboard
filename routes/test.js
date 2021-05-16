@@ -232,8 +232,7 @@ router.post("/register", upload.single('avatar'), async (req, res) => {
     biography
   );
 
-  res.status(200).redirect("/login");
-  return;
+  return res.sendStatus(200);
 });
 
 router.get("/team-sign-up", async (req, res) => {
@@ -397,10 +396,7 @@ router.patch('/user', upload.single('avatar'), async (req, res) => {
       const updatedUser = await users.updateUser(req.session.user._id.toString(), userInfo);
       //prob want to send the user back to profile page 
       req.session.destroy();
-      return res.render("pages/login", {
-        title: "Account Login | Stevens Esports",
-        scripts: ["/public/js/forms.js"],
-      });
+      return res.sendStatus(200);
   } catch(e){
       res.status(400).json({ error: e });
       return;
@@ -476,12 +472,7 @@ router.patch('/user/password', upload.single('avatar'), async (req, res) => {
   try{
       const updatedUser = await users.updateUser(req.session.user._id.toString(), userInfo);
       req.session.destroy();
-      /*return res.render("pages/login", {
-        title: "Account Login | Stevens Esports",
-        scripts: ["/public/js/forms.js"],
-      });*/
-      res.redirect(307, '/login');
-      return;
+      return res.sendStatus(200);
   } catch(e){
       res.status(400).json({ error: e });
   }

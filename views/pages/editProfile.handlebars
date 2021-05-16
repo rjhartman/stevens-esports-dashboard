@@ -3,6 +3,7 @@
         <div class="login">
             <form method="PATCH" id="profile-form" action="/user/" class="form" enctype="multipart/form-data">
                 <h1>Edit Profile Information</h1>
+                <h2 style="text-align: center;">You will be logged out after changes are made.</h2>
                 {{#if error}}
                     <p class="error">{{error}}</p>
                 {{/if}}

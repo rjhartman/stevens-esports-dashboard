@@ -31,6 +31,8 @@ function checkValidity(form) {
   return valid;
 }
 
+
+
 /**
  * Handles form submissions using AJAX.
  *
@@ -47,9 +49,13 @@ function onSubmit(e) {
   else if(form.getAttribute("method") == 'POST' && form.getAttribute("action") == "/register"){
     // Construct formData object and send that in for POST route
     const uploadData = new FormData(form);
-    const request = new XMLHttpRequest();
-    request.open("POST", "/register", true);
-    request.send(uploadData);
+    fetch("/user", {
+      method: 'PATCH',
+      body: uploadData
+    }).then(response => {
+      if(response.ok)
+        window.location.href = '/login';
+    });
     e.preventDefault();
   }
   else if(form.getAttribute("method") == 'PATCH' && form.getAttribute("action") == "/user/"){
@@ -62,9 +68,13 @@ function onSubmit(e) {
         patchedData.append(en[0], en[1]);
     }
 
-    const request = new XMLHttpRequest();
-    request.open("PATCH", "/user/", true);
-    request.send(patchedData);
+    fetch("/user", {
+      method: 'PATCH',
+      body: patchedData
+    }).then(response => {
+      if(response.ok)
+        window.location.href = '/login';
+    });
     e.preventDefault();
   }
   else if(form.getAttribute("method") == 'PATCH' && form.getAttribute("action") == "/user/password"){
@@ -77,9 +87,13 @@ function onSubmit(e) {
         patchedData.append(en[0], en[1]);
     }
 
-    const request = new XMLHttpRequest();
-    request.open("PATCH", "/user/password", true);
-    request.send(patchedData);
+    fetch("/user", {
+      method: 'PATCH',
+      body: patchedData
+    }).then(response => {
+      if(response.ok)
+        window.location.href = '/login';
+    });
     e.preventDefault();
   }
 }

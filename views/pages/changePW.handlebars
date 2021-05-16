@@ -3,6 +3,7 @@
         <div class="login">
             <form method="PATCH" id="password-form" action="/user/password" class="form" enctype="multipart/form-data">
                 <h1>Change Password</h1>
+                <h2 style="text-align: center;">You will be logged out after changes are made.</h2>
                 {{#if error}}
                     <p class="error">{{error}}</p>
                 {{/if}}
