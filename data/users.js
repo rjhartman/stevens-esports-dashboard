@@ -53,8 +53,7 @@ async function checkUserObj(userObj){
     checkString(userObj.passwordDigest, "passwordDigest");
     checkString(userObj.role, "roleName");
     checkString(userObj.biography, "biography");
-    if (!userObj.avatar) throw `no input for avatar`
-    if (typeof userObj.avatar !== "string") throw `avatar is not a string`;
+    if (!userObj.avatar) throw `no input for avatar`;
 }
 module.exports = {
   async getUser(username) {
@@ -195,18 +194,21 @@ module.exports = {
   async updateUser(id,userObj){
     checkString(id, "id");
     let parsedId = ObjectID(id);
-    checkUserObj(userObj);
+    await checkUserObj(userObj);
+    let avatarUrl = "";
+    
     const user = await this.getUserById(id);
     username = userObj.username.toLowerCase();
 
-    if(typeof userObj.avatar === "string"){
-      avatar = user.avatar;
+    if(typeof userObj.avatar !== "string"){
+      initCloud();
+      let resultUpload = await uploadImage(userObj.avatar);
+      avatarUrl = resultUpload.secure_url;
     }
     else{
-      initCloud();
-      let resultUpload = await uploadImage(avatar);
-      avatar = resultUpload.secure_url;
+      avatarUrl = userObj.avatar;
     }
+
   
     const userCollection = await users();
     let updatedUser = {
@@ -219,7 +221,7 @@ module.exports = {
       //can't change role through update user method
       role: user.role,
       biography: userObj.biography,
-      avatar: avatar
+      avatar: avatarUrl
     };
     const updatedInfo = await userCollection.updateOne(
       { _id: parsedId },

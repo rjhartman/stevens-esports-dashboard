@@ -4,7 +4,7 @@ const playerRoute = require('./players')
 const apiRoutes = require("./api");
 const teamRoutes = require('./teams');
 const gameRoutes = require('./game');
-const userRoutes = require('./users.js');
+const userRoutes = require('./users');
 
 const constructorMethod = (app) => {
     app.use('/', test);

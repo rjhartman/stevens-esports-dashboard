@@ -44,7 +44,7 @@ function onSubmit(e) {
   if (!checkValidity(form)) {
     e.preventDefault();
   }
-  else if(form.attr("method", "POST")){
+  else if(form.getAttribute("method") == 'POST' && form.getAttribute("action") == "/register"){
     // Construct formData object and send that in for POST route
     const uploadData = new FormData(form);
     const request = new XMLHttpRequest();
@@ -52,20 +52,34 @@ function onSubmit(e) {
     request.send(uploadData);
     e.preventDefault();
   }
-  else if(form.attr("method", "PATCH") && form.attr("action", "/editinfo")){
+  else if(form.getAttribute("method") == 'PATCH' && form.getAttribute("action") == "/user/"){
     // Construct formData object and send that in for PATCH route
     const uploadData = new FormData(form);
+    let patchedData = new FormData();
+    // Moves all populated pairs into a new form data object
+    for(en of uploadData.entries()){
+      if(uploadData.get(en[0]) !== '')
+        patchedData.append(en[0], en[1]);
+    }
+
     const request = new XMLHttpRequest();
-    request.open("PATCH", "/edit-info", true);
-    request.send(uploadData);
+    request.open("PATCH", "/user/", true);
+    request.send(patchedData);
     e.preventDefault();
   }
-  else if(form.attr("method", "PATCH") && form.attr("action", "/password")){
-    // Construct formData object and send that in for PATCH route
+  else if(form.getAttribute("method") == 'PATCH' && form.getAttribute("action") == "/user/password"){
+    // Construct formData object and send that in for PATCH route for password
     const uploadData = new FormData(form);
+    let patchedData = new FormData();
+    // Moves all populated pairs into a new form data object
+    for(en of uploadData.entries()){
+      if(uploadData.get(en[0]) !== '')
+        patchedData.append(en[0], en[1]);
+    }
+
     const request = new XMLHttpRequest();
-    request.open("PATCH", "/change-password", true);
-    request.send(uploadData);
+    request.open("PATCH", "/user/password", true);
+    request.send(patchedData);
     e.preventDefault();
   }
 }

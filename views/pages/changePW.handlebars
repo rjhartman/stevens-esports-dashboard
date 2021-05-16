@@ -1,7 +1,7 @@
 <div class="page-container">
     <div class="main">
         <div class="login">
-            <form method="POST" id="password-form" action="/change-password" class="form">
+            <form method="PATCH" id="password-form" action="/user/password" class="form" enctype="multipart/form-data">
                 <h1>Change Password</h1>
                 {{#if error}}
                     <p class="error">{{error}}</p>

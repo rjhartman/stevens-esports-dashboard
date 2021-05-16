@@ -1,7 +1,7 @@
 <div class="page-container">
     <div class="main">
         <div class="login">
-            <form method="POST" id="profile-form" action="/edit-profile" class="form">
+            <form method="PATCH" id="profile-form" action="/user/" class="form" enctype="multipart/form-data">
                 <h1>Edit Profile Information</h1>
                 {{#if error}}
                     <p class="error">{{error}}</p>
