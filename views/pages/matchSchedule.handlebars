@@ -5,14 +5,17 @@
         <div class="team-filters">
             <div class="banner_container">
                 <a class="team_filter" href="/schedule"><img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620962778/logos/all_logo.png" alt="All Matches"></a>
-                <a class="team_filter" href="/schedule/1"><img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620962778/logos/league_logo_2.png" alt="League of Legends Matches"></a>
+                {{#each game}}
+                <a class="team_filter" href="/schedule/{{this.title}}"><img src={{this.img}} alt="{{this.title}}"></a>
+                {{/each}}
+                {{!-- <a class="team_filter" href="/schedule/1"><img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620962778/logos/league_logo_2.png" alt="League of Legends Matches"></a>
                 <a class="team_filter" href="/schedule/2"><img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620962777/logos/csgo_logo.png" alt="Counter-Strike: Global Offensive Matches"></a>
                 <a class="team_filter" href="/schedule/3"><img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620962778/logos/valorant_logo.png" alt="Valorant Matches"></a>
                 <a class="team_filter" href="/schedule/4"><img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620962777/logos/overwatch_logo.png" alt="Overwatch Matches"></a>
                 <a class="team_filter" href="/schedule/5"><img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620962777/logos/hearthstone_logo.png" alt="Hearthstone Matches"></a>
                 <a class="team_filter" href="/schedule/6"><img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620962777/logos/rocket_league_logo.png" alt="Rocket League Matches"></a>
                 <a class="team_filter" href="/schedule/7"><img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620962777/logos/r6_logo.png" alt="Rainbow Six: Siege Matches"></a>
-                <a class="team_filter" href="/schedule/8"><img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620962777/logos/cod_logo.png" alt="Call of Duty Matches"></a>
+                <a class="team_filter" href="/schedule/8"><img src="https://res.cloudinary.com/stevens-esports/image/upload/v1620962777/logos/cod_logo.png" alt="Call of Duty Matches"></a> --}}
             </div>
         </div>
         <div class="body_content">

@@ -31,6 +31,8 @@ function checkValidity(form) {
   return valid;
 }
 
+
+
 /**
  * Handles form submissions using AJAX.
  *
@@ -44,20 +46,54 @@ function onSubmit(e) {
   if (!checkValidity(form)) {
     e.preventDefault();
   }
-  else if(form.attr("method", "POST")){
+  else if(form.getAttribute("method") == 'POST' && form.getAttribute("action") == "/register"){
     // Construct formData object and send that in for POST route
     const uploadData = new FormData(form);
-    const request = new XMLHttpRequest();
-    request.open("POST", "/register", true);
-    request.send(uploadData);
+    fetch("/user", {
+      method: 'PATCH',
+      body: uploadData
+    }).then(response => {
+      if(response.ok)
+        window.location.href = '/login';
+    });
     e.preventDefault();
   }
-  else if(form.attr("method", "PUT")){
-    // Construct formData object and send that in for POST route
+  else if(form.getAttribute("method") == 'PATCH' && form.getAttribute("action") == "/user/"){
+    // Construct formData object and send that in for PATCH route
     const uploadData = new FormData(form);
-    const request = new XMLHttpRequest();
-    request.open("POST", "/register", true);
-    request.send(uploadData);
+    let patchedData = new FormData();
+    // Moves all populated pairs into a new form data object
+    for(en of uploadData.entries()){
+      if(uploadData.get(en[0]) !== '')
+        patchedData.append(en[0], en[1]);
+    }
+
+    fetch("/user", {
+      method: 'PATCH',
+      body: patchedData
+    }).then(response => {
+      if(response.ok)
+        window.location.href = '/login';
+    });
+    e.preventDefault();
+  }
+  else if(form.getAttribute("method") == 'PATCH' && form.getAttribute("action") == "/user/password"){
+    // Construct formData object and send that in for PATCH route for password
+    const uploadData = new FormData(form);
+    let patchedData = new FormData();
+    // Moves all populated pairs into a new form data object
+    for(en of uploadData.entries()){
+      if(uploadData.get(en[0]) !== '')
+        patchedData.append(en[0], en[1]);
+    }
+
+    fetch("/user", {
+      method: 'PATCH',
+      body: patchedData
+    }).then(response => {
+      if(response.ok)
+        window.location.href = '/login';
+    });
     e.preventDefault();
   }
 }

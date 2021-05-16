@@ -196,7 +196,8 @@ async function get_resolved_id(id) {
   const matchList = await matchCollection.find({}).toArray();
   for (let match of matchList) {
     if (match.date < new Date()) {
-      if (match.game == id) {
+      let game = await gameData.getGameById(String(match.game));
+      if (game.title == id) {
         let matchObj = {
           game: getLogo(match.matchType),
           date: getMatchTime(match.date),
@@ -219,7 +220,8 @@ async function get_unresolved_id(id) {
   const matchList = await matchCollection.find({}).toArray();
   for (let match of matchList) {
     if (match.date > new Date()) {
-      if (match.game == id) {
+        let game = await gameData.getGameById(String(match.game));
+        if (game.title == id) {
         let matchObj = {
           game: getLogo(match.matchType),
           date: getMatchTime(match.date),
