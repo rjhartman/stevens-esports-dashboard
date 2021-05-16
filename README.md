@@ -55,7 +55,7 @@ All users have a "player profile" made for them by default. These show public fa
 
 ### Register (/register)
 
-The register page allows anyone to sign up for an account. You can do so by inputting all required information, with an optional bio or profile picture. Once registered, you will be able to sign in as a new user!
+The register page allows anyone to sign up for an account. You can do so by inputting all required information, with an optional bio. Once registered, you will be able to sign in as a new user!
 
 ### Sign In (/login)
 
@@ -88,7 +88,7 @@ Normal users and admins alike can register for teams through a Google form on th
 
 ### Profile (/user-profile) `authenticated`
 
-Here, users can view their current profile, as it would appear to the world if they were on a team. There are buttons to change their password, or edit their profile's appearance.
+Here, users can view their current profile, as it would appear to the world if they were on a team. There are buttons to change their password, or edit their profile's appearance, as well as upload a custom profile picture.
 
 ### Edit Profile (/edit-profile) `authenticated`
 
