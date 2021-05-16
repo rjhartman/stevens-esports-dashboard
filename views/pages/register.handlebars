@@ -1,7 +1,7 @@
 <div class="page-container">
     <div class="main">
         <div class="login">
-            <form method="POST" id="register-form" action="/register" class="form" enctype="multipart/form-data">
+            <form method="POST" id="register-form" action="/register" class="form">
                 <h1>Register</h1>
                 {{#if error}}
                     <p class="error">{{error}}</p>
@@ -39,10 +39,6 @@
                     <label for="confirm_password" class="required">Confirm Password</label>
                     <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
                     <p class="error"></p>
-                </div>
-                <div class="form__row">
-                    <label for="avatar">Upload Image</label>
-                    <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg">
                 </div>
                 <div class="form__row">
                     <label for="biography">Add Biography</label>

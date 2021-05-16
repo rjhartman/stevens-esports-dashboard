@@ -71,7 +71,7 @@ router.get("/register", async (req, res) => {
   });
 });
 
-router.post("/register", upload.single('avatar'), async (req, res) => {
+router.post("/register", async (req, res) => {
   // TODO: Hash the password with bcrypt.hash, 16 salts, store it in password digest
 
   if (req.session.user) return res.redirect("/dashboard");
@@ -228,11 +228,11 @@ router.post("/register", upload.single('avatar'), async (req, res) => {
     email,
     hashedPassword,
     nickname,
-    req.file.buffer,
     biography
   );
 
-  return res.sendStatus(200);
+  res.status(200).redirect("/login");
+  return;
 });
 
 router.get("/team-sign-up", async (req, res) => {

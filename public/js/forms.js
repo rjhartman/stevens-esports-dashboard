@@ -46,18 +46,6 @@ function onSubmit(e) {
   if (!checkValidity(form)) {
     e.preventDefault();
   }
-  else if(form.getAttribute("method") == 'POST' && form.getAttribute("action") == "/register"){
-    // Construct formData object and send that in for POST route
-    const uploadData = new FormData(form);
-    fetch("/user", {
-      method: 'PATCH',
-      body: uploadData
-    }).then(response => {
-      if(response.ok)
-        window.location.href = '/login';
-    });
-    e.preventDefault();
-  }
   else if(form.getAttribute("method") == 'PATCH' && form.getAttribute("action") == "/user/"){
     // Construct formData object and send that in for PATCH route
     const uploadData = new FormData(form);

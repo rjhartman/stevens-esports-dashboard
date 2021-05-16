@@ -118,7 +118,6 @@ module.exports = {
     email,
     passwordDigest,
     nickname,
-    avatar,
     bio,
     role = "regular"
   ) {
@@ -134,17 +133,7 @@ module.exports = {
     checkString(passwordDigest, "passwordDigest");
     // checkString(userObj.role, "roleName");
     checkString(bio, "biography");
-    username = username.toLowerCase();
-    
-    if (!avatar){
-      avatar = "https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png";
-    }
-    else{
-      initCloud();
-      let resultUpload = await uploadImage(avatar);
-      avatar = resultUpload.secure_url;
-    }
-    
+    username = username.toLowerCase();    
 
     const returnVal = await collection.insertOne({
       firstName: firstName,
@@ -155,7 +144,7 @@ module.exports = {
       nickname: nickname,
       role: role,
       biography: bio,
-      avatar: avatar,
+      avatar: "https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png",
     });
 
     if (returnVal.insertedCount === 0) throw "Error: Could not add user!";
