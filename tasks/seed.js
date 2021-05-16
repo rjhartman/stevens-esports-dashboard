@@ -15,10 +15,42 @@ async function main() {
   const game1 = await game.addGame({
     title: "League of Legends",
     categories: ["MOBA", "Strategy"],
+    img: "https://res.cloudinary.com/stevens-esports/image/upload/v1620962778/logos/league_logo_2.png",
   });
   const game2 = await game.addGame({
     title: "Counter-Strike: Global Offensive",
     categories: ["FPS", "Strategy"],
+    img: "https://res.cloudinary.com/stevens-esports/image/upload/v1620962777/logos/csgo_logo.png"
+  });
+  const game3 = await game.addGame({
+    title: "Valorant",
+    categories: ["FPS", "Strategy"],
+    img: "https://res.cloudinary.com/stevens-esports/image/upload/v1620962778/logos/valorant_logo.png"
+  });
+  const game4 = await game.addGame({
+    title: "Overwatch",
+    categories: ["FPS", "Action"],
+    img: "https://res.cloudinary.com/stevens-esports/image/upload/v1620962777/logos/overwatch_logo.png"
+  });
+  const game5 = await game.addGame({
+    title: "Hearthstone",
+    categories: ["Card", "Strategy"],
+    img: "https://res.cloudinary.com/stevens-esports/image/upload/v1620962777/logos/hearthstone_logo.png"
+  });
+  const game6 = await game.addGame({
+    title: "Rocket League",
+    categories: ["FPS", "Strategy"],
+    img: "https://res.cloudinary.com/stevens-esports/image/upload/v1620962777/logos/rocket_league_logo.png"
+  });
+  const game7 = await game.addGame({
+    title: "Rainbow Six Siege",
+    categories: ["FPS", "Strategy"],
+    img: "https://res.cloudinary.com/stevens-esports/image/upload/v1620962777/logos/r6_logo.png"
+  });
+  const game8 = await game.addGame({
+    title: "Call of Duty",
+    categories: ["FPS", "Strategy"],
+    img: "https://res.cloudinary.com/stevens-esports/image/upload/v1620962777/logos/cod_logo.png"
   });
 
   const Jerry_user = await users.addUser(

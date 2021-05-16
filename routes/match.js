@@ -3,7 +3,7 @@ const router = express.Router();
 const match = require("./../data/match.js");
 const xss = require("xss");
 const games = require("./../data/game.js");
-const { game } = require("../data/index.js");
+// const { game } = require("../data/index.js");
 function checkString(str, name){
   if (!str) throw `${name || 'provided variable'} is empty`
   if (typeof str !== 'string') throw `${name || 'provided variable'} is not a string`
@@ -77,12 +77,14 @@ router.get("/", async function (req, res) {
     try {
         let unresolved = await match.get_unresolved();
         let resolved = await match.get_resolved();
+        let gameList = await games.getAllGames();
         // console.log(test[0]);
         res.render("pages/matchSchedule", {
             title: "Match Schedule | Stevens Esports", 
             umatch: unresolved,
             rmatch : resolved,
-            user: req.session.user
+            user: req.session.user,
+            game: gameList,
             });
     } catch (e) {
       res.sendStatus(500);
@@ -97,10 +99,12 @@ router.get("/:gameid", async function (req, res) {
         let unresolved = await match.get_unresolved_id(gameid);
         let resolved = await match.get_resolved_id(gameid);
         // console.log(test[0]);
+        let gameList = await games.getAllGames();
         res.render("pages/matchSchedule", {
             title: "Match Schedule | Stevens Esports", 
             umatch: unresolved,
-            rmatch : resolved
+            rmatch : resolved,
+            game: gameList,
             });
     } catch (e) {
       res.sendStatus(500);
