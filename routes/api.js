@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const users = require("./../data/users.js");
-const matches = require("./../data/match.js");
+const users = require("../data/users.js");
+const matches = require("../data/match.js");
+const gameData = require("../data/game.js");
 const { ObjectID } = require("mongodb");
+const { games } = require("../config/mongoCollections.js");
 
 function checkString(str, name) {
   if (typeof str !== "string") throw `${name} must be a string.`;
@@ -22,8 +24,29 @@ function checkDate(str, name) {
 
 function checkScore(num, name) {
   const score = parseInt(num);
-  if (!Number.isInteger(score)) throw `${name} must be an integer.`;
+  if (!Number.isInteger(score))
+    throw `${name} must be an integer. Got ${score}`;
   if (score < 0) throw `${name} must be a non-negative integer.`;
+}
+
+function checkMatchBody(body) {
+  let { team, opponent, game, date, result, teamsScore, opponentScore } = body;
+  checkString(team, "Team");
+  checkString(opponent, "Opponent");
+  checkBsonID(game, "Game");
+  checkDate(date, "Date");
+
+  // If the match hasn't happened yet, then we can have undefined results.
+  if (new Date(date) > new Date()) {
+    if (result) checkString(result, "Result");
+    if (teamsScore && teamsScore !== 0) checkScore(teamsScore, "Team's score");
+    if (opponentScore && teamsScore !== 0)
+      checkScore(opponentScore, "Opponent's score");
+  } else {
+    checkString(result, "Result");
+    checkScore(teamsScore, "Team's score");
+    checkScore(opponentScore, "Opponent's score");
+  }
 }
 
 router.get("/users", async (req, res) => {
@@ -66,9 +89,43 @@ router.post("/users/:id/demote", async (req, res) => {
   res.json({ success: true });
 });
 
+router.post("/match", async (req, res) => {
+  let { team, opponent, game, date, result, teamsScore, opponentScore } =
+    req.body;
+
+  try {
+    checkMatchBody(req.body);
+    const gameObj = await gameData.getGameById(game);
+    if (
+      !result ||
+      (!teamsScore && teamsScore !== 0) ||
+      (!opponentScore && opponentScore !== 0)
+    ) {
+      result = undefined;
+      teamsScore = undefined;
+      opponentScore = undefined;
+    }
+    res.json(
+      await matches.addMatch({
+        team,
+        opponent,
+        game,
+        date,
+        result,
+        teamsScore,
+        opponentScore,
+        matchType: gameObj.title,
+      })
+    );
+  } catch (e) {
+    console.error(req.body);
+    console.error(e);
+    res.status(400).json({ error: e });
+  }
+});
+
 router.patch("/matches/:id/update", async (req, res) => {
   let { id } = req.params;
-  console.log(req.body);
   let { team, opponent, game, date, result, teamsScore, opponentScore } =
     req.body;
 
@@ -79,13 +136,7 @@ router.patch("/matches/:id/update", async (req, res) => {
 
   // Error checking
   try {
-    checkString(team, "Team");
-    checkString(opponent, "Opponent");
-    checkBsonID(game, "Game");
-    checkDate(date, "Date");
-    checkString(result, "Result");
-    checkScore(teamsScore, "Team's score");
-    checkScore(opponentScore, "Opponent's score");
+    checkMatchBody(req.body);
     teamsScore = parseInt(teamsScore);
     opponentScore = parseInt(opponentScore);
     res.json(
@@ -100,6 +151,7 @@ router.patch("/matches/:id/update", async (req, res) => {
       })
     );
   } catch (e) {
+    console.error(e);
     res.status(400).json({ error: e });
   }
 });

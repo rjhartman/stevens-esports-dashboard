@@ -27,9 +27,7 @@ function removeError(input) {
 }
 
 function validateMatchForm() {
-  const { stevensScore, opponentsScore } = getMatchFormElements();
-  stevensScoreVal = parseInt(stevensScore.value);
-  opponentsScoreVal = parseInt(opponentsScore.value);
+  const { stevensScore, opponentsScore, result, date } = getMatchFormElements();
   let valid = true;
 
   document
@@ -44,6 +42,26 @@ function validateMatchForm() {
       }
     });
 
+  // If the match date has already passed, then result and scores are required.
+  if (date.valueAsDate) {
+    if (date.valueAsDate < new Date()) {
+      const stevensScoreVal = parseInt(stevensScore.value);
+      const opponentsScoreVal = parseInt(opponentsScore.value);
+      if (isNaN(stevensScoreVal)) {
+        addError(stevensScore, "There must be a score.");
+        valid = false;
+      }
+      if (isNaN(opponentsScoreVal)) {
+        addError(opponentsScore, "There must be a score.");
+        valid = false;
+      }
+      if (!result.value) {
+        addError(result, "There must be a result.");
+        valid = false;
+      }
+    }
+  }
+
   return valid;
 }
 
@@ -52,6 +70,10 @@ function disableMatchForm() {
 }
 function enableMatchForm() {
   document.getElementById("match-form").classList.add("visible");
+  document
+    .getElementById("match-form")
+    .querySelectorAll(".error.active")
+    .forEach((el) => el.classList.remove("active"));
 }
 
 function fillMatchForm(options) {
@@ -61,9 +83,10 @@ function fillMatchForm(options) {
     ? "Create Match"
     : "Edit Match";
   form.action = options.endpoint;
+  form.dataset.method = options.create === true ? "POST" : "PATCH";
 
   Object.values(getMatchFormElements()).forEach(
-    (el) => (el.required = options.create === true)
+    (el) => (el.required = options.create === true && el.type !== "number")
   );
   // Select team:
   const team = document.getElementById("m-team");
@@ -134,10 +157,9 @@ function submitMatchForm(e) {
 
     $.ajax({
       url: form.action,
-      method: "PATCH",
+      method: form.dataset.method,
       data: data,
-      complete: () => {
-        console.log("here");
+      success: () => {
         disableMatchForm();
         fillMatchesTable();
       },
@@ -164,6 +186,7 @@ function bindForms() {
   document.getElementById("add-match-button").addEventListener("click", (e) => {
     fillMatchForm({
       create: true,
+      endpoint: "api/match",
     });
   });
 }
@@ -263,7 +286,9 @@ function fillMatchesTable() {
       const row = document.createElement("tr");
       fields.forEach((field) => {
         const column = document.createElement("td");
-        if (field === "date") {
+        if (field === "result") {
+          column.innerText = match.result ? match.result : "N/A";
+        } else if (field === "date") {
           column.innerText = moment(match.date).format("LL");
         } else if (match[field]) {
           column.innerText = match[field];

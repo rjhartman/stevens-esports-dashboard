@@ -16,39 +16,54 @@ function checkString(str, name) {
 }
 
 async function checkMatchObj(obj, strict = true) {
-  if (obj.opponent !== undefined || strict)
-    checkString(obj.opponent, "opponent");
-  //Need some function to check the game and team objectIDs are valid when they're set up
-  if (obj.game !== undefined || strict){
-    let parsedGameId = String(obj.game);
-    checkString(parsedGameId,"game");
-    try {
-        await gameData.getGameById(parsedGameId);
-    } catch(e){
-        throw `gameid doesn't exist`
+  let {
+    opponent,
+    game,
+    team,
+    date,
+    result,
+    opponentScore,
+    teamsScore,
+    matchType,
+  } = obj;
+  console.log(obj);
+  if (!(opponent === undefined && !strict)) checkString(opponent, "opponent");
+  if (!(game === undefined && !strict) && !ObjectId.isValid(game))
+    throw `Game was not a valid BSON ID.`;
+  if (!(team === undefined && !strict)) checkString(team, "team");
+
+  // Check the date
+  if (!(date === undefined && !strict)) {
+    checkString(date, "date");
+    const timestamp = Date.parse(date);
+    if (isNaN(timestamp)) throw `Date was not a valid date.`;
+  }
+
+  // If the date is in the future, then win and loss can be undefined.
+  if (!(date === undefined && !strict) && new Date(date) > new Date()) {
+    if (result !== undefined) checkString(result, "Result");
+    if (opponentScore !== undefined) {
+      if (typeof opponentScore !== "number")
+        throw `Opponent's score must be an integer.`;
+      if (opponentScore < 0) throw `Opponent's score must be non-zero.`;
     }
+    if (teamsScore !== undefined) {
+      if (typeof teamsScore !== "number")
+        throw `Team's score must be an integer.`;
+      if (teamsScore < 0) throw `Team's score must be non-zero.`;
+    }
+  } else if (!(date === undefined && !strict)) {
+    checkString(result);
+    if (typeof opponentScore !== "number")
+      throw `Opponent's score must be an integer. Received ${typeof opponentScore}`;
+    if (opponentScore < 0) throw `Opponent's score must be non-zero.`;
+    if (typeof teamsScore !== "number")
+      throw `Team's score must be an integer.`;
+    if (teamsScore < 0) throw `Team's score must be non-zero.`;
   }
-  if (obj.team !== undefined || strict){
-      checkString(obj.team,"team");
-  }
-  if (
-    (obj.opponentScore !== undefined || strict) &&
-    typeof obj.opponentScore != "number"
-  )
-    throw `score should be a number`;
-  if ((obj.opponentScore !== undefined || strict) && obj.opponentScore < 0)
-    throw `score can't be negative`;
-  if (
-    (obj.teamsScore !== undefined || strict) &&
-    typeof obj.teamsScore != "number"
-  )
-    throw `team score should be a number`;
-  if ((obj.teamsScore !== undefined || strict) && obj.teamsScore < 0)
-    throw `score can't be negative`;
-  if (obj.matchType !== undefined || strict) {
-    console.log(obj.matchType);
-    checkString(obj.matchType, "match type");
-  }
+
+  if (!(matchType === undefined && !strict))
+    checkString(matchType, "match type");
 }
 
 function getMatchTime(d) {
@@ -117,6 +132,8 @@ async function getMatchById(id) {
   return match;
 }
 async function addMatch(obj) {
+  obj.opponentScore = parseInt(obj.opponentScore);
+  obj.teamsScore = parseInt(obj.teamsScore);
   await checkMatchObj(obj);
   const matchCollection = await matches();
   let newMatch = {
