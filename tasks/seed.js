@@ -60,7 +60,6 @@ async function main() {
     "jcheng15@stevens.edu",
     "$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u",
     "Jerrytd579",
-    "",
     "This is my bio"
   );
   const Jerry_player = await playerData.addPlayer(
@@ -79,7 +78,6 @@ async function main() {
     "achuah@stevens.edu",
     "$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u",
     "Sheathblade",
-    "",
     "This is andrews bio"
   );
   const Andrew_player = await playerData.addPlayer(
@@ -98,7 +96,6 @@ async function main() {
     "rhartman1@stevens.edu",
     "$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u",
     "Strider",
-    "",
     "This is ryans bio",
     "administrator"
   );
@@ -113,7 +110,6 @@ async function main() {
     "dpekata@stevens.edu",
     "$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u",
     "Gamble",
-    "",
     "This is dans bio"
   );
   const Dan_player = await playerData.addPlayer("gamble", "AWPer", true, false);
@@ -127,7 +123,6 @@ async function main() {
     "jchen103@stevens.edu",
     "$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u",
     "Dragoblin",
-    "",
     "This is jerry chens bio"
   );
   const Jerry_two_player = await playerData.addPlayer(
@@ -146,7 +141,6 @@ async function main() {
     "phill@stevens.edu",
     "$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u",
     "graffixnyc",
-    "",
     "This is patricks bio"
   );
   const Patrick_player = await playerData.addPlayer(
