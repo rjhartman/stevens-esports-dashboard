@@ -144,7 +144,7 @@ async function addMatch(obj) {
     // Object ID of the team competing
     team: obj.team,
     // Date Field
-    date: obj.date,
+    date: new Date(obj.date),
     // String, NA for unresolved matches
     result: obj.result,
     // Number
@@ -220,8 +220,8 @@ async function get_unresolved_id(id) {
   const matchList = await matchCollection.find({}).toArray();
   for (let match of matchList) {
     if (match.date > new Date()) {
-        let game = await gameData.getGameById(String(match.game));
-        if (game.title == id) {
+      let game = await gameData.getGameById(String(match.game));
+      if (game.title == id) {
         let matchObj = {
           game: getLogo(match.matchType),
           date: getMatchTime(match.date),
