@@ -79,6 +79,7 @@ router.post("/register", async (req, res) => {
     firstName,
     lastName,
     nickname,
+    discord,
     username,
     password,
     confirm_password,
@@ -138,6 +139,21 @@ router.post("/register", async (req, res) => {
     )
   ) {
     errorMessage = "Email not valid format.";
+    res.status(400).render("pages/register", {
+      title: "Account Registration | Stevens Esports",
+      scripts: ["/public/js/forms.js"],
+      error: errorMessage,
+    });
+    return;
+  }
+
+  // Test if discord is in correct format
+  if (
+    !/^.{3,32}#[0-9]{4}$/.test(
+      discord
+    )
+  ) {
+    errorMessage = "Discord tag not valid format.";
     res.status(400).render("pages/register", {
       title: "Account Registration | Stevens Esports",
       scripts: ["/public/js/forms.js"],
