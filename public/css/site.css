@@ -258,6 +258,19 @@ sub {
     text-align: center;
 }
 
+.side-menu:hover,
+.side-menu:focus {
+    color: #ff2929;
+    outline: none;
+}
+
+.discord .icon svg {
+    transition: 0.2s;
+}
+.discord .icon svg:hover {
+    fill: #ff2929;
+}
+
 #header .container {
     -webkit-box-pack: justify;
     justify-content: space-between;
