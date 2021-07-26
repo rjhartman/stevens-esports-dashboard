@@ -189,6 +189,12 @@ sub {
     max-width: 1026px;
 }
 
+.column {
+    float: left;
+    width: 50%;
+    margin: auto;
+}
+
 /* ======================================================== */
 /*                        * Header *                        */
 /* ======================================================== */
@@ -237,45 +243,19 @@ sub {
     outline: none;
 }
 
-#header-menu ul.menu .sub-menu-list {
-    display: none;
-    position: absolute;
-    background-color: #1d1d1d;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-    z-index: 999;
-    width: 21%;
-}
-
-#header-menu ul.menu .sub-menu-list a {
-    float: none;
-    color: #FFFFFF;
-    text-decoration: none;
-    padding: 12px 12px;
-    display: block;
-}
-
-#header-menu ul.menu .sub-menu-list a:hover {
-    background-color: #464646;
-}
-
-#header-menu ul.menu .team-dropdown {
-    overflow: hidden;
-}
-
-#header-menu ul.menu .team-dropdown .show {
-    display: block;
-}
-
-#header-menu ul.menu .sub-menu-list .team {
-    display: block;
+.side-menu {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    font-style: normal;
+    font-size: 1.6rem;
+    line-height: 2.4rem;
+    letter-spacing: 1px;
     text-transform: uppercase;
-}
-
-#header-menu ul.menu .sub-menu-list .team img {
-    max-width: 20%;
-    height: auto;
-    padding-right: 6%;
-    vertical-align: middle;
+    text-decoration: none;
+    color: #ffffff;
+    transition: 0.2s;
+    padding-left: 40px;
+    text-align: center;
 }
 
 #header .container {
@@ -360,13 +340,19 @@ sub {
 
 #landing-intro {
     text-align: center;
-    color: #e40808;
+    color: #f71e1e;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: 500;
     font-style: italic;
     line-height: 2.4rem;
     font-size: 1.7rem;
     letter-spacing: 0.8px;
+}
+
+#landing-intro:after {
+    content: "";
+    display: table;
+    clear: both;
 }
 
 #landing-intro h1 {
@@ -381,7 +367,7 @@ sub {
 }
 
 #landing-intro p {
-    padding-bottom: 60px;
+    padding-bottom: 40px;
 }
 
 .page-container .main {
@@ -700,10 +686,10 @@ sub {
 @media (min-width: 801px) {
     #footer .footer-sm .sm-links li {
         -webkit-box-flex: 0;
-        flex: 0 0 25%;
-        max-width: calc(25% - 5px);
+        flex: 0 0 33%;
+        max-width: calc(33% - 5px);
     }
-    #footer .footer-sm .sm-links li:nth-child(4n+1) {
+    #footer .footer-sm .sm-links li:nth-child(3n+1) {
         margin-left: 0;
     }
 }
