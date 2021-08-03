@@ -395,7 +395,6 @@ sub {
 }
 
 #aboutUs h1 {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: bold;
     font-style: normal;
     font-size: 2.4rem;
@@ -407,6 +406,13 @@ sub {
 
 #aboutUs p {
     padding-bottom: 40px;
+}
+
+#aboutUs h2 {
+    color: #000000;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 1.8rem;
 }
 
 .page-container .main {
