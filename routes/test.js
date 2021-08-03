@@ -63,11 +63,17 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/about-us", async (req, res) => {
+  return res.render("pages/aboutUs", {
+    title: "About Us | Stevens Esports",
+    scripts: ["/public/js/forms.js"],
+  });
+});
+
 router.get("/register", async (req, res) => {
   if (req.session.user) return res.redirect("/dashboard");
   return res.render("pages/register", {
-    title: "Account Registration | Stevens Esports",
-    scripts: ["/public/js/forms.js"],
+    title: "Account Registration | Stevens Esports"
   });
 });
 
