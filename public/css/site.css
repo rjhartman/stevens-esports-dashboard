@@ -415,6 +415,13 @@ sub {
     font-size: 1.8rem;
 }
 
+#aboutUs hr {
+    height: 2px;
+    background-color: #f71e1e;
+    border: none;
+    margin: 40px 0;
+}
+
 .page-container .main {
     position: relative;
     padding: 40px 0;
