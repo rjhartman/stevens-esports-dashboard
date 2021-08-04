@@ -228,7 +228,7 @@ sub {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: bold;
     font-style: normal;
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     line-height: 2.4rem;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -247,8 +247,8 @@ sub {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: bold;
     font-style: normal;
-    font-size: 1.6rem;
-    line-height: 2.4rem;
+    font-size: 1.3rem;
+    line-height: 1.7rem;
     letter-spacing: 1px;
     text-transform: uppercase;
     text-decoration: none;
@@ -291,7 +291,7 @@ sub {
     #header-menu {
         -webkit-box-flex: 0;
         flex: 0 1 100%;
-        margin-left: 60px;
+        margin-left: 30px;
     }
 
     #header-menu ul {
@@ -415,7 +415,7 @@ sub {
     font-size: 1.8rem;
 }
 
-#aboutUs hr {
+hr {
     height: 2px;
     background-color: #f71e1e;
     border: none;
