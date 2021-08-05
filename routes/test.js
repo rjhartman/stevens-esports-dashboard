@@ -53,7 +53,7 @@ router.post("/login", async (req, res) => {
     delete user.passwordDigest;
     user.isAdmin = user.role === "administrator";
     req.session.user = user;
-    return res.redirect("/dashboard");
+    return res.redirect("/");
   } catch (e) {
     return res.status(401).render("pages/login", {
       title: "Account Login | Stevens Esports",

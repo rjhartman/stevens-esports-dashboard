@@ -1,6 +1,11 @@
 <div class="page-container">
     <img style="top:-150px;" src="https://res.cloudinary.com/stevens-esports/image/upload/v1620963777/Promo_Photos_B/6.jpg" id="landing-banner" alt="Stevens Esports Banner">
     <div class="main" style="margin-top: -550px; padding-top: 0;">
+        <div class="container width--wide">
+            <h1 style="text-align: center; padding-top: 4rem; color: #f71e1e; text-transform: uppercase;">Active Rosters</h1>
+            <hr>
+        </div>
+        {{#if teams}}
         <div class="team-grid">
             {{#each teams}}
             <div class="team">
@@ -26,5 +31,8 @@
             </div>
             {{/each}}
         </div>
+        {{else}}
+        <h1 class="empty">Sorry! There are currently no active teams.</h1>
+        {{/if}}
     </div>
 </div>

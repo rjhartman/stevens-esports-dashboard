@@ -271,6 +271,10 @@ sub {
     fill: #ff2929;
 }
 
+.discord {
+    padding-left: 20px;
+}
+
 #header .container {
     -webkit-box-pack: justify;
     justify-content: space-between;
@@ -291,7 +295,6 @@ sub {
     #header-menu {
         -webkit-box-flex: 0;
         flex: 0 1 100%;
-        margin-left: 30px;
     }
 
     #header-menu ul {
@@ -785,6 +788,17 @@ hr {
     #footer .footer-sm .sm-links a span.text {
         font-size: 0.8rem;
     }
+}
+
+.empty {
+    text-align: center;
+    color: #f71e1e;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 700;
+    line-height: 2.4rem;
+    font-size: 1.7rem;
+    letter-spacing: 0.8px;
+    padding-top: 1.5rem;
 }
 
 /* ======================================================== */
@@ -1328,7 +1342,6 @@ main.backend {
     justify-content: center;
     max-width: 100%;
     margin: 0 1.4rem 6rem 1.4rem;
-    padding-top: 4rem;
 }
 
 .team {
