@@ -17,25 +17,30 @@
                 </p>
                 <br>
             </div>
-            <div class="container width--wide">
+            <div class="container width--wide" style="max-width:max-content">
                 <h1>E-Board Members</h1>
                 <hr>
                 <div class="staff-grid">
-                    {{#each staff}}
                     <div class="staff">
-                        <img style="width: 200px;" src="{{this.avatar}}" alt="{{this.firstName}} {{this.lastName}}">
-                        {{#if this.firstName}}
-                            {{#if this.nickname}}
-                                {{#if this.lastName}}
-                                    <h1>{{this.firstName}} "{{this.nickname}}" {{this.lastName}}</h1>
-                                {{/if}}
-                            {{/if}}
-                        {{/if}}
-                        {{#if this.role}}
-                        <h2>{{this.role}}</h2>
-                        {{/if}}
+                        <img style="width: 300px;" src="https://res.cloudinary.com/stevens-esports/image/upload/v1628121702/avatars/chris_kurtz.png" alt="President">
+                        <h1>Chris "Number2Ginger" Kurtz</h1>
+                        <h2>President &amp; Co-Chair of Tournament Ops</h2>
                     </div>
-                    {{/each}}
+                    <div class="staff">
+                        <img style="width: 300px;" src="https://res.cloudinary.com/stevens-esports/image/upload/v1628122172/avatars/mike_prizant.jpg" alt="Content Director">
+                        <h1>Mike "Mickelsnack" Prizant</h1>
+                        <h2>Content Director</h2>
+                    </div>
+                    <div class="staff">
+                        <img style="width: 300px;" src="https://res.cloudinary.com/stevens-esports/image/upload/v1628122170/avatars/nick_cuoto.jpg" alt="Co-Chair of Tournament Ops">
+                        <h1>Nick "SnikIRL" Cuoto</h1>
+                        <h2>Co-Chair of Tournament Ops</h2>
+                    </div>
+                    <div class="staff">
+                        <img style="width: 300px;" src="https://res.cloudinary.com/stevens-esports/image/upload/v1628122171/avatars/alex_longo.jpg" alt="Co-Chair of Tournament Ops">
+                        <h1>Alex "fuzzybunny8998" Longo</h1>
+                        <h2>Co-Chair of Tournament Ops</h2>
+                    </div>
                 </div>
             </div>
         </div>
