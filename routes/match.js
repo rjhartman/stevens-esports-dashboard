@@ -101,7 +101,8 @@ router.get("/:gameid", async function (req, res) {
             umatch: unresolved,
             rmatch : resolved,
             game: gameList,
-            });
+            user: req.session.user,
+        });
     } catch (e) {
       res.sendStatus(500);
     }

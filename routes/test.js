@@ -66,6 +66,7 @@ router.post("/login", async (req, res) => {
 router.get("/about-us", async (req, res) => {
   return res.render("pages/aboutUs", {
     title: "About Us | Stevens Esports",
+    user: req.session.user,
     scripts: ["/public/js/forms.js"],
   });
 });

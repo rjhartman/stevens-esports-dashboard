@@ -21,7 +21,11 @@ router.get('/:playerid', async (req, res) => {
     try {
         let username = req.params.playerid;
         const person = await playerFuncs.getPersonByUsername(username);
-        res.render('pages/profile', {title: person.nickname + " | Stevens Esports", player: person});
+        res.render('pages/profile', {
+            title: person.nickname + " | Stevens Esports",
+            player: person,
+            user: req.session.user,
+        });
         return;
     } catch (e) {
         res.redirect('/');
