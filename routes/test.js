@@ -8,7 +8,12 @@ const games = require("../data/game");
 const teams = require("../data/teamFunctions");
 
 router.get("/", async (req, res) => {
-  if(req.session.user) return res.render('pages/landing', {title: "Home | Stevens Esports", user: req.session.user})
+  if(req.session.user)
+    return res.render('pages/landing', {
+      title: "Home | Stevens Esports",
+      user: req.session.user,
+      isAdmin: req.session.user.role === "administrator"
+    });
   return res.render("pages/landing", { title: "Home | Stevens Esports" });
 });
 
@@ -504,11 +509,12 @@ router.patch('/user/password', upload.single('avatar'), async (req, res) => {
 });
 
 router.get("/dashboard", async (req, res) => {
-  if(!req.session.user) return res.redirect('/');
+  if(!req.session.user || req.session.user.role === "regular")
+    return res.redirect('/');
   res.render("pages/dashboard", {
     title: "Dashboard | Stevens Esports",
     user: req.session.user,
-    isAdmin: req.session.user === "administrator",
+    isAdmin: req.session.user.role === "administrator",
     games: await games.getAllGames(),
     teams: await teams.getAllTeams(),
     layout: "backend",
