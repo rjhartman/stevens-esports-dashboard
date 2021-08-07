@@ -18,10 +18,15 @@
 
 <body>
     {{#unless user}}
-    {{> header }}
+        {{> header }}
     {{/unless}}
     {{#if user}}
-    {{> user-header}}
+        {{#unless isAdmin}}
+            {{> user-header}}
+        {{/unless}}
+        {{#if isAdmin}}
+            {{> privileged-header}}
+        {{/if}}
     {{/if}}
     {{{body}}}
     {{> footer }}

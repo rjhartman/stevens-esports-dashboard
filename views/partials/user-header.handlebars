@@ -20,9 +20,6 @@
           <li class="menu-item">
             <a href="/team-sign-up">Applications</a>
           </li>
-          <li class="menu-item">
-            <a href="/user-profile">My Profile</a>
-          </li>
         </ul>
       </div>
     </nav>
@@ -35,7 +32,13 @@
           </svg>
       </span>
     </a>
-    <a href="/logout" class="side-menu">Sign Out</a>
+    <div class="dropdown">
+      <button class="dropbtn">Settings</button>
+      <div class="dropdown-content">
+        <a href="/user-profile">My Profile</a>
+        <a href="/logout">Sign Out</a>
+      </div>
+    </div>
   </div>
   <!-- .container -->
 </header>
