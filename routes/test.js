@@ -265,7 +265,10 @@ router.post("/register", async (req, res) => {
 
 router.get("/team-sign-up", async (req, res) => {
   if(!req.session.user) return res.redirect('/');
-  if(req.session.user) return res.render('pages/teamRegistration', {title: "Home | Stevens Esports", user: req.session.user})
+  if(req.session.user) return res.render('pages/teamRegistration', {
+    title: "Team Registration | Stevens Esports",
+    user: req.session.user
+  });
   return res.render("pages/teamRegistration", {
     title: "Team Registration | Stevens Esports",
   });
