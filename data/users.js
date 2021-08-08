@@ -50,6 +50,10 @@ async function checkUserObj(userObj){
     if(!(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(userObj.email))){
       throw `Email not valid format.`
     }
+    checkString(userObj.discordtag, "discordtag");
+    if (!/^.{3,32}#[0-9]{4}$/.test(discordtag)){
+      throw `Discord tag not in correct format.`;
+    }
     checkString(userObj.passwordDigest, "passwordDigest");
     checkString(userObj.role, "roleName");
     checkString(userObj.biography, "biography");
@@ -116,6 +120,7 @@ module.exports = {
     lastName,
     username,
     email,
+    discordtag,
     passwordDigest,
     nickname,
     bio,
@@ -130,6 +135,10 @@ module.exports = {
     if(!(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email))){
       throw `Email not valid format.`
     }
+    checkString(discordtag, "discordtag")
+    if (!/^.{3,32}#[0-9]{4}$/.test(discordtag)){
+      throw `Discord tag not in correct format.`;
+    }
     checkString(passwordDigest, "passwordDigest");
     // checkString(userObj.role, "roleName");
     checkString(bio, "biography");
@@ -140,6 +149,7 @@ module.exports = {
       lastName: lastName,
       username: username,
       email: email,
+      discordtag: discordtag,
       passwordDigest: passwordDigest,
       nickname: nickname,
       role: role,
@@ -206,6 +216,7 @@ module.exports = {
       username: username,
       nickname: userObj.nickname,
       email: userObj.email,
+      discordtag: userObj.discordtag,
       passwordDigest: userObj.passwordDigest,
       //can't change role through update user method
       role: user.role,

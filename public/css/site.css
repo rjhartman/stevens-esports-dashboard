@@ -1184,6 +1184,7 @@ main.backend {
 
 .profile-info h2.nickname {
     color: var(--primary);
+    margin-top: 1.5em;
 }
 
 .player-profile {

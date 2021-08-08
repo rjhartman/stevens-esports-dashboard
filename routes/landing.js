@@ -85,7 +85,7 @@ router.get("/about-us", async (req, res) => {
 });
 
 router.get("/register", async (req, res) => {
-  if (req.session.user) return res.redirect("/dashboard");
+  if (req.session.user) return res.redirect("/");
   return res.render("pages/register", {
     title: "Account Registration | Stevens Esports"
   });
@@ -94,12 +94,12 @@ router.get("/register", async (req, res) => {
 router.post("/register", async (req, res) => {
   // TODO: Hash the password with bcrypt.hash, 16 salts, store it in password digest
 
-  if (req.session.user) return res.redirect("/dashboard");
+  if (req.session.user) return res.redirect("/");
   let {
     firstName,
     lastName,
     nickname,
-    discord,
+    discordtag,
     username,
     password,
     confirm_password,
@@ -167,10 +167,10 @@ router.post("/register", async (req, res) => {
     return;
   }
 
-  // Test if discord is in correct format
+  // Test if discord tag is in correct format
   if (
     !/^.{3,32}#[0-9]{4}$/.test(
-      discord
+      discordtag
     )
   ) {
     errorMessage = "Discord tag not valid format.";
@@ -262,6 +262,7 @@ router.post("/register", async (req, res) => {
     lastName,
     username,
     email,
+    discordtag,
     hashedPassword,
     nickname,
     biography
@@ -408,6 +409,28 @@ router.patch('/user', upload.single('avatar'), async (req, res) => {
         }
       user.email = email;
   }
+  if ('discordtag' in inputObj){
+    discordtag = inputObj.discordtag;
+    if(discordtag == undefined || discordtag.trim() == ''){
+        errorMessage = 'Discord tag field cannot be empty.';
+        //change the render page to the edit-profile page
+        res.status(400).render('pages/editProfile', {title: "Edit Profile | Stevens Esports",
+                                                  scripts: ["/public/js/forms.js"],
+                                                  error: errorMessage
+                                                });
+        return;
+      }
+    // Test if email is valid format
+    if (!/^.{3,32}#[0-9]{4}$/.test(discordtag)){
+        errorMessage = 'Discord tag not valid format.'
+        res.status(400).render('pages/editProfile', {title: "Edit Profile | Stevens Esports",
+                                                scripts: ["/public/js/forms.js"],
+                                                error: errorMessage
+                                                });
+        return;     
+    }
+    user.discordtag = discordtag;
+  }
   if ('nickname' in inputObj){
       nickname = inputObj.nickname;
       if(nickname == undefined || nickname.trim() == ''){
@@ -433,6 +456,7 @@ router.patch('/user', upload.single('avatar'), async (req, res) => {
       lastName: user.lastName,
       username: user.username,
       email: user.email,
+      discordtag: user.discordtag,
       passwordDigest: user.passwordDigest,
       nickname: user.nickname,
       role: user.role,
