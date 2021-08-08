@@ -72,6 +72,7 @@ router.get("/about-us", async (req, res) => {
   return res.render("pages/aboutUs", {
     title: "About Us | Stevens Esports",
     user: req.session.user,
+    isAdmin: req.session.user.role === "administrator",
     scripts: ["/public/js/forms.js"],
   });
 });
@@ -267,10 +268,13 @@ router.get("/team-sign-up", async (req, res) => {
   if(!req.session.user) return res.redirect('/');
   if(req.session.user) return res.render('pages/teamRegistration', {
     title: "Team Registration | Stevens Esports",
-    user: req.session.user
+    user: req.session.user,
+    isAdmin: req.session.user.role === "administrator",
   });
   return res.render("pages/teamRegistration", {
     title: "Team Registration | Stevens Esports",
+    user: req.session.user,
+    isAdmin: req.session.user.role === "administrator",
   });
 });
 
@@ -279,6 +283,7 @@ router.get("/user-profile", async (req, res) => {
   res.render("pages/userProfile", {
     title: "My Profile | Stevens Esports",
     user: req.session.user,
+    isAdmin: req.session.user.role === "administrator",
   });
 });
 
@@ -287,7 +292,8 @@ router.get("/edit-profile", async (req, res) => {
   res.render("pages/editProfile", {
     title: "Edit Profile | Stevens Esports",
     scripts: ["/public/js/forms.js"],
-    user: req.session.user
+    user: req.session.user,
+    isAdmin: req.session.user.role === "administrator",
   });
 });
 
@@ -296,7 +302,8 @@ router.get("/change-password", async (req, res) => {
   res.render("pages/changePW", {
     title: "Change Password | Stevens Esports",
     scripts: ["/public/js/forms.js"],
-    user: req.session.user
+    user: req.session.user,
+    isAdmin: req.session.user.role === "administrator",
   });
 });
 

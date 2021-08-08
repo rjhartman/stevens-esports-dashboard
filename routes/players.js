@@ -21,12 +21,20 @@ router.get('/:playerid', async (req, res) => {
     try {
         let username = req.params.playerid;
         const person = await playerFuncs.getPersonByUsername(username);
-        res.render('pages/profile', {
-            title: person.nickname + " | Stevens Esports",
-            player: person,
-            user: req.session.user,
-        });
-        return;
+        if(!req.session.user)
+            return res.render('pages/profile', {
+                title: person.nickname + " | Stevens Esports",
+                player: person,
+                user: req.session.user,
+            });
+        else {
+            return res.render('pages/profile', {
+                title: person.nickname + " | Stevens Esports",
+                player: person,
+                user: req.session.user,
+                isAdmin: req.session.user.role === "administrator"
+            });
+        }
     } catch (e) {
         res.redirect('/');
         console.log(e);

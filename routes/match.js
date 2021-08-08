@@ -77,13 +77,24 @@ router.get("/", async function (req, res) {
         let resolved = await match.get_resolved();
         let gameList = await games.getAllGames();
         // console.log(test[0]);
-        res.render("pages/matchSchedule", {
+        if(!req.session.user)
+          return res.render("pages/matchSchedule", {
             title: "Match Schedule | Stevens Esports", 
             umatch: unresolved,
             rmatch : resolved,
             user: req.session.user,
             game: gameList,
-            });
+          });
+        else {
+          return res.render("pages/matchSchedule", {
+            title: "Match Schedule | Stevens Esports", 
+            umatch: unresolved,
+            rmatch : resolved,
+            user: req.session.user,
+            isAdmin: req.session.user.role === "administrator",
+            game: gameList,
+          });
+        }
     } catch (e) {
       res.sendStatus(500);
     }
@@ -96,13 +107,24 @@ router.get("/:gameid", async function (req, res) {
         let resolved = await match.get_resolved_id(gameid);
         // console.log(test[0]);
         let gameList = await games.getAllGames();
-        res.render("pages/matchSchedule", {
+        if(!req.session.user)
+          return res.render("pages/matchSchedule", {
             title: "Match Schedule | Stevens Esports", 
             umatch: unresolved,
             rmatch : resolved,
             game: gameList,
             user: req.session.user,
-        });
+          });
+        else {
+          return res.render("pages/matchSchedule", {
+              title: "Match Schedule | Stevens Esports", 
+              umatch: unresolved,
+              rmatch : resolved,
+              game: gameList,
+              user: req.session.user,
+              isAdmin: req.session.user.role === "administrator"
+          });
+        }
     } catch (e) {
       res.sendStatus(500);
     }

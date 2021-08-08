@@ -55,7 +55,19 @@ router.get('/', async (req, res) => {
             teams_list[i]["logo"] = getLogo(teams_list[i].game);
         }
 
-        res.render('pages/teamslist', {title: 'Rosters | Stevens Esports', teams: teams_list, user: req.session.user});
+        if(!req.session.user)
+            return res.render('pages/teamslist', {
+                title: 'Rosters | Stevens Esports',
+                teams: teams_list,
+            });
+        else{
+            return res.render('pages/teamslist', {
+                title: 'Rosters | Stevens Esports',
+                teams: teams_list,
+                user: req.session.user,
+                isAdmin: req.session.user.role === "administrator",
+            });
+        }
     } catch (e) {
         res.status(500);
     }
