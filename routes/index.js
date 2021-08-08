@@ -1,4 +1,4 @@
-const test = require('./test');
+const test = require('./landing');
 const matchRoute = require('./match');
 const playerRoute = require('./players')
 const apiRoutes = require("./api");
