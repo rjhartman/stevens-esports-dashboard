@@ -69,12 +69,19 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/about-us", async (req, res) => {
-  return res.render("pages/aboutUs", {
-    title: "About Us | Stevens Esports",
-    user: req.session.user,
-    isAdmin: req.session.user.role === "administrator",
-    scripts: ["/public/js/forms.js"],
-  });
+  if(!req.session.user)
+    return res.render("pages/aboutUs", {
+      title: "About Us | Stevens Esports",
+      scripts: ["/public/js/forms.js"],
+    });
+  else {
+    return res.render("pages/aboutUs", {
+      title: "About Us | Stevens Esports",
+      user: req.session.user,
+      isAdmin: req.session.user.role === "administrator",
+      scripts: ["/public/js/forms.js"],
+    });
+  }
 });
 
 router.get("/register", async (req, res) => {
