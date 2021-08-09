@@ -19,6 +19,19 @@
                 {{/if}}
                 <a class="edit" href="/edit-profile">Edit Profile Information</a>
                 <a class="edit" href="/change-password">Change Password</a>
+                <a id="delete" class="edit">Delete Account</a>
+                <div id="deleteWindow" class="deleteModal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span class="close">&times;</span>
+                            <h2>Are you sure you want to delete your account?</h2>
+                        </div>
+                        <div class="modal-body">
+                            <a class="edit">Yes, I want to delete the account.</a>
+                            <a class="edit">No, I don't want to delete the account.</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
