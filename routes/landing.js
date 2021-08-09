@@ -243,6 +243,17 @@ router.post("/register", async (req, res) => {
     // Don't do anything
   }
 
+  // Check password meets restrictions (minimum 8 chars + 1 upper + 1 lower + 1 number)
+  if(!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(password)){
+    errorMessage = "Password needs to be at least 8 characters long, and must include one uppercase and lowercase letter, as well as one number.";
+    res.status(400).render("pages/register", {
+      title: "Account Registration | Stevens Esports",
+      scripts: ["/public/js/forms.js"],
+      error: errorMessage,
+    });
+    return;
+  }
+
   // Test if password box and confirm password box matches
   if (password !== confirm_password) {
     errorMessage = "Password fields do not match.";
@@ -505,6 +516,17 @@ router.patch('/user/password', upload.single('avatar'), async (req, res) => {
                                               error: errorMessage
                                               });
       return;       
+  }
+
+  // Test if password meets restrictions (minimum 8 chars, 1 upper + lower, 1 number)
+  if(!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(password)){
+    errorMessage = "New password needs to be at least 8 characters long, and must include one uppercase and lowercase letter, as well as one number.";
+    res.status(400).render("pages/register", {
+      title: "Account Registration | Stevens Esports",
+      scripts: ["/public/js/forms.js"],
+      error: errorMessage,
+    });
+    return;
   }
   // Test if confirm password field is filled in or not
   let confirm_password = inputObj.confirm_password;
