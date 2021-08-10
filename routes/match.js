@@ -129,4 +129,8 @@ router.get("/:gameid", async function (req, res) {
       res.sendStatus(500);
     }
 });
+router.delete("/:matchId", async function (req, res){
+  if (!req.params.matchId) throw `matchId required`;
+  let matchId = req.params.matchId;
+});
 module.exports = router;

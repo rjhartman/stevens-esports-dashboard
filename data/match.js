@@ -310,8 +310,22 @@ async function getAllMatches(transform = true) {
     : matchesList;
 }
 
-async function deleteMatch(){
+async function deleteMatch(matchId){
   // TODO: Complete function to delete match from database, update accordingly on dashboard + schedule
+
+  // Currently deletes specified match from the database, hopefully
+  checkString(matchId, "matchId");
+  let parsedId = ObjectId(matchId);
+  let match = await getMatchById(matchId);
+  let matchCollection = await matches();
+
+  const deletionInfo = await matchCollection.deleteOne({ _id, parsedId});
+
+  if(deletionInfo.deletedCount === 0){
+    throw `Could not delete match with id ${matchId}.`;
+  }
+
+  return `${match.title} has been successfully deleted`;
 }
 
 module.exports = {
@@ -323,4 +337,5 @@ module.exports = {
   addMatch,
   updateMatch,
   getMatchById,
+  deleteMatch,
 };
