@@ -252,9 +252,11 @@ module.exports = {
     deleteImage(avatar);
 
     const userCollection = await users();
-    const result = await users.deleteOne({
-      _id: user,
+    const result = await userCollection.deleteOne({
+      _id: user._id,
     });
+    if(result.deletedCount !== 1)
+      throw "Could not delete user successfully";
     return user;
   }
 };
