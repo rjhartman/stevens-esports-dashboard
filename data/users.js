@@ -41,7 +41,8 @@ let uploadImage = (avatar) => {
   });
 };
 
-// Upon deleting user, if user is not using default avatar, will delete image from cloud to save space
+// Upon deleting user, if user is not using default avatar,
+// will delete image from cloud to save space
 function deleteImage(avatar){
 
 }
