@@ -41,6 +41,11 @@ let uploadImage = (avatar) => {
   });
 };
 
+// Upon deleting user, if user is not using default avatar, will delete image from cloud to save space
+function deleteImage(avatar){
+
+}
+
 async function checkUserObj(userObj){
     checkString(userObj.firstName, "firstName");
     checkString(userObj.lastName, "lastName");
@@ -228,8 +233,28 @@ module.exports = {
       { $set: updatedUser }
     );
     if (updatedInfo.modifiedCount === 0) {
-      throw "could not update user successfully";
+      throw "Could not update user successfully";
     }
+    return user;
+  },
+  
+  /**
+   * Deletes users (also deletes associated avatar if not default)
+   * Retroactively deletes player objects as well
+   */
+  async deleteUser(id){
+    // TODO: Finish deleting users from database, hook up deletePlayer() from players.js
+    // TODO: to retroactively delete any player associated with the user
+    checkString(id, "id");
+    let user = await this.getUserById(id);
+    let avatar = user.avatarUrl;
+
+    deleteImage(avatar);
+
+    const userCollection = await users();
+    const result = await users.deleteOne({
+      _id: user,
+    });
     return user;
   }
 };

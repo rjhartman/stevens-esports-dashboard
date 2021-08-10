@@ -103,4 +103,9 @@ async function getAllPlayers(transform = true) {
     return playerList;
 }
 
+async function deletePlayer(){
+    //TODO: Delete player object from database by user
+    //TODO: (will also be used in deleting user accounts should any exist as a player)
+}
+
 module.exports = {addPlayer, getPersonByUsername, getPlayerByUsername, getPlayerById, getAllPlayers}

@@ -310,6 +310,10 @@ async function getAllMatches(transform = true) {
     : matchesList;
 }
 
+async function deleteMatch(){
+  // TODO: Complete function to delete match from database, update accordingly on dashboard + schedule
+}
+
 module.exports = {
   get_resolved,
   get_resolved_id,

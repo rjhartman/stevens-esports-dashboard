@@ -135,4 +135,8 @@ module.exports = {
         }
         return await getTeamById(id);
     },
+
+    async deleteTeam(){
+        // TODO: Complete this function for deleting a team from database
+    }
 };
