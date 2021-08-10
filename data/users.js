@@ -3,6 +3,8 @@ const fs = require('fs');
 const streamifier = require('streamifier');
 const cloudinary = require("cloudinary").v2;
 const { ObjectID } = require("mongodb");
+const { players } = require("../config/mongoCollections");
+const playerFunctions = require("../data/players");
 
 const users = mongoCollections.users;
 
@@ -247,12 +249,21 @@ module.exports = {
     // TODO: Finish deleting users from database, hook up deletePlayer() from players.js
     // TODO: to retroactively delete any player associated with the user
     checkString(id, "id");
+
+    const userCollection = await users();
+    const playerCollection = await players();
+
     let user = await this.getUserById(id);
+    let username = await user.username;
+    let userPlayers = await playerFunctions.getAllPlayersByUsername(username);
     let avatar = user.avatarUrl;
 
     deleteImage(avatar);
 
-    const userCollection = await users();
+    for(x of userPlayers){
+      playerFunctions.deletePlayer(x);
+    }
+
     const result = await userCollection.deleteOne({
       _id: user._id,
     });
