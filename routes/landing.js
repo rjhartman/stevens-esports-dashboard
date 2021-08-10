@@ -5,7 +5,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const users = require("../data/users");
 const games = require("../data/game");
-const teams = require("../data/teamFunctions");
+const teams = require("../data/teamfunctions");
 
 router.get("/", async (req, res) => {
   if(req.session.user)
