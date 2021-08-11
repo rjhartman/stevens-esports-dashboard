@@ -169,9 +169,9 @@ router.post("/register", async (req, res) => {
 
   // Test if discord tag is in correct format
   if (
-    !/^.{3,32}#[0-9]{4}$/.test(
+    !(/^.{3,32}#[0-9]{4}$/.test(
       discordtag
-    )
+    ))
   ) {
     errorMessage = "Discord tag not valid format.";
     res.status(400).render("pages/register", {
@@ -432,7 +432,7 @@ router.patch('/user', upload.single('avatar'), async (req, res) => {
         return;
       }
     // Test if email is valid format
-    if (!/^.{3,32}#[0-9]{4}$/.test(discordtag)){
+    if (!(/^.{3,32}#[0-9]{4}$/.test(discordtag))){
         errorMessage = 'Discord tag not valid format.'
         res.status(400).render('pages/editProfile', {title: "Edit Profile | Stevens Esports",
                                                 scripts: ["/public/js/forms.js"],
@@ -472,7 +472,7 @@ router.patch('/user', upload.single('avatar'), async (req, res) => {
       nickname: user.nickname,
       role: user.role,
       biography: user.biography,
-      avatar: user.avatar,
+      avatar: user.avatar
   }
   try{
       const updatedUser = await users.updateUser(req.session.user._id.toString(), userInfo);
@@ -568,6 +568,16 @@ router.patch('/user/password', upload.single('avatar'), async (req, res) => {
       return res.sendStatus(200);
   } catch(e){
       res.status(400).json({ error: e });
+  }
+});
+
+router.delete("/delete-user", async (req, res) => {
+  try{
+    const deletedUser = await users.deleteUser(req.session.user._id.toString());
+    req.session.destroy();
+    return res.sendStatus(200);
+  } catch(e){
+    res.status(400).json({ error: e });
   }
 });
 

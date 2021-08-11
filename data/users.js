@@ -5,6 +5,7 @@ const cloudinary = require("cloudinary").v2;
 const { ObjectID } = require("mongodb");
 const { players } = require("../config/mongoCollections");
 const playerFunctions = require("../data/players");
+const { resolve } = require("path");
 
 const users = mongoCollections.users;
 
@@ -43,11 +44,29 @@ let uploadImage = (avatar) => {
   });
 };
 
+function findImageNameFromUrl(url){
+  var imageName = url.split('/').pop();
+  return imageName.split('.').slice(0,-1).join('.');
+}
+
 // Upon deleting user, if user is not using default avatar,
 // will delete image from cloud to save space
-function deleteImage(avatar){
-
+let deleteImage = (avatar) => {
+  let imageName = findImageNameFromUrl(avatar);
+  if(imageName != "default-player"){
+    return new Promise((resolve, reject) => {
+      cloudinary.uploader.destroy("avatars/" + imageName,
+        function(e, r){
+          if(r)
+            resolve(r);
+          else
+            reject(e);
+        }
+      );
+    });
+  }
 }
+
 
 async function checkUserObj(userObj){
     checkString(userObj.firstName, "firstName");
@@ -59,7 +78,7 @@ async function checkUserObj(userObj){
       throw `Email not valid format.`
     }
     checkString(userObj.discordtag, "discordtag");
-    if (!/^.{3,32}#[0-9]{4}$/.test(discordtag)){
+    if (!(/^.{3,32}#[0-9]{4}$/.test(userObj.discordtag))){
       throw `Discord tag not in correct format.`;
     }
     checkString(userObj.passwordDigest, "passwordDigest");
@@ -211,6 +230,7 @@ module.exports = {
       initCloud();
       let resultUpload = await uploadImage(userObj.avatar);
       avatarUrl = resultUpload.secure_url;
+      let deleteExisting = await deleteImage(user.avatar);
     }
     else{
       avatarUrl = userObj.avatar;
@@ -229,7 +249,7 @@ module.exports = {
       //can't change role through update user method
       role: user.role,
       biography: userObj.biography,
-      avatar: avatarUrl
+      avatar: avatarUrl,
     };
     const updatedInfo = await userCollection.updateOne(
       { _id: parsedId },
@@ -251,21 +271,22 @@ module.exports = {
     checkString(id, "id");
 
     const userCollection = await users();
-    const playerCollection = await players();
+    //const playerCollection = await players();
 
     let user = await this.getUserById(id);
     let username = await user.username;
-    let userPlayers = await playerFunctions.getAllPlayersByUsername(username);
-    let avatar = user.avatarUrl;
+    //let userPlayers = await playerFunctions.getAllPlayersByUsername(username);
+    let avatar = await user.avatar;
 
-    deleteImage(avatar);
-
+    initCloud();
+    let response = await deleteImage(avatar);
+    /*
     for(x of userPlayers){
       playerFunctions.deletePlayer(x);
-    }
+    }*/
 
     const result = await userCollection.deleteOne({
-      _id: user._id,
+      _id: ObjectID(user._id),
     });
     if(result.deletedCount !== 1)
       throw "Could not delete user successfully";

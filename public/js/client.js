@@ -39,3 +39,13 @@ window.onclick = function(event) {
     if(event.target == modal)
         modal.style.display = "none";
 }
+
+$('.deleteLink').click(function(e){
+    e.preventDefault();
+    $.ajax({
+      url: $(this).attr('href'),
+      type: 'DELETE',
+      success: function(result) {  
+          window.location.href = '/';      
+   }});
+ });
