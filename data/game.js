@@ -2,9 +2,33 @@ const mongoCollections = require("../config/mongoCollections");
 const games = mongoCollections.games;
 // const teams = require('./teamfunctions.js');
 let { ObjectId } = require("mongodb");
-// const cloudinary = require("cloudinary").v2;
+const cloudinary = require("cloudinary").v2;
 require("dotenv").config();
 
+function initCloud() {
+  cloudinary.config({
+    cloud_name: "stevens-esports",
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
+}
+function findImageNameFromUrl(url){
+  var imageName = url.split('/').pop();
+  return imageName.split('.').slice(0,-1).join('.');
+}
+let deleteImage = (logo) => {
+  let imageName = findImageNameFromUrl(logo);
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.destroy("logos/" + imageName,
+      function(e, r){
+        if(r)
+          resolve(r);
+        else
+          reject(e);
+      }
+    );
+  });
+}
 function checkString(str, name) {
   if (!str) throw `${name || "provided variable"} is empty`;
   if (typeof str !== "string")
@@ -48,6 +72,11 @@ async function deleteGame(id) {
   let game = getGameById(id);
   let parsedId = ObjectId(id);
   const gameCollection = await games();
+
+  // Deletes image from cloudinary
+  initCloud();
+  let result = await deleteImage(game.img);
+
   const deletionInfo = await gameCollection.deleteOne({ _id: parsedId });
   if (deletionInfo.deletedCount === 0) {
     throw `Could not delete game with id of ${id}`;
