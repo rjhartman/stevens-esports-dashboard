@@ -58,6 +58,7 @@ async function main() {
     "Cheng",
     "jerrytd579",
     "jcheng15@stevens.edu",
+    "Test1#1234",
     "$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u",
     "Jerrytd579",
     "This is my bio"
@@ -76,6 +77,7 @@ async function main() {
     "Chuah",
     "sheathblade",
     "achuah@stevens.edu",
+    "Test2#1234",
     "$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u",
     "Sheathblade",
     "This is andrews bio"
@@ -94,6 +96,7 @@ async function main() {
     "Hartman",
     "strider",
     "rhartman1@stevens.edu",
+    "Test3#1234",
     "$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u",
     "Strider",
     "This is ryans bio",
@@ -108,6 +111,7 @@ async function main() {
     "Pekata",
     "gamble",
     "dpekata@stevens.edu",
+    "Test4#1234",
     "$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u",
     "Gamble",
     "This is dans bio"
@@ -121,6 +125,7 @@ async function main() {
     "Chen",
     "dragoblin",
     "jchen103@stevens.edu",
+    "Test5#1234",
     "$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u",
     "Dragoblin",
     "This is jerry chens bio"
@@ -139,6 +144,7 @@ async function main() {
     "Hill",
     "graffixnyc",
     "phill@stevens.edu",
+    "Test6#1234",
     "$2b$16$nrS5Y/yojRkIJKVmX79PFOpeZE/gcAMg3/1BtVF2DOomgiw.HCq6u",
     "graffixnyc",
     "This is patricks bio"
