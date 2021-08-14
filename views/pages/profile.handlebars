@@ -4,7 +4,7 @@
             <div class="profile-info">
                 <img class="profile-pic" style="padding: 0;" src="{{player.avatar}}" alt="Profile Picture">
                 <h2 class="nickname">{{player.firstName}} "{{player.nickname}}" {{player.lastName}}</h2>
-                <hr>
+                <hr style="min-width: 400px; margin: 0;">
                 {{#if player.activePlayers}}
                     {{#each player.activePlayers}}
                         {{#if this.team}}
@@ -18,7 +18,7 @@
                         {{/unless}}
                         {{#if this.position}}
                         <h3 class="position">Position: {{this.position}}</h3>
-                        <hr>
+                        <hr style="min-width: 400px; margin: 0;">
                         {{/if}}
                     {{/each}}
                 {{else}}
