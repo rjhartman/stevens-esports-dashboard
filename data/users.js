@@ -354,8 +354,6 @@ module.exports = {
    * Retroactively deletes player objects as well
    */
   async deleteUser(id){
-    // TODO: Finish deleting users from database, hook up deletePlayer() from players.js
-    // TODO: to retroactively delete any player associated with the user
     checkString(id, "id");
 
     const userCollection = await users();
