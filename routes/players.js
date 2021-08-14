@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const xss = require('xss');
 const data = require('../data');
-const playerFuncs = data.players;
+const userFunctions = data.users;
 
 router.get('/', async (req, res) => {
     try {
@@ -12,15 +12,14 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:playerid', async (req, res) => {
-    if(req.params.playerid == undefined || typeof req.params.playerid != 'string'){
+router.get('/:username', async (req, res) => {
+    if(req.params.username == undefined || typeof req.params.username != 'string'){
         res.redirect('/');
         return;
     }
 
     try {
-        let username = req.params.playerid;
-        const person = await playerFuncs.getPersonByUsername(username);
+        const person = await userFunctions.getUser(req.params.username);
         if(!req.session.user)
             return res.render('pages/profile', {
                 title: person.nickname + " | Stevens Esports",

@@ -3,15 +3,26 @@
         <div class="player-profile">
             <div class="profile-info">
                 <img class="profile-pic" style="padding: 0;" src="{{player.avatar}}" alt="Profile Picture">
-                <h2 class="nickname">{{player.nickname}}</h2>
-                {{#if player.isCaptain}}
-                <h3 class="captain">Team Captain</h3>
-                {{/if}}
-                {{#unless player.isStarter}}
-                <h3 class="sub">Substitute Player</h3>
-                {{/unless}}
-                {{#if player.position}}
-                <h3 class="position">Position: {{player.position}}</h3>
+                <h2 class="nickname">{{player.firstName}} "{{player.nickname}}" {{player.lastName}}</h2>
+                <hr>
+                {{#if player.activePlayers}}
+                    {{#each player.activePlayers}}
+                        {{#if this.team}}
+                        <h3 class="activeTeam">{{this.team}}</h3>
+                        {{/if}}
+                        {{#if this.isCaptain}}
+                        <h3 class="captain">Team Captain</h3>
+                        {{/if}}
+                        {{#unless this.isStarter}}
+                        <h3 class="sub">Substitute Player</h3>
+                        {{/unless}}
+                        {{#if this.position}}
+                        <h3 class="position">Position: {{this.position}}</h3>
+                        <hr>
+                        {{/if}}
+                    {{/each}}
+                {{else}}
+                <p class="bio">Not an active player on any team.</p>
                 {{/if}}
                 <h3 class="bio">Biography: </h3>
                 {{#if player.biography}}

@@ -3,8 +3,6 @@ const fs = require('fs');
 const streamifier = require('streamifier');
 const cloudinary = require("cloudinary").v2;
 const { ObjectID } = require("mongodb");
-const { players } = require("../config/mongoCollections");
-const playerFunctions = require("../data/players");
 const { resolve } = require("path");
 
 const users = mongoCollections.users;
