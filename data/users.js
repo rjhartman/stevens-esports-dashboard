@@ -182,6 +182,7 @@ module.exports = {
       role: role,
       biography: bio,
       avatar: "https://res.cloudinary.com/stevens-esports/image/upload/v1620940207/avatars/default-player.png",
+      activePlayers: []
     });
 
     if (returnVal.insertedCount === 0) throw "Error: Could not add user!";
@@ -250,6 +251,7 @@ module.exports = {
       role: user.role,
       biography: userObj.biography,
       avatar: avatarUrl,
+      activePlayers: user.activePlayers
     };
     const updatedInfo = await userCollection.updateOne(
       { _id: parsedId },
@@ -259,6 +261,55 @@ module.exports = {
       throw "Could not update user successfully";
     }
     return user;
+  },
+
+  // Updates user object to add player into array
+  async addPlayer(user, game, team, position, isStarter, isCaptain){
+    checkString(user, "addPlayer username");
+    checkString(game, "addPlayer game");
+    checkString(team, "addPlayer team");
+    checkString(position, "addPlayer position");
+
+    const userCollection = await users();
+    const userToUpdate = await this.getUser(user);
+
+    if(typeof(isStarter) != 'boolean') throw `Error: input ${isStarter} for isStarter is not a boolean.`;
+    if(typeof(isCaptain) != 'boolean') throw `Error: input ${isCaptain} for isCaptain is not a boolean.`;
+    
+    position = position.trim()
+
+    // Gets player array and appends to it
+    let appendedPlayers = userToUpdate.activePlayers.push(
+      {
+        game: game,
+        team: team,
+        position: position,
+        isStarter: isStarter,
+        isCaptain: isCaptain
+      }
+    )
+
+    let updatedUser = {
+      firstName: userToUpdate.firstName,
+      lastName: userToUpdate.lastName,
+      username: userToUpdate.username,
+      nickname: userToUpdate.nickname,
+      email: userToUpdate.email,
+      discordtag: userToUpdate.discordtag,
+      passwordDigest: userToUpdate.passwordDigest,
+      role: userToUpdate.role,
+      biography: userToUpdate.biography,
+      avatar: userToUpdate.avatar,
+      activePlayers: appendedPlayers
+    };
+
+    const returnval = await userCollection.updateOne(
+        { _id: userToUpdate._id },
+        { $set: updatedUser }
+    );
+
+    if(returnval.modifiedCount === 0) throw "Error: Could not update user with player!";
+    return userToUpdate;
   },
   
   /**

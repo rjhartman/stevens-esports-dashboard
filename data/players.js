@@ -1,4 +1,5 @@
 const mongoCollections = require('../config/mongoCollections');
+const users = mongoCollections.users;
 const players = mongoCollections.players;
 const userFunctions = require('../data/users');
 
@@ -49,34 +50,6 @@ async function getAllPlayersByUsername(username){
     }
 
     return playerArray;
-}
-
-async function addPlayer(user, position, isStarter, isCaptain){
-    stringChecker(user, "addPlayer username");
-    stringChecker(position, "addPlayer position");
-
-    const playerCollection = await players();
-
-    if(typeof(isStarter) != 'boolean') throw `Error: input ${isStarter} for isStarter is not a boolean.`;
-    if(typeof(isCaptain) != 'boolean') throw `Error: input ${isCaptain} for isCaptain is not a boolean.`;
-
-    user = user.trim();
-    user = user.toLowerCase();
-    position = position.trim();
-    position = position.toLowerCase();
-
-    if(!userFunctions.getUser(user)) throw `Error: user not found/valid.`
-
-    const returnval = await playerCollection.insertOne({
-        user: user,
-        position: position,
-        isStarter: isStarter,
-        isCaptain: isCaptain
-    });
-
-    if(returnval.insertedCount === 0) throw "Error: Could not add player!";
-    let player = await this.getPlayerById(returnval.insertedId.toString());
-    return player;
 }
 
 async function getPersonByUsername(username){
@@ -137,4 +110,4 @@ async function deletePlayer(playerId){
     return `Player object with id: ${playerId} successfully deleted.`;
 }
 
-module.exports = {addPlayer, getPersonByUsername, getPlayerByUsername, getPlayerById, getAllPlayers, getAllPlayersByUsername, deletePlayer}
+module.exports = {getPersonByUsername, getPlayerByUsername, getPlayerById, getAllPlayers, getAllPlayersByUsername, deletePlayer}
