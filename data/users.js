@@ -359,19 +359,12 @@ module.exports = {
     checkString(id, "id");
 
     const userCollection = await users();
-    //const playerCollection = await players();
 
     let user = await this.getUserById(id);
-    let username = await user.username;
-    //let userPlayers = await playerFunctions.getAllPlayersByUsername(username);
     let avatar = await user.avatar;
 
     initCloud();
     let response = await deleteImage(avatar);
-    /*
-    for(x of userPlayers){
-      playerFunctions.deletePlayer(x);
-    }*/
 
     const result = await userCollection.deleteOne({
       _id: ObjectID(user._id),
