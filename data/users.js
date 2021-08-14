@@ -277,7 +277,7 @@ module.exports = {
     position = position.trim()
 
     // Gets player array and appends to it
-    let appendedPlayers = userToUpdate.activePlayers.push(
+    userToUpdate.activePlayers.push(
       {
         game: game,
         team: team,
@@ -285,7 +285,7 @@ module.exports = {
         isStarter: isStarter,
         isCaptain: isCaptain
       }
-    )
+    );
 
     let updatedUser = {
       firstName: userToUpdate.firstName,
@@ -298,7 +298,7 @@ module.exports = {
       role: userToUpdate.role,
       biography: userToUpdate.biography,
       avatar: userToUpdate.avatar,
-      activePlayers: appendedPlayers
+      activePlayers: userToUpdate.activePlayers
     };
 
     const returnval = await userCollection.updateOne(

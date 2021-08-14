@@ -4,7 +4,6 @@ const match = data.match;
 const game = data.game;
 const teams = data.teams;
 const users = data.users;
-const playerData = data.players;
 
 require("dotenv").config();
 
@@ -63,13 +62,15 @@ async function main() {
     "Jerrytd579",
     "This is my bio"
   );
-  const Jerry_player = await playerData.addPlayer(
+  const Jerry_player = await users.addPlayer(
     "jerrytd579",
+    "League of Legends",
+    "Stevens LoL Red",
     "ADC",
     true,
     false
   );
-  const jerry = await playerData.getPlayerByUsername("jerrytd579");
+  const jerry = await users.getUser("jerrytd579");
   const jerry_id = jerry._id;
 
   const Andrew_user = await users.addUser(
@@ -82,13 +83,15 @@ async function main() {
     "Sheathblade",
     "This is andrews bio"
   );
-  const Andrew_player = await playerData.addPlayer(
+  const Andrew_player = await users.addPlayer(
     "sheathblade",
+    "League of Legends",
+    "Stevens LoL Red",
     "Top",
     true,
     false
   );
-  const andrew = await playerData.getPlayerByUsername("sheathblade");
+  const andrew = await users.getUser("sheathblade");
   const andrew_id = andrew._id;
 
   const Ryan_user = await users.addUser(
@@ -102,8 +105,15 @@ async function main() {
     "This is ryans bio",
     "administrator"
   );
-  const Ryan_player = await playerData.addPlayer("strider", "IGL", true, true);
-  const ryan = await playerData.getPlayerByUsername("strider");
+  const Ryan_player = await users.addPlayer(
+    "strider",
+    "Counter-Strike: Global Offensive",
+    "Stevens CSGO Red",
+    "IGL",
+    true,
+    true
+  );
+  const ryan = await users.getUser("strider");
   const ryan_id = ryan._id;
 
   const Dan_user = await users.addUser(
@@ -116,8 +126,15 @@ async function main() {
     "Gamble",
     "This is dans bio"
   );
-  const Dan_player = await playerData.addPlayer("gamble", "AWPer", true, false);
-  const dan = await playerData.getPlayerByUsername("gamble");
+  const Dan_player = await users.addPlayer(
+    "gamble",
+    "Counter-Strike: Global Offensive",
+    "Stevens CSGO Red",
+    "AWPer",
+    true,
+    false
+  );
+  const dan = await users.getUser("gamble");
   const dan_id = dan._id;
 
   const Jerry_two_user = await users.addUser(
@@ -130,13 +147,15 @@ async function main() {
     "Dragoblin",
     "This is jerry chens bio"
   );
-  const Jerry_two_player = await playerData.addPlayer(
+  const Jerry_two_player = await users.addPlayer(
     "dragoblin",
+    "Overwatch",
+    "Stevens Overwatch Gray",
     "Tank",
     true,
     false
   );
-  const jerry_chen = await playerData.getPlayerByUsername("dragoblin");
+  const jerry_chen = await users.getUser("dragoblin");
   const jerry_chen_id = jerry_chen._id;
 
   const Patrick_user = await users.addUser(
@@ -149,13 +168,15 @@ async function main() {
     "graffixnyc",
     "This is patricks bio"
   );
-  const Patrick_player = await playerData.addPlayer(
+  const Patrick_player = await users.addPlayer(
     "graffixnyc",
+    "Overwatch",
+    "Stevens Overwatch Gray",
     "Support",
     true,
     false
   );
-  const patrick = await playerData.getPlayerByUsername("graffixnyc");
+  const patrick = await users.getUser("graffixnyc");
   const patrick_id = patrick._id;
 
   const team_one = await teams.addTeam(
