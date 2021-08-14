@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data');
 const teamFuncs = data.teams;
-const player = data.players;
+const userFuncs = data.users;
+const gameFuncs = data.game;
 const cloudinary = require("cloudinary").v2;
 const xss = require('xss');
 
@@ -39,7 +40,7 @@ function getLogo(gameType) {
 router.get('/', async (req, res) => {
     try {
         const teams_list = await teamFuncs.getAllTeams();
-        const playernames = await player.getAllPlayers();
+        const playernames = await userFuncs.getAllUsers();
         for (i = 0; i < teams_list.length; i++) { // for each team
             for (j = 0; j < teams_list[i].players.length; j++) { // for each player in each team
                 for (h = 0; h < playernames.length; h++) { // for the list of players
@@ -48,7 +49,7 @@ router.get('/', async (req, res) => {
                             continue;
                         }
                         // if they are the same, overwrite the stored id with an object of the id and the name
-                        teams_list[i].players[j] = { id: teams_list[i].players[j], name: playernames[h].user};
+                        teams_list[i].players[j] = { id: teams_list[i].players[j], name: playernames[h].nickname};
                     }
                 }
             }
