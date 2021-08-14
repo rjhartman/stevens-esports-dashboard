@@ -311,6 +311,43 @@ module.exports = {
     if(returnval.modifiedCount === 0) throw "Error: Could not update user with player!";
     return userToUpdate;
   },
+
+  // Removes player from user based on team
+  async deletePlayer(username, team){
+    checkString(username, 'username');
+
+    const userCollection = await users();
+    let userToUpdate = await this.getUser(username);
+
+    let playerArray = user.activePlayers.filter(function(obj){
+      return obj.team !== team;
+    });
+
+    let updatedUser = {
+      firstName: userToUpdate.firstName,
+      lastName: userToUpdate.lastName,
+      username: userToUpdate.username,
+      nickname: userToUpdate.nickname,
+      email: userToUpdate.email,
+      discordtag: userToUpdate.discordtag,
+      passwordDigest: userToUpdate.passwordDigest,
+      role: userToUpdate.role,
+      biography: userToUpdate.biography,
+      avatar: userToUpdate.avatar,
+      activePlayers: playerArray
+    };
+
+    const returnval = await userCollection.updateOne(
+        { _id: userToUpdate._id },
+        { $set: updatedUser }
+    );
+
+    if(returnval.modifiedCount === 0){
+        throw `Could not delete player with username: ${username}`;
+    }
+
+    return `Player with username: ${username} successfully deleted.`;
+  },
   
   /**
    * Deletes users (also deletes associated avatar if not default)

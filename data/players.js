@@ -89,25 +89,4 @@ async function getAllPlayers(transform = true) {
     return playerList;
 }
 
-async function deletePlayer(playerId){
-    //TODO: Delete player object from database by user
-    //TODO: (will also be used in deleting user accounts should any exist as a player)
-
-    // What this does is it deletes a specific player object based on playerId.
-    stringChecker(playerId, 'playerId');
-
-    let player = await getPlayerById(playerId);
-    let parsedId = ObjectId(playerId);
-    let playerCollection = await players();
-
-    const deletionInfo = playerCollection.deleteOne({_id, parsedId});
-
-    if(deletionInfo.deletedCount === 0){
-        throw `Could not delete player object with id ${playerId}`;
-    }
-
-
-    return `Player object with id: ${playerId} successfully deleted.`;
-}
-
-module.exports = {getPersonByUsername, getPlayerByUsername, getPlayerById, getAllPlayers, getAllPlayersByUsername, deletePlayer}
+module.exports = {getPersonByUsername, getPlayerByUsername, getPlayerById, getAllPlayers, getAllPlayersByUsername}
