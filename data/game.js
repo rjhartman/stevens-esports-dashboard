@@ -60,7 +60,7 @@ async function addGame(obj) {
   let newGame = {
     title: obj.title,
     categories: obj.categories,
-    img: obj.img
+    logo: obj.img
   };
   const newInsertInformation = await gameCollection.insertOne(newGame);
   if (newInsertInformation.insertedCount === 0)
