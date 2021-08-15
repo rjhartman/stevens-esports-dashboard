@@ -51,7 +51,13 @@ async function getGameById(id) {
   const gameCollection = await games();
   const game = await gameCollection.findOne({ _id: parsedId });
   if (game === null) throw "No game with that id";
-  // console.log(match);
+  return game;
+}
+async function getGameByName(gameName){
+  checkString(gameName, "gameName");
+  const gameCollection = await games();
+  const game = await gameCollection.findOne({ title: gameName });
+  if(game === null) throw "No game with that name";
   return game;
 }
 async function addGame(obj) {
@@ -92,6 +98,7 @@ async function getAllGames() {
 module.exports = {
   addGame,
   getGameById,
+  getGameByName,
   deleteGame,
   getAllGames,
 };

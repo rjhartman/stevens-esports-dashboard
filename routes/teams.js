@@ -15,26 +15,17 @@ function initCloud() {
     });
 }
 
-function getLogo(gameType) {
+function findImageNameFromUrl(url){
+    return url.split('/').pop();
+}  
+
+// Colorizes game logo for team
+async function getLogo(gameType) {
     initCloud();
-    switch (gameType) {
-        case "League of Legends":
-            return cloudinary.url("logos/league_logo_2_red.png");
-        case "Counter-Strike: Global Offensive":
-            return cloudinary.url("logos/csgo_logo_red.png");
-        case "Overwatch":
-            return cloudinary.url("logos/overwatch_logo_red.png");
-        case "Rocket League":
-            return cloudinary.url("logos/rocket_league_logo_red.png");
-        case "Valorant":
-            return cloudinary.url("logos/valorant_logo_red.png");
-        case "Hearthstone":
-            return cloudinary.url("logos/hearthstone_logo_red.png");
-        case "Call of Duty":
-            return cloudinary.url("logos/cod_logo_red.png");
-        case "Rainbow Six: Siege":
-            return cloudinary.url("logos/r6_logo_red.png");
-    }
+    const game = await gameFuncs.getGameByName(gameType);
+    let imageName = findImageNameFromUrl(game.logo);
+
+    return cloudinary.url("logos/" + imageName, {effect: 'colorize', color: '#ff2929'});
 }
 
 router.get('/', async (req, res) => {
@@ -53,7 +44,7 @@ router.get('/', async (req, res) => {
                     }
                 }
             }
-            teams_list[i]["logo"] = getLogo(teams_list[i].game);
+            teams_list[i]["logo"] = await getLogo(teams_list[i].game);
         }
 
         if(!req.session.user)
