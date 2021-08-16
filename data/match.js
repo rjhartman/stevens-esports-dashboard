@@ -92,7 +92,33 @@ function getMatchTime(d) {
   }
   return `${months[d.getMonth()]} ${d.getDate()} | ${hours}:${min} ${ampm}`;
 }
-
+/*
+function getLogo(matchType) {
+  cloudinary.config({
+    cloud_name: "stevens-esports",
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
+  switch (matchType) {
+    case "League of Legends":
+      return cloudinary.url("logos/league_logo_2_red.png");
+    case "Counter-Strike: Global Offensive":
+      return cloudinary.url("logos/csgo_logo_red.png");
+    case "Overwatch":
+      return cloudinary.url("logos/overwatch_logo_red.png");
+    case "Rocket League":
+      return cloudinary.url("logos/rocket_league_logo_red.png");
+    case "Valorant":
+      return cloudinary.url("logos/valorant_logo_red.png");
+    case "Hearthstone":
+      return cloudinary.url("logos/hearthstone_logo_red.png");
+    case "Call of Duty":
+      return cloudinary.url("logos/cod_logo_red.png");
+    case "Rainbow Six: Siege":
+      return cloudinary.url("logos/r6_logo_red.png");
+  }
+}
+*/
 function findImageNameFromUrl(url){
   return url.split('/').pop();
 }  
@@ -190,7 +216,7 @@ async function get_resolved_id(id) {
       let game = await gameData.getGameById(String(match.game));
       if (game.title == id) {
         let matchObj = {
-          game: getLogo(match.matchType),
+          game: await getLogo(match.matchType),
           date: getMatchTime(match.date),
           team1: match.team,
           team2: match.opponent,
@@ -214,7 +240,7 @@ async function get_unresolved_id(id) {
       let game = await gameData.getGameById(String(match.game));
       if (game.title == id) {
         let matchObj = {
-          game: getLogo(match.matchType),
+          game: await getLogo(match.matchType),
           date: getMatchTime(match.date),
           team1: match.team,
           team2: match.opponent,
@@ -235,7 +261,7 @@ async function get_resolved() {
   for (let match of matchList) {
     if (match.date < new Date()) {
       let matchObj = {
-        game: getLogo(match.matchType),
+        game: await getLogo(match.matchType),
         date: getMatchTime(match.date),
         team1: match.team,
         team2: match.opponent,
@@ -257,7 +283,7 @@ async function get_unresolved() {
     let d = match.date;
     if (d > new Date()) {
       let matchObj = {
-        game: getLogo(match.matchType),
+        game: await getLogo(match.matchType),
         date: getMatchTime(d),
         team1: match.team,
         team2: match.opponent,
