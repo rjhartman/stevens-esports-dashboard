@@ -141,4 +141,14 @@ router.post("/", async ( req, res) => {
       res.status(400).json({ error: e });
     }
 });
+router.delete("/:teamId", async function (req, res){
+    if (!req.params.teamId) throw `teamId required`;
+    let teamId = req.params.teamId;
+    try{
+      await teamFuncs.deleteTeam(teamId);
+      res.sendStatus(200);
+    } catch(e){
+      res.sendStatus(404);
+  }
+});
 module.exports = router;

@@ -136,7 +136,17 @@ module.exports = {
         return await getTeamById(id);
     },
 
-    async deleteTeam(){
+    async deleteTeam(teamId){
         // TODO: Complete this function for deleting a team from database
+        checkString(teamId, "teamId");
+        let parsedId = ObjectId(teamId);
+        
+        const teamCollection = await teams();
+        const deletionInfo = await teamCollection.deleteOne({ _id: parsedId});
+        if(deletionInfo.deletedCount === 0){
+            throw `Could not delete match with id $teamId}.`;
+        }
+
+        // return `${team.title} has been successfully deleted`;
     }
 };
