@@ -335,9 +335,7 @@ async function deleteMatch(matchId){
   let parsedId = ObjectId(matchId);
   let match = await getMatchById(matchId);
   let matchCollection = await matches();
-
-  const deletionInfo = await matchCollection.deleteOne({ _id, parsedId});
-
+  const deletionInfo = await matchCollection.deleteOne({ _id: parsedId});
   if(deletionInfo.deletedCount === 0){
     throw `Could not delete match with id ${matchId}.`;
   }
