@@ -1,6 +1,7 @@
 const promoteIcon = `<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user-plus" class="svg-inline--fa fa-user-plus fa-w-20" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M624 208h-64v-64c0-8.8-7.2-16-16-16h-32c-8.8 0-16 7.2-16 16v64h-64c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h64v64c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16v-64h64c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm-400 48c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg>`;
 const demoteIcon = `<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user-minus" class="svg-inline--fa fa-user-minus fa-w-20" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M624 208H432c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h192c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm-400 48c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg>`;
 const editIcon = `<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="edit" class="svg-inline--fa fa-edit fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"></path></svg>`;
+const deleteIcon = `<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash" class="svg-inline--fa fa-trash fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z"></path></svg>`;
 
 function getMatchFormElements() {
   return {
@@ -212,6 +213,17 @@ function changeUserPermissions(user) {
     });
 }
 
+function deleteUserAsAdmin(user){
+  $.ajax({
+    url: `/api/users/${user._id}/delete`,
+    method: "DELETE",
+    success: () => {
+      fillUsersTable(document.getElementById("users"));
+    },
+    error: (xhr, status, e) => console.error(e),
+  });
+}
+
 function fillUsersTable(table) {
   // Get the field names based on the data-name attributes
   // in the table headers.
@@ -246,19 +258,34 @@ function fillUsersTable(table) {
 
       // If the row isn't empty, append it to the table.
       if (row.children) {
-        const column = document.createElement("td");
-        const button = document.createElement("button");
-        column.classList.add("center");
+        // Attaching promote/demote button
+        const permcolumn = document.createElement("td");
+        const permbutton = document.createElement("button");
+        permcolumn.classList.add("center");
 
-        button.classList.add("promote");
-        button.innerHTML =
+        permbutton.classList.add("promote");
+        permbutton.innerHTML =
           user.role === "administrator" ? demoteIcon : promoteIcon;
-        button.addEventListener("click", () => {
+        permbutton.addEventListener("click", () => {
           changeUserPermissions(user);
         });
-        column.appendChild(button);
+        permcolumn.appendChild(permbutton);
         row.id = user._id;
-        row.appendChild(column);
+        row.appendChild(permcolumn);
+
+        // Attaching delete button
+        const deleteCol = document.createElement("td");
+        const deleteButton = document.createElement("button");
+        deleteCol.classList.add("center");
+
+        deleteButton.classList.add("promote");
+        deleteButton.innerHTML = deleteIcon;
+        deleteButton.addEventListener("click", () => {
+          deleteUserAsAdmin(user);
+        });
+        deleteCol.appendChild(deleteButton);
+        row.appendChild(deleteCol);
+
         fBody.appendChild(row);
       } else {
         console.warn(`
@@ -334,6 +361,20 @@ function fillMatchesTable() {
         column.appendChild(button);
         row.appendChild(column);
         row.id = match._id;
+
+        // Attaching delete button
+        const deleteCol = document.createElement("td");
+        const deleteButton = document.createElement("button");
+        deleteCol.classList.add("center");
+
+        deleteButton.classList.add("promote");
+        deleteButton.innerHTML = deleteIcon;
+        deleteButton.addEventListener("click", () => {
+          console.log("clicked delete");
+        });
+        deleteCol.appendChild(deleteButton);
+        row.appendChild(deleteCol);
+
         fBody.appendChild(row);
       }
     })

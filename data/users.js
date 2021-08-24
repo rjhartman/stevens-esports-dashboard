@@ -6,6 +6,7 @@ const { ObjectID } = require("mongodb");
 const { resolve } = require("path");
 
 const users = mongoCollections.users;
+const teams = mongoCollections.teams;
 
 function initCloud() {
   cloudinary.config({
@@ -262,6 +263,7 @@ module.exports = {
   },
 
   // Updates user object to add player into array
+  // Also updates team object with new player
   async addPlayer(user, game, team, position, isStarter, isCaptain){
     checkString(user, "addPlayer username");
     checkString(game, "addPlayer game");
@@ -269,6 +271,7 @@ module.exports = {
     checkString(position, "addPlayer position");
 
     const userCollection = await users();
+    const teamCollection = await teams();
     const userToUpdate = await this.getUser(user);
 
     if(typeof(isStarter) != 'boolean') throw `Error: input ${isStarter} for isStarter is not a boolean.`;
@@ -307,10 +310,26 @@ module.exports = {
     );
 
     if(returnval.modifiedCount === 0) throw "Error: Could not update user with player!";
+
+    // Now updates team object with new player
+    let teamToUpdate = await teamCollection.findOne({
+      name: team
+    });
+
+    const returnVal = await teamCollection.updateOne(
+      { _id: teamToUpdate._id },
+      { $push: {players: userToUpdate._id}}
+    );
+
+    if(returnVal.modifiedCount === 0){
+      throw `Could not update team with new roster`;
+    }
+
     return userToUpdate;
   },
 
   // Removes player from user based on team
+  // Removes player from team object
   async deletePlayer(username, team){
     checkString(username, 'username');
 
@@ -344,20 +363,51 @@ module.exports = {
         throw `Could not delete player with username: ${username}`;
     }
 
+    // Removes player id from teanm object
+    let teamToUpdate = await teamCollection.find({
+      name: team
+    });
+
+    const returnVal = await teamCollection.updateOne(
+      { _id: teamToUpdate._id },
+      { $pull: {players: userToUpdate._id}}
+    );
+
+    if(returnVal.modifiedCount === 0){
+      throw `Could not update team with new roster`;
+    }
+
     return `Player with username: ${username} successfully deleted.`;
   },
   
   /**
    * Deletes users (also deletes associated avatar if not default)
-   * Retroactively deletes player objects as well
+   * Retroactively deletes player objects in team documents as well
    */
   async deleteUser(id){
     checkString(id, "id");
 
     const userCollection = await users();
+    const teamCollection = await teams();
 
     let user = await this.getUserById(id);
     let avatar = await user.avatar;
+
+    let result_teams = await teamCollection.find({
+      players: {$in: [ObjectID(id)]},
+    }).toArray();
+
+    // Loops through all teams and removes the player id from the array and updates db
+    for(let i = 0; i < result_teams.length; i++){
+      const returnVal = await teamCollection.updateOne(
+        { _id: result_teams[i]._id },
+        { $pull: {players: ObjectID(id)}}
+      );
+
+      if(returnVal.modifiedCount === 0){
+        throw `Could not update team with new roster`;
+      }
+    }
 
     initCloud();
     let response = await deleteImage(avatar);
@@ -367,6 +417,7 @@ module.exports = {
     });
     if(result.deletedCount !== 1)
       throw "Could not delete user successfully";
+
     return user;
   }
 };
