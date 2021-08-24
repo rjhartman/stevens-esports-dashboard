@@ -3,6 +3,7 @@
     <h2>Manage Teams</h2>
     <button class="collapse-button button">&minus;</button>
   </header>
+  <button class="add-match button" id="add-team-button">Add Team</button>
   {{> loader }}
   <table id="users" class="fillable">
     <thead>
@@ -19,8 +20,8 @@
         <th data-name="role">
           Role
         </th>
-        <th>
-          Promote/Demote
+        <th data-name="edit">
+          Edit
         </th>
       </tr>
     </thead>
