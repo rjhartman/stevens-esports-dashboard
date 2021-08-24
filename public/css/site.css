@@ -1455,6 +1455,14 @@ main.backend {
 .add-match {
     margin-bottom: 2rem;
 }
+
+.add-team {
+    margin-bottom: 2rem;
+}
+
+.add-game {
+    margin-bottom: 2rem;
+}
 /* ======================================================== */
 /*                        * Teams *                         */
 /* ======================================================== */
