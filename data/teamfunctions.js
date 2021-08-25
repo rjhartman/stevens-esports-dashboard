@@ -164,13 +164,13 @@ module.exports = {
         // TODO: Complete this function for deleting a team from database
         checkString(teamId, "teamId");
         let parsedId = ObjectId(teamId);
-        
+        let team = await this.getTeamById(teamId);
         const teamCollection = await teams();
         const deletionInfo = await teamCollection.deleteOne({ _id: parsedId});
         if(deletionInfo.deletedCount === 0){
-            throw `Could not delete match with id $teamId}.`;
+            throw `Could not delete team with id ${teamId}.`;
         }
 
-        // return `${team.title} has been successfully deleted`;
+        return `${team.name} has been successfully deleted`;
     }
 };
