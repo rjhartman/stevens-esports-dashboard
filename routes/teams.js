@@ -106,7 +106,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.post("/", async ( req, res) => {
+router.post("/", async (req, res) => {
     xss(req.body.name);
     xss(req.body.status);
     xss(req.body.game);
@@ -135,7 +135,12 @@ router.post("/", async ( req, res) => {
         let parsedId = ObjectId(teamInfo.players[i]);
     }
     try {
-        const newTeam = await teamFuncs.addTeam(teamInfo);
+        const newTeam = await teamFuncs.addTeam(teamInfo.name, teamInfo.status, teamInfo.game);
+
+        for(let i = 0; i < teamInfo.players.length; i++){
+            let user = await userFuncs.getUserById(teamInfo.players[i].toString());
+            await userFuncs.addPlayer(user.username, teamInfo.game, teamInfo.name, "N/A", true, false);
+        }
         res.sendStatus(200);
     } catch (e) {
       res.status(400).json({ error: e });

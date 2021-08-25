@@ -52,6 +52,22 @@ async function main() {
     img: "https://res.cloudinary.com/stevens-esports/image/upload/v1620962777/logos/cod_logo.png"
   });
 
+  const team_one = await teams.addTeam(
+    "Stevens LoL Red",
+    "Varsity",
+    "League of Legends"
+  );
+  const team_two = await teams.addTeam(
+    "Stevens CSGO Red",
+    "Varsity",
+    "Counter-Strike: Global Offensive"
+  );
+  const team_three = await teams.addTeam(
+    "Stevens Overwatch Gray",
+    "Junior Varsity",
+    "Overwatch"
+  );
+
   const Jerry_user = await users.addUser(
     "Jerry",
     "Cheng",
@@ -178,25 +194,6 @@ async function main() {
   );
   const patrick = await users.getUser("graffixnyc");
   const patrick_id = patrick._id;
-
-  const team_one = await teams.addTeam(
-    "Stevens LoL Red",
-    "Varsity",
-    "League of Legends",
-    [jerry_id, andrew_id]
-  );
-  const team_two = await teams.addTeam(
-    "Stevens CSGO Red",
-    "Varsity",
-    "Counter-Strike: Global Offensive",
-    [ryan_id, dan_id]
-  );
-  const team_three = await teams.addTeam(
-    "Stevens Overwatch Gray",
-    "Junior Varsity",
-    "Overwatch",
-    [jerry_chen_id, patrick_id]
-  );
 
   const match1 = await match.addMatch({
     opponent: "Some other team",

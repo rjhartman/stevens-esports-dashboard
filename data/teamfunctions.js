@@ -49,7 +49,7 @@ module.exports = {
           )
         : team_col;
     },
-    async addTeam(name, status, game, players) {
+    async addTeam(name, status, game) {
         const teamCollection = await teams();
         if (typeof name !== "string" || name.trim().length === 0) {
             throw `Error: name should be a string of length greater than zero.`;
@@ -62,21 +62,22 @@ module.exports = {
         }
         if (typeof game !== "string" || game.trim().length === 0) {
             throw `Error: game should be a string of length greater than zero.`;
-        }
+        }/*
         if (!Array.isArray(players) || players.length == 0) {
             throw 'Error: Please make sure your players is an array.';
         }
+        
         for (let i = 0; i < players.length; i++) {
             // if (typeof players[i] !== 'string' || players[i].trim().length == 0) {
             //     throw 'Error: players should all be strings of length greater than zero.';
             // }
             let parsedId = ObjectId(players[i]);
-        }
+        }*/
         let newTeam = {
             name: name,
             status: status,
             game: game,
-            players: players
+            players: []
         };
         const team_insert = await teamCollection.insertOne(newTeam);
         if(team_insert.insertedCount === 0) throw `Error: Could not add team!`;
