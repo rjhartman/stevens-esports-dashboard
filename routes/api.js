@@ -57,6 +57,10 @@ router.get("/matches", async (req, res) => {
   res.json(await matches.getAllMatches(true));
 });
 
+router.get("/teams", async (req, res) => {
+  res.json(await teamData.getAllTeams_Alt(true));
+});
+
 router.post("/users/:id/promote", async (req, res) => {
   let { id } = req.params;
 

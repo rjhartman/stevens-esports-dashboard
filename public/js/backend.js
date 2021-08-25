@@ -162,7 +162,7 @@ function submitMatchForm(e) {
       data: data,
       success: () => {
         disableMatchForm();
-        fillMatchesTable();
+        fillMatchesTable(document.getElementById("matches"));
       },
       error: (xhr, status, e) => console.error(e),
     });
@@ -229,7 +229,7 @@ function deleteMatch(match){
     url: `/api/matches/${match._id}/delete`,
     method: "DELETE",
     success: () => {
-      fillMatchesTable();
+      fillMatchesTable(document.getElementById("matches"));
     },
     error: (xhr, status, e) => console.error(e),
   });
@@ -310,8 +310,7 @@ function fillUsersTable(table) {
   table.classList.add("active");
 }
 
-function fillMatchesTable() {
-  const table = document.getElementById("matches");
+function fillMatchesTable(table) {
   const fBody = table.querySelector("tbody");
   fBody
     .querySelectorAll("tr")
@@ -396,6 +395,74 @@ function fillMatchesTable() {
   table.classList.add("active");
 }
 
+function fillTeamsTable(table){
+  const fBody = table.querySelector("tbody");
+  fBody
+    .querySelectorAll("tr")
+    .forEach((el) => el.parentElement.removeChild(el));
+  const fields = Array.from(table.querySelectorAll("th[data-name]")).map(
+    (header) => header.dataset.name
+  );
+
+  $.get("api/teams", (data) =>
+    data.forEach((team) => {
+      const row = document.createElement("tr");
+      fields.forEach((field) => {
+        const column = document.createElement("td");
+        if (field === "name") {
+          column.innerText = team.name ? team.name : "N/A";
+        } else if (field === "status") {
+          column.innerText = team.status ? team.status : "N/A";
+        } else if (field === "game") {
+          column.innerText = team.game ? team.game : "N/A";
+        } else
+          console.warn(
+            `Teams table: Header contained name ${field} which could not be found for the team ${team._id}.`
+          );
+
+        if (column.innerText) row.appendChild(column);
+      });
+
+      if (row.children) {
+        // Make and append a button to edit this team
+        const column = document.createElement("td");
+        const button = document.createElement("button");
+        column.classList.add("center");
+
+        button.classList.add("promote");
+        button.innerHTML = editIcon;
+
+        button.addEventListener("click", () => {
+          console.log("hello");
+        });
+
+        column.appendChild(button);
+        row.appendChild(column);
+        row.id = team._id;
+
+        // Attaching delete button
+        const deleteCol = document.createElement("td");
+        const deleteButton = document.createElement("button");
+        deleteCol.classList.add("center");
+
+        deleteButton.classList.add("promote");
+        deleteButton.innerHTML = deleteIcon;
+        deleteButton.addEventListener("click", () => {
+          console.log("hello 2");
+        });
+        deleteCol.appendChild(deleteButton);
+        row.appendChild(deleteCol);
+
+        fBody.appendChild(row);
+      }
+    })
+  );
+
+  const loader = table.closest("section").querySelector(".loader");
+  if (loader) loader.parentElement.removeChild(loader);
+  table.classList.add("active");
+}
+
 $(document).ready(() => {
   bindAccordions();
   bindForms();
@@ -406,4 +473,7 @@ $(document).ready(() => {
 
   const matches = document.getElementById("matches");
   if (matches) fillMatchesTable(matches);
+
+  const teams = document.getElementById("teams");
+  if (teams) fillTeamsTable(teams);
 });

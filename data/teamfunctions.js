@@ -1,5 +1,6 @@
 const mongoCollections = require('../config/mongoCollections');
 const teams = mongoCollections.teams;
+const userFuncs = require("../data/users.js");
 let { ObjectId } = require('mongodb');
 
 function checkString(str, name){
@@ -24,6 +25,29 @@ module.exports = {
         const teamCollection = await teams();
         const team_col = await teamCollection.find({}).toArray();
         return team_col;
+    },
+    async getAllTeams_Alt(transform = true){
+        const teamCollection = await teams();
+        const team_col = await teamCollection.find({}).toArray();
+
+        // Transforms document to return user objects instead of their ids in array
+        return transform
+        ? await Promise.all(
+            team_col.map(async (team) => {
+              try {
+                  const playerArray = [];
+                for(let i = 0; i < team.players.length; i++){
+                    playerArray.push(await userFuncs.getUserById(team.players[i].toString()));
+                }
+                team.players = playerArray;
+              } catch (e) {
+                console.warn("Team could not be transformed.", e);
+                team.players = null;
+              }
+              return team;
+            })
+          )
+        : team_col;
     },
     async addTeam(name, status, game, players) {
         const teamCollection = await teams();
