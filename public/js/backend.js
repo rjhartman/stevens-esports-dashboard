@@ -225,7 +225,14 @@ function deleteUserAsAdmin(user){
 }
 
 function deleteMatch(match){
-
+  $.ajax({
+    url: `/api/matches/${match._id}/delete`,
+    method: "DELETE",
+    success: () => {
+      fillMatchesTable();
+    },
+    error: (xhr, status, e) => console.error(e),
+  });
 }
 
 function fillUsersTable(table) {
@@ -374,7 +381,7 @@ function fillMatchesTable() {
         deleteButton.classList.add("promote");
         deleteButton.innerHTML = deleteIcon;
         deleteButton.addEventListener("click", () => {
-          console.log("clicked delete");
+          deleteMatch(match);
         });
         deleteCol.appendChild(deleteButton);
         row.appendChild(deleteCol);

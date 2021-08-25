@@ -173,16 +173,21 @@ router.delete("/users/:id/delete", async (req, res) => {
   res.json({ success: true });
 });
 
-router.delete("/:matchId", async function (req, res){
-  if (!req.params.matchId) throw `matchId required`;
-  let matchId = req.params.matchId;
+router.delete("/matches/:id/delete", async function (req, res){
+  let { id } = req.params;
+
+  if (!id || !(id = id.trim()))
+    return res.status(400).json({ error: "ID cannot be empty." });
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).json({ error: "ID was not a valid BSON id." });
+
   try{
-    await match.deleteMatch(matchId);
-    res.sendStatus(200);
+    const deletedMatch = await match.deleteMatch(id);
+    return res.sendStatus(200);
   } catch(e){
-    console.error(e);
     res.status(400).json({ error: e });
   }
+  res.json({ success: true });
 });
 
 router.delete("/:teamId", async function (req, res){
