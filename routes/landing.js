@@ -588,6 +588,7 @@ router.get("/dashboard", async (req, res) => {
     title: "Dashboard | Stevens Esports",
     user: req.session.user,
     isAdmin: req.session.user.role === "administrator",
+    users: await users.getAllUsers(),
     games: await games.getAllGames(),
     teams: await teams.getAllTeams(),
     layout: "backend",

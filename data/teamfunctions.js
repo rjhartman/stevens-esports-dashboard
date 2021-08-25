@@ -1,5 +1,6 @@
 const mongoCollections = require('../config/mongoCollections');
 const teams = mongoCollections.teams;
+const games = mongoCollections.games;
 const userFuncs = require("../data/users.js");
 let { ObjectId } = require('mongodb');
 
@@ -51,18 +52,14 @@ module.exports = {
     },
     async addTeam(name, status, game) {
         const teamCollection = await teams();
-        if (typeof name !== "string" || name.trim().length === 0) {
-            throw `Error: name should be a string of length greater than zero.`;
-        }
-        if (typeof status !== "string" || status.trim().length === 0) {
-            throw `Error: status should be a string of length greater than zero.`;
-        }
+        checkString(name, "addTeam name");
+        checkString(status, "addTeam status");
         if (status.toLowerCase().trim() !== "varsity" && status.toLowerCase().trim() !== "junior varsity") {
             throw `Error: team status should be set to Varsity or Junior Varsity`;
         }
-        if (typeof game !== "string" || game.trim().length === 0) {
-            throw `Error: game should be a string of length greater than zero.`;
-        }/*
+        
+        checkString(game, "addTeam game");
+        /*
         if (!Array.isArray(players) || players.length == 0) {
             throw 'Error: Please make sure your players is an array.';
         }

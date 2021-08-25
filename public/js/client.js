@@ -21,7 +21,6 @@ $("#upcoming").click(function(event){
     $(".unresolved_matches").show();
 });
 
-
 // Pop-up window
 var modal = document.getElementById("deleteWindow");
 var btn = document.getElementById("delete");

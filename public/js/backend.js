@@ -16,6 +16,15 @@ function getMatchFormElements() {
   };
 }
 
+function getTeamFormElements() {
+  return {
+    form: document.getElementById("team-form"),
+    teamName: document.getElementById("m-teamName"),
+    teamGame: document.getElementById("m-teamGame"),
+    varsity: document.getElementById("m-varsity"),
+  };
+}
+
 function addError(input, error) {
   const errorEl = input.closest(".row").querySelector(".error");
   errorEl.innerText = error;
@@ -66,6 +75,38 @@ function validateMatchForm() {
   return valid;
 }
 
+function validateTeamForm() {
+  const { teamName, teamGame, varsity } = getTeamFormElements();
+  let valid = true;
+
+  document
+    .getElementById("team-form")
+    .querySelectorAll("input, select, textarea")
+    .forEach((el) => {
+      if (!el.checkValidity()) {
+        addError(el, el.validationMessage);
+        valid = false;
+      } else {
+        removeError(el);
+      }
+    });
+
+  if (!teamName) {
+    addError(teamName, "There must be a team name.");
+    valid = false;
+  }
+  if (!teamGame) {
+    addError(teamGame, "There must be a game.");
+    valid = false;
+  }
+  if (!varsity) {
+    addError(varsity, "There must be a varsity status.");
+    valid = false;
+  }
+
+  return valid;
+}
+
 function disableMatchForm() {
   document.getElementById("match-form").classList.remove("visible");
 }
@@ -73,6 +114,17 @@ function enableMatchForm() {
   document.getElementById("match-form").classList.add("visible");
   document
     .getElementById("match-form")
+    .querySelectorAll(".error.active")
+    .forEach((el) => el.classList.remove("active"));
+}
+
+function disableTeamForm() {
+  document.getElementById("team-form").classList.remove("visible");
+}
+function enableTeamForm() {
+  document.getElementById("team-form").classList.add("visible");
+  document
+    .getElementById("team-form")
     .querySelectorAll(".error.active")
     .forEach((el) => el.classList.remove("active"));
 }
@@ -129,6 +181,35 @@ function fillMatchForm(options) {
   opponentsScore.value = options.opponentScore ? options.opponentScore : null;
 }
 
+function fillTeamForm(options) {
+  enableTeamForm();
+  const form = document.getElementById("team-form");
+  form.querySelector("h2").innerText = options.create
+    ? "Create Team"
+    : "Edit Team";
+  form.action = options.endpoint;
+  form.dataset.method = options.create === true ? "POST" : "PATCH";
+
+  Object.values(getTeamFormElements()).forEach(
+    (el) => (el.required = options.create === true && el.type !== "number")
+  );
+
+  // Fill team name:
+  const rosterName = document.getElementById("m-teamName");
+  rosterName.value = options.name ? options.name : "";
+
+  // Select game:
+  const game = document.getElementById("m-teamGame");
+  const selectedGame = game.querySelector(`option[value='${options.game}']`);
+  game.selectedIndex = selectedGame
+    ? Array.from(game.children).indexOf(selectedGame)
+    : 0;
+
+  // Fill team varsity status:
+  const status = document.getElementById("m-varsity");
+  status.value = options.status ? options.status : "";
+}
+
 function bindAccordions() {
   const collapsables = document.querySelectorAll(".collapsable");
   collapsables.forEach((section) => {
@@ -169,6 +250,28 @@ function submitMatchForm(e) {
   } else console.log("Error with inputs");
 }
 
+function submitTeamForm(e) {
+  e.preventDefault();
+  if (validateTeamForm()) {
+    const { form } = getTeamFormElements();
+
+    // Get form data in JSON format
+    const data = {};
+    new FormData(form).forEach((value, key) => (data[key] = value));
+
+    $.ajax({
+      url: form.action,
+      method: form.dataset.method,
+      data: data,
+      success: () => {
+        disableTeamForm();
+        fillTeamsTable(document.getElementById("teams"));
+      },
+      error: (xhr, status, e) => console.error(e),
+    });
+  } else console.log("Error with inputs");
+}
+
 function bindForms() {
   const matchesFormButton = document
     .getElementById("match-form")
@@ -188,6 +291,27 @@ function bindForms() {
     fillMatchForm({
       create: true,
       endpoint: "api/match",
+    });
+  });
+
+  const teamsFormButton = document
+    .getElementById("team-form")
+    .querySelector("button:not(.close)");
+  teamsFormButton.addEventListener("click", submitTeamForm);
+  document
+    .getElementById("team-form")
+    .addEventListener("submit", submitTeamForm);
+  document
+    .getElementById("team-form")
+    .querySelector("button.close")
+    .addEventListener("click", (e) => {
+      e.preventDefault();
+      disableTeamForm();
+    });
+  document.getElementById("add-team-button").addEventListener("click", (e) => {
+    fillTeamForm({
+      create: true,
+      endpoint: "/teams/",
     });
   });
 }
@@ -415,6 +539,14 @@ function fillTeamsTable(table){
           column.innerText = team.status ? team.status : "N/A";
         } else if (field === "game") {
           column.innerText = team.game ? team.game : "N/A";
+        } else if (field === "players") {
+          if(team.players.length == 0)
+            column.innerText = "N/A";
+          else{
+            for(let i = 0; i < team.players.length; i++){
+              column.innerText += "\n " + team.players[i].username;
+            }
+          }
         } else
           console.warn(
             `Teams table: Header contained name ${field} which could not be found for the team ${team._id}.`
@@ -433,7 +565,13 @@ function fillTeamsTable(table){
         button.innerHTML = editIcon;
 
         button.addEventListener("click", () => {
-          console.log("hello");
+          fillTeamForm({
+            name: team.name,
+            status: team.status,
+            game: team.game,
+            endpoint: `api/teams/${team._id}/update`,
+            method: "PUT",
+          });
         });
 
         column.appendChild(button);
@@ -476,4 +614,18 @@ $(document).ready(() => {
 
   const teams = document.getElementById("teams");
   if (teams) fillTeamsTable(teams);
+});
+
+$('option').mousedown(function(e) {
+  e.preventDefault();
+  var originalScrollTop = $(this).parent().scrollTop();
+  //console.log(originalScrollTop);
+  $(this).prop('selected', $(this).prop('selected') ? false : true);
+  var self = this;
+  $(this).parent().focus();
+  setTimeout(function() {
+      $(self).parent().scrollTop(originalScrollTop);
+  }, 0);
+  
+  return false;
 });

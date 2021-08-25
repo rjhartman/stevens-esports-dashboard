@@ -4,15 +4,44 @@
     <button class="collapse-button button">&minus;</button>
   </header>
   <button class="add-team button" id="add-team-button">Add Team</button>
+  <button class="add-player button" id="add-player-button">Add Player</button>
   {{> loader }}
+  <form id="team-form">
+    <button class="close button">&times;</button>
+    <h2>Edit Team</h2>
+    <div class="row">
+      <label for="m-teamName">Roster Name</label>
+      <input type="text" name="teamName" id="m-teamName"/>
+      <p class="error">Error</p>
+    </div>
+    <div class="row">
+      <label for="m-teamGame">Game</label>
+      <select name="teamGame" id="m-teamGame">
+        {{#each games }}
+          <option value="{{this.title}}">{{this.title}}</option>
+        {{/each}}
+      </select>
+      <p class="error">Error</p>
+    </div>
+    <div class="row">
+      <label for="m-varsity">Varsity Status</label>
+      <select id="m-varsity" name="varsity">
+        <option value="Varsity">Varsity</option>
+        <option value="Junior Varsity">Junior Varsity</option>
+      </select>
+      <p class="error">Error</p>
+    </div>
+    <button class="button rounded">SUBMIT</button>
+  </form>
   <table id="teams" class="fillable">
     <thead>
       <tr>
         <th data-name="name">Roster Name</th>
         <th data-name="status">Varsity Status</th>
         <th data-name="game">Game</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <th data-name="players">Players</th>
+        <th>Edit Team</th>
+        <th>Delete Team</th>
       </tr>
     </thead>
     <tbody></tbody>
