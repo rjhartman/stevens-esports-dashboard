@@ -3,8 +3,8 @@ const router = express.Router();
 const users = require("../data/users.js");
 const matches = require("../data/match.js");
 const gameData = require("../data/game.js");
+const teamData = require("../data/teamfunctions.js");
 const { ObjectID } = require("mongodb");
-const { games } = require("../config/mongoCollections.js");
 
 function checkString(str, name) {
   if (typeof str !== "string") throw `${name} must be a string.`;
@@ -190,16 +190,21 @@ router.delete("/matches/:id/delete", async function (req, res){
   res.json({ success: true });
 });
 
-router.delete("/:teamId", async function (req, res){
-  if (!req.params.teamId) throw `teamId required`;
-  let teamId = req.params.teamId;
+router.delete("/teams/:id/delete", async function (req, res){
+  let { id } = req.params;
+
+  if (!id || !(id = id.trim()))
+    return res.status(400).json({ error: "ID cannot be empty." });
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).json({ error: "ID was not a valid BSON id." });
+
   try{
-    await teamFuncs.deleteTeam(teamId);
-    res.sendStatus(200);
+    const deletedTeam = await teamData.deleteTeam(id);
+    return res.sendStatus(200);
   } catch(e){
-    console.error(e);
     res.status(400).json({ error: e });
   }
+  res.json({ success: true });
 });
 
 module.exports = router;
