@@ -182,7 +182,7 @@ router.delete("/matches/:id/delete", async function (req, res){
     return res.status(400).json({ error: "ID was not a valid BSON id." });
 
   try{
-    const deletedMatch = await match.deleteMatch(id);
+    const deletedMatch = await matches.deleteMatch(id);
     return res.sendStatus(200);
   } catch(e){
     res.status(400).json({ error: e });
