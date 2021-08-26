@@ -169,8 +169,10 @@ async function updateMatch(id, obj) {
   const matchCollection = await matches();
   const updatedMatch = {};
   for ([key, value] of Object.entries(obj)) {
-    if(key === "game")
+    if(key === "game" && typeof value == 'string')
       updatedMatch[key] = ObjectId(value);
+    else if (key ==='date')
+      updatedMatch[key] = new Date(value);
     else
       updatedMatch[key] = value;
   }
