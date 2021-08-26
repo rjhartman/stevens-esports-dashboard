@@ -176,7 +176,6 @@ async function updateMatch(id, obj) {
     else
       updatedMatch[key] = value;
   }
-
   const updatedInfo = await matchCollection.updateOne(
     { _id: parsedId },
     { $set: updatedMatch }
