@@ -215,4 +215,20 @@ router.delete("/teams/:id/delete", async function (req, res){
   res.json({ success: true });
 });
 
+router.delete('/games/:id/delete', async (req, res) => {
+  let { id } = req.params;
+
+  if (!id || !(id = id.trim()))
+    return res.status(400).json({ error: "ID cannot be empty." });
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).json({ error: "ID was not a valid BSON id." });
+
+  try{
+      const deletedGame = await gameData.deleteGame(id);
+      return res.sendStatus(200);
+  } catch(e){
+      return res.sendStatus(400).json({ error: e });
+  }
+});
+
 module.exports = router;

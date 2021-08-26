@@ -5,11 +5,25 @@
   </header>
   <button class="add-game button" id="add-game-button">Add Game</button>
   {{> loader }}
+  <form id="game-form">
+    <button class="close button">&times;</button>
+    <h2>Edit Game</h2>
+    <div class="row">
+      <label for="m-gameName">Game Title</label>
+      <input type="text" name="gameName" id="m-gameName"/>
+      <p class="error">Error</p>
+    </div>
+    <div class="row">
+      <label for="m-image">Cloudinary Image URL</label>
+      <input type="text" name="image" id="m-image"/>
+      <p class="error">Error</p>
+    </div>
+    <button class="button rounded">SUBMIT</button>
+  </form>
   <table id="games" class="fillable">
     <thead>
       <tr>
         <th data-name="title">Game Title</th>
-        <th data-name="categories">Categories</th>
         <th data-name="logo">Cloudinary Image URL</th>
         <th>Edit</th>
         <th>Delete</th>

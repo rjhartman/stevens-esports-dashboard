@@ -25,6 +25,14 @@ function getTeamFormElements() {
   };
 }
 
+function getGameFormElements() {
+  return {
+    form: document.getElementById("game-form"),
+    gameName: document.getElementById("m-gameName"),
+    image: document.getElementById("m-image"),
+  }
+}
+
 function addError(input, error) {
   const errorEl = input.closest(".row").querySelector(".error");
   errorEl.innerText = error;
@@ -107,6 +115,34 @@ function validateTeamForm() {
   return valid;
 }
 
+function validateGameForm() {
+  const { gameName, image } = getGameFormElements();
+  let valid = true;
+
+  document
+    .getElementById("game-form")
+    .querySelectorAll("input, select, textarea")
+    .forEach((el) => {
+      if (!el.checkValidity()) {
+        addError(el, el.validationMessage);
+        valid = false;
+      } else {
+        removeError(el);
+      }
+    });
+
+  if (!gameName) {
+    addError(gameName, "There must be a game name.");
+    valid = false;
+  }
+  if (!image) {
+    addError(image, "There must be a cloudinary image URL.");
+    valid = false;
+  }
+
+  return valid;
+}
+
 function disableMatchForm() {
   document.getElementById("match-form").classList.remove("visible");
 }
@@ -125,6 +161,17 @@ function enableTeamForm() {
   document.getElementById("team-form").classList.add("visible");
   document
     .getElementById("team-form")
+    .querySelectorAll(".error.active")
+    .forEach((el) => el.classList.remove("active"));
+}
+
+function disableGameForm() {
+  document.getElementById("game-form").classList.remove("visible");
+}
+function enableGameForm() {
+  document.getElementById("game-form").classList.add("visible");
+  document
+    .getElementById("game-form")
     .querySelectorAll(".error.active")
     .forEach((el) => el.classList.remove("active"));
 }
@@ -210,6 +257,28 @@ function fillTeamForm(options) {
   status.value = options.status ? options.status : "";
 }
 
+function fillGameForm(options) {
+  enableGameForm();
+  const form = document.getElementById("game-form");
+  form.querySelector("h2").innerText = options.create
+    ? "Add Game"
+    : "Edit Game";
+  form.action = options.endpoint;
+  form.dataset.method = options.create === true ? "POST" : "PATCH";
+
+  Object.values(getGameFormElements()).forEach(
+    (el) => (el.required = options.create === true && el.type !== "number")
+  );
+
+  // Fill game name:
+  const gameName = document.getElementById("m-gameName");
+  gameName.value = options.title ? options.title : "";
+
+  // Fill cloudinary image link:
+  const image = document.getElementById("m-image");
+  image.value = options.img ? options.img : "";
+}
+
 function bindAccordions() {
   const collapsables = document.querySelectorAll(".collapsable");
   collapsables.forEach((section) => {
@@ -228,6 +297,17 @@ function bindAccordions() {
   });
 }
 
+function reloadDashboard(){
+  $.ajax({
+    url: `/dashboard`,
+    method: "GET",
+    success: () => {
+      window.location.href = '/dashboard'
+    },
+    error: (xhr, status, e) => console.error(e),
+  });
+}
+
 function submitMatchForm(e) {
   e.preventDefault();
   if (validateMatchForm()) {
@@ -242,8 +322,7 @@ function submitMatchForm(e) {
       method: form.dataset.method,
       data: data,
       success: () => {
-        disableMatchForm();
-        fillMatchesTable(document.getElementById("matches"));
+        reloadDashboard();
       },
       error: (xhr, status, e) => console.error(e),
     });
@@ -264,8 +343,28 @@ function submitTeamForm(e) {
       method: form.dataset.method,
       data: data,
       success: () => {
-        disableTeamForm();
-        fillTeamsTable(document.getElementById("teams"));
+        reloadDashboard();
+      },
+      error: (xhr, status, e) => console.error(e),
+    });
+  } else console.log("Error with inputs");
+}
+
+function submitGameForm(e) {
+  e.preventDefault();
+  if (validateGameForm()) {
+    const { form } = getGameFormElements();
+
+    // Get form data in JSON format
+    const data = {};
+    new FormData(form).forEach((value, key) => (data[key] = value));
+
+    $.ajax({
+      url: form.action,
+      method: form.dataset.method,
+      data: data,
+      success: () => {
+        reloadDashboard();
       },
       error: (xhr, status, e) => console.error(e),
     });
@@ -314,6 +413,27 @@ function bindForms() {
       endpoint: "/teams/",
     });
   });
+
+  const gameFormButton = document
+    .getElementById("game-form")
+    .querySelector("button:not(.close)");
+  gameFormButton.addEventListener("click", submitGameForm);
+  document
+    .getElementById("game-form")
+    .addEventListener("submit", submitGameForm);
+  document
+    .getElementById("game-form")
+    .querySelector("button.close")
+    .addEventListener("click", (e) => {
+      e.preventDefault();
+      disableGameForm();
+    });
+  document.getElementById("add-game-button").addEventListener("click", (e) => {
+    fillGameForm({
+      create: true,
+      endpoint: "/game/",
+    });
+  });
 }
 
 function changeUserPermissions(user) {
@@ -342,7 +462,7 @@ function deleteUserAsAdmin(user){
     url: `/api/users/${user._id}/delete`,
     method: "DELETE",
     success: () => {
-      fillUsersTable(document.getElementById("users"));
+      reloadDashboard();
     },
     error: (xhr, status, e) => console.error(e),
   });
@@ -353,10 +473,21 @@ function deleteMatch(match){
     url: `/api/matches/${match._id}/delete`,
     method: "DELETE",
     success: () => {
-      fillMatchesTable(document.getElementById("matches"));
+      reloadDashboard();
     },
     error: (xhr, status, e) => console.error(e),
   });
+}
+
+function deleteGame(game){
+  $.ajax({
+    url: `/api/games/${game._id}/delete`,
+    method: "DELETE",
+    success: () => {
+      reloadDashboard();
+    },
+    error: (xhr, status, e) => console.error(e),
+  })
 }
 
 function fillUsersTable(table) {
@@ -619,14 +750,6 @@ function fillGamesTable(table){
           column.innerText = game.title ? game.title : "N/A";
         } else if (field === "logo") {
           column.innerText = game.logo ? game.logo : "N/A";
-        } else if (field === "categories") {
-          if(game.categories.length == 0)
-            column.innerText = "N/A";
-          else{
-            for(let i = 0; i < game.categories.length; i++){
-              column.innerText += "\n " + game.categories[i];
-            }
-          }
         } else
           console.warn(
             `Games table: Header contained name ${field} which could not be found for the game ${game._id}.`
@@ -636,7 +759,7 @@ function fillGamesTable(table){
       });
 
       if (row.children) {
-        // Make and append a button to edit this team
+        // Make and append a button to edit this game
         const column = document.createElement("td");
         const button = document.createElement("button");
         column.classList.add("center");
@@ -645,15 +768,12 @@ function fillGamesTable(table){
         button.innerHTML = editIcon;
 
         button.addEventListener("click", () => {
-          /*
-          fillTeamForm({
-            name: team.name,
-            status: team.status,
-            game: team.game,
-            endpoint: `api/teams/${team._id}/update`,
+          fillGameForm({
+            title: game.title,
+            img: game.logo,
+            endpoint: `api/games/${game._id}/update`,
             method: "PUT",
-          });*/
-          console.log('hello');
+          });
         });
 
         column.appendChild(button);
@@ -668,7 +788,7 @@ function fillGamesTable(table){
         deleteButton.classList.add("promote");
         deleteButton.innerHTML = deleteIcon;
         deleteButton.addEventListener("click", () => {
-          console.log("hello 2");
+          deleteGame(game);
         });
         deleteCol.appendChild(deleteButton);
         row.appendChild(deleteCol);

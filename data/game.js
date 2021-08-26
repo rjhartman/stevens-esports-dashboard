@@ -1,34 +1,12 @@
 const mongoCollections = require("../config/mongoCollections");
 const games = mongoCollections.games;
-// const teams = require('./teamfunctions.js');
+const teams = mongoCollections.teams;
+const users = mongoCollections.users;
+const matches = mongoCollections.matches;
 let { ObjectId } = require("mongodb");
-const cloudinary = require("cloudinary").v2;
+
 require("dotenv").config();
 
-function initCloud() {
-  cloudinary.config({
-    cloud_name: "stevens-esports",
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-  });
-}
-function findImageNameFromUrl(url){
-  var imageName = url.split('/').pop();
-  return imageName.split('.').slice(0,-1).join('.');
-}
-let deleteImage = (logo) => {
-  let imageName = findImageNameFromUrl(logo);
-  return new Promise((resolve, reject) => {
-    cloudinary.uploader.destroy("logos/" + imageName,
-      function(e, r){
-        if(r)
-          resolve(r);
-        else
-          reject(e);
-      }
-    );
-  });
-}
 function checkString(str, name) {
   if (!str) throw `${name || "provided variable"} is empty`;
   if (typeof str !== "string")
@@ -37,13 +15,8 @@ function checkString(str, name) {
   if (s === "") throw `${name || "provided variable"} is an empty string`;
 }
 function checkGameObj(obj) {
-  checkString(obj.title, "title");
-  if (!Array.isArray(obj.categories))
-    throw `categories should be an array of strings`;
-  for (let c of obj.categories) {
-    checkString(c);
-  }
-  checkString(obj.img, "image");
+  checkString(obj.gameName, "title");
+  checkString(obj.image, "image");
 }
 async function getGameById(id) {
   checkString(id, "id");
@@ -64,9 +37,8 @@ async function addGame(obj) {
   checkGameObj(obj);
   const gameCollection = await games();
   let newGame = {
-    title: obj.title,
-    categories: obj.categories,
-    logo: obj.img
+    title: obj.gameName,
+    logo: obj.image
   };
   const newInsertInformation = await gameCollection.insertOne(newGame);
   if (newInsertInformation.insertedCount === 0)
@@ -75,19 +47,60 @@ async function addGame(obj) {
 }
 async function deleteGame(id) {
   checkString(id, "id");
-  let game = getGameById(id);
+  let gameToDelete = await getGameById(id);
   let parsedId = ObjectId(id);
   const gameCollection = await games();
+  const teamCollection = await teams();
+  const userCollection = await users();
+  const matchCollection = await matches();
 
-  // Deletes image from cloudinary
-  initCloud();
-  let result = await deleteImage(game.img);
+  // Deletes all player objects in user doc associated with team of game
+  let userArray = await userCollection.find({
+    activePlayers: {$elemMatch: {game: gameToDelete.title}}
+  }).toArray();
+
+  if(userArray.length !== 0){
+    for(let i = 0; i < userArray.length; i++){
+      let playerArray = userArray[i].activePlayers.filter(function(obj){
+        return obj.game !== gameToDelete.title;
+      });
+  
+      let updatedUser = {
+        firstName: userArray[i].firstName,
+        lastName: userArray[i].lastName,
+        username: userArray[i].username,
+        nickname: userArray[i].nickname,
+        email: userArray[i].email,
+        discordtag: userArray[i].discordtag,
+        passwordDigest: userArray[i].passwordDigest,
+        role: userArray[i].role,
+        biography: userArray[i].biography,
+        avatar: userArray[i].avatar,
+        activePlayers: playerArray
+      };
+  
+      const returnval = await userCollection.updateOne(
+          { _id: userArray[i]._id },
+          { $set: updatedUser }
+      );
+  
+      if(returnval.modifiedCount === 0){
+          throw `Could not delete player with username: ${userArray[i].username}`;
+      }
+    }
+  }
+  
+  // Deletes all matches associated with game
+  const deleteAllMatchInfo = await matchCollection.deleteMany({ matchType: gameToDelete.title });
+
+  // Deletes all teams associated with the game
+  const deleteAllTeamsInfo = await teamCollection.deleteMany({ game: gameToDelete.title });
 
   const deletionInfo = await gameCollection.deleteOne({ _id: parsedId });
   if (deletionInfo.deletedCount === 0) {
     throw `Could not delete game with id of ${id}`;
   }
-  return `${game.title} has been successfully deleted`;
+  return `${gameToDelete.title} has been successfully deleted`;
 }
 
 async function getAllGames() {

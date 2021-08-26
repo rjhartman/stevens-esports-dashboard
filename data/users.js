@@ -336,7 +336,7 @@ module.exports = {
     const userCollection = await users();
     let userToUpdate = await this.getUser(username);
 
-    let playerArray = user.activePlayers.filter(function(obj){
+    let playerArray = userToUpdate.activePlayers.filter(function(obj){
       return obj.team !== team;
     });
 
