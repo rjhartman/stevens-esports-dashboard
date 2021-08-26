@@ -2,7 +2,7 @@ const mongoCollections = require("../config/mongoCollections");
 const matches = mongoCollections.matches;
 const gameData = require("./game.js");
 const teams = require("./teamfunctions.js");
-let { ObjectId } = require("mongodb");
+let { ObjectId, ObjectID } = require("mongodb");
 const cloudinary = require("cloudinary").v2;
 require("dotenv").config();
 
@@ -92,33 +92,7 @@ function getMatchTime(d) {
   }
   return `${months[d.getMonth()]} ${d.getDate()} | ${hours}:${min} ${ampm}`;
 }
-/*
-function getLogo(matchType) {
-  cloudinary.config({
-    cloud_name: "stevens-esports",
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-  });
-  switch (matchType) {
-    case "League of Legends":
-      return cloudinary.url("logos/league_logo_2_red.png");
-    case "Counter-Strike: Global Offensive":
-      return cloudinary.url("logos/csgo_logo_red.png");
-    case "Overwatch":
-      return cloudinary.url("logos/overwatch_logo_red.png");
-    case "Rocket League":
-      return cloudinary.url("logos/rocket_league_logo_red.png");
-    case "Valorant":
-      return cloudinary.url("logos/valorant_logo_red.png");
-    case "Hearthstone":
-      return cloudinary.url("logos/hearthstone_logo_red.png");
-    case "Call of Duty":
-      return cloudinary.url("logos/cod_logo_red.png");
-    case "Rainbow Six: Siege":
-      return cloudinary.url("logos/r6_logo_red.png");
-  }
-}
-*/
+
 function findImageNameFromUrl(url){
   return url.split('/').pop();
 }  
@@ -151,6 +125,8 @@ async function getMatchById(id) {
 async function addMatch(obj) {
   obj.opponentScore = parseInt(obj.opponentScore);
   obj.teamsScore = parseInt(obj.teamsScore);
+  if(typeof obj.game == 'string')
+    obj.game = ObjectId(obj.game);
   await checkMatchObj(obj);
   const matchCollection = await matches();
   let newMatch = {
@@ -193,7 +169,10 @@ async function updateMatch(id, obj) {
   const matchCollection = await matches();
   const updatedMatch = {};
   for ([key, value] of Object.entries(obj)) {
-    updatedMatch[key] = value;
+    if(key === "game")
+      updatedMatch[key] = ObjectId(value);
+    else
+      updatedMatch[key] = value;
   }
 
   const updatedInfo = await matchCollection.updateOne(
