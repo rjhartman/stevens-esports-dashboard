@@ -1535,6 +1535,16 @@ main.backend {
     margin-bottom: 2rem;
 }
 
+.add-player {
+    margin-bottom: 2rem;
+}
+.edit-player {
+    margin-bottom: 2rem;
+}
+.del-player {
+    margin-bottom: 2rem;
+}
+
 .add-game {
     margin-bottom: 2rem;
 }
