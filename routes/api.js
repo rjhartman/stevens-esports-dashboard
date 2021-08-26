@@ -61,6 +61,10 @@ router.get("/teams", async (req, res) => {
   res.json(await teamData.getAllTeams_Alt(true));
 });
 
+router.get("/games", async (req, res) => {
+  res.json(await gameData.getAllGames());
+});
+
 router.post("/users/:id/promote", async (req, res) => {
   let { id } = req.params;
 

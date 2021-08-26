@@ -601,6 +601,88 @@ function fillTeamsTable(table){
   table.classList.add("active");
 }
 
+function fillGamesTable(table){
+  const fBody = table.querySelector("tbody");
+  fBody
+    .querySelectorAll("tr")
+    .forEach((el) => el.parentElement.removeChild(el));
+  const fields = Array.from(table.querySelectorAll("th[data-name]")).map(
+    (header) => header.dataset.name
+  );
+
+  $.get("api/games", (data) =>
+    data.forEach((game) => {
+      const row = document.createElement("tr");
+      fields.forEach((field) => {
+        const column = document.createElement("td");
+        if (field === "title") {
+          column.innerText = game.title ? game.title : "N/A";
+        } else if (field === "logo") {
+          column.innerText = game.logo ? game.logo : "N/A";
+        } else if (field === "categories") {
+          if(game.categories.length == 0)
+            column.innerText = "N/A";
+          else{
+            for(let i = 0; i < game.categories.length; i++){
+              column.innerText += "\n " + game.categories[i];
+            }
+          }
+        } else
+          console.warn(
+            `Games table: Header contained name ${field} which could not be found for the game ${game._id}.`
+          );
+
+        if (column.innerText) row.appendChild(column);
+      });
+
+      if (row.children) {
+        // Make and append a button to edit this team
+        const column = document.createElement("td");
+        const button = document.createElement("button");
+        column.classList.add("center");
+
+        button.classList.add("promote");
+        button.innerHTML = editIcon;
+
+        button.addEventListener("click", () => {
+          /*
+          fillTeamForm({
+            name: team.name,
+            status: team.status,
+            game: team.game,
+            endpoint: `api/teams/${team._id}/update`,
+            method: "PUT",
+          });*/
+          console.log('hello');
+        });
+
+        column.appendChild(button);
+        row.appendChild(column);
+        row.id = game._id;
+
+        // Attaching delete button
+        const deleteCol = document.createElement("td");
+        const deleteButton = document.createElement("button");
+        deleteCol.classList.add("center");
+
+        deleteButton.classList.add("promote");
+        deleteButton.innerHTML = deleteIcon;
+        deleteButton.addEventListener("click", () => {
+          console.log("hello 2");
+        });
+        deleteCol.appendChild(deleteButton);
+        row.appendChild(deleteCol);
+
+        fBody.appendChild(row);
+      }
+    })
+  );
+
+  const loader = table.closest("section").querySelector(".loader");
+  if (loader) loader.parentElement.removeChild(loader);
+  table.classList.add("active");
+}
+
 $(document).ready(() => {
   bindAccordions();
   bindForms();
@@ -614,6 +696,9 @@ $(document).ready(() => {
 
   const teams = document.getElementById("teams");
   if (teams) fillTeamsTable(teams);
+
+  const games = document.getElementById("games");
+  if (games) fillGamesTable(games);
 });
 
 $('option').mousedown(function(e) {
