@@ -195,7 +195,8 @@ async function updateMatch(id, obj) {
   for ([key, value] of Object.entries(obj)) {
     updatedMatch[key] = value;
   }
-
+  updatedMatch.date = new Date(obj.date);
+  updatedMatch.game = ObjectId(obj.game);
   const updatedInfo = await matchCollection.updateOne(
     { _id: parsedId },
     { $set: updatedMatch }
