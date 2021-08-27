@@ -122,7 +122,7 @@ async function updateGame(id, obj) {
   // Updates game object
   let updatedInfo = {
     title: obj.gameName,
-    img: obj.image
+    logo: obj.image
   };
 
   const returnVal = await gameCollection.updateOne(
