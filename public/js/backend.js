@@ -261,8 +261,8 @@ function fillGameForm(options) {
   enableGameForm();
   const form = document.getElementById("game-form");
   form.querySelector("h2").innerText = options.create
-    ? "Add Game"
-    : "Edit Game";
+    ? "Add Game (Upload a 96x96px logo image to Cloudinary -- Put link in the form)"
+    : "Edit Game (Upload a 96x96px logo image to Cloudinary -- Put link in the form)";
   form.action = options.endpoint;
   form.dataset.method = options.create === true ? "POST" : "PATCH";
 
