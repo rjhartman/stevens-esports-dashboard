@@ -49,6 +49,12 @@ function checkMatchBody(body) {
   }
 }
 
+function checkGameBody(body) {
+  let { gameName, image } = body;
+  checkString(gameName, "game title");
+  checkString(image, "image link");
+}
+
 router.get("/users", async (req, res) => {
   res.json(await users.getAllUsers(true));
 });
@@ -158,6 +164,26 @@ router.patch("/matches/:id/update", async (req, res) => {
         opponentScore,
       })
     );
+  } catch (e) {
+    console.error(e);
+    res.status(400).json({ error: e });
+  }
+});
+
+router.patch("/games/:id/update", async (req, res) => {
+  let { id } = req.params;
+  let { gameName, image } =
+    req.body;
+
+  if (!id || !(id = id.trim()))
+    return res.status(400).json({ error: "ID cannot be empty." });
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).json({ error: "ID was not a valid BSON id." });
+
+  // Error checking
+  try {
+    checkGameBody(req.body);
+    res.json(await gameData.updateGame(id, { gameName, image }));
   } catch (e) {
     console.error(e);
     res.status(400).json({ error: e });

@@ -1,7 +1,7 @@
 const mongoCollections = require("../config/mongoCollections");
 const matches = mongoCollections.matches;
 const gameData = require("./game.js");
-const teams = require("./teamfunctions.js");
+const games = mongoCollections.games;
 let { ObjectId, ObjectID } = require("mongodb");
 const cloudinary = require("cloudinary").v2;
 require("dotenv").config();
@@ -295,7 +295,8 @@ async function getAllMatches(transform = true) {
     ? await Promise.all(
         matchesList.map(async (match) => {
           try {
-            const game = await gameData.getGameById(match.game.toString());
+            const gameCollection = await games();
+            const game = await gameCollection.findOne({ _id: match.game });
             match.game = game;
           } catch (e) {
             console.warn("Game could not be transformed.", e);

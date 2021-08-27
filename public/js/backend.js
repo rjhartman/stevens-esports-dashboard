@@ -272,11 +272,11 @@ function fillGameForm(options) {
 
   // Fill game name:
   const gameName = document.getElementById("m-gameName");
-  gameName.value = options.title ? options.title : "";
+  gameName.value = options.gameName ? options.gameName : "";
 
   // Fill cloudinary image link:
   const image = document.getElementById("m-image");
-  image.value = options.img ? options.img : "";
+  image.value = options.image ? options.image : "";
 }
 
 function bindAccordions() {
@@ -769,8 +769,8 @@ function fillGamesTable(table){
 
         button.addEventListener("click", () => {
           fillGameForm({
-            title: game.title,
-            img: game.logo,
+            gameName: game.title,
+            image: game.logo,
             endpoint: `api/games/${game._id}/update`,
             method: "PUT",
           });

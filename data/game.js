@@ -89,17 +89,17 @@ async function deleteGame(id) {
       }
     }
   }
-  
-  // Deletes all matches associated with game
-  const deleteAllMatchInfo = await matchCollection.deleteMany({ matchType: gameToDelete.title });
-
-  // Deletes all teams associated with the game
-  const deleteAllTeamsInfo = await teamCollection.deleteMany({ game: gameToDelete.title });
 
   const deletionInfo = await gameCollection.deleteOne({ _id: parsedId });
-  if (deletionInfo.deletedCount === 0) {
+  if (deletionInfo.deletedCount === 0)
     throw `Could not delete game with id of ${id}`;
-  }
+  
+  // Deletes all matches associated with game
+  await matchCollection.deleteMany({ matchType: gameToDelete.title });
+
+  // Deletes all teams associated with the game
+  await teamCollection.deleteMany({ game: gameToDelete.title });
+
   return `${gameToDelete.title} has been successfully deleted`;
 }
 
@@ -108,10 +108,57 @@ async function getAllGames() {
   return await collection.find({}).toArray();
 }
 
+// Updates game object and all associated matches, teams, and user players
+async function updateGame(id, obj) {
+  checkString(id, "id");
+  checkGameObj(obj, "game object");
+  let parsedId = ObjectId(id);
+  let gameToUpdate = await getGameById(id);
+  const gameCollection = await games();
+  const teamCollection = await teams();
+  const matchCollection = await matches();
+  const userCollection = await users();
+
+  // Updates game object
+  let updatedInfo = {
+    title: obj.gameName,
+    img: obj.image
+  };
+
+  const returnVal = await gameCollection.updateOne(
+    { _id: parsedId },
+    { $set: updatedInfo }
+  );
+
+  if(returnVal.modifiedCount === 0)
+    throw 'Could not update the game successfully.';
+
+  // Updates all teams game name
+  await teamCollection.updateMany(
+    { game: gameToUpdate.title },
+    { $set: { game: obj.gameName }}
+  );
+
+  // Updates all matches matchType
+  await matchCollection.updateMany(
+    { matchType: gameToUpdate.title },
+    { $set: { matchType: obj.gameName }}
+  );
+
+  // Updates all user objects with player objects with new name
+  await userCollection.updateMany(
+    { activePlayers: { $elemMatch: { game: gameToUpdate.title }}},
+    { $set: { "activePlayers.$.game": obj.gameName }}
+  );
+
+  return gameToUpdate;
+}
+
 module.exports = {
   addGame,
   getGameById,
   getGameByName,
   deleteGame,
   getAllGames,
+  updateGame
 };
