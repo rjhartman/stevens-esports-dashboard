@@ -4,10 +4,8 @@ const app = express();
 const static = express.static(__dirname + "/public");
 const path = require("path");
 const session = require("express-session");
-
 const configRoutes = require("./routes");
 const exphbs = require("express-handlebars");
-const e = require("express");
 
 app.use("/public", static);
 app.use(express.json());
@@ -15,9 +13,7 @@ app.use(express.json());
 app.use(
   session({
     name: "StevensEsportsDashboard",
-    secret: process.env.SESSION_SECRET
-      ? process.env.SESSION_SECRET
-      : "t@FBc924fCnkUy#LDFzKtV7Ea92S",
+    secret: process.env.SESSION_SECRET || "t@FBc924fCnkUy#LDFzKtV7Ea92S",
     saveUninitialized: true,
     resave: false,
     cookie: { maxAge: 60000000 },
