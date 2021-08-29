@@ -21,6 +21,7 @@
     "browser-sync": "^2.26.14",
     "browsersync": "0.0.1-security",
     "cloudinary": "^1.25.1",
+    "cookie-session": "^1.4.0",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
     "express-handlebars": "^5.3.1",

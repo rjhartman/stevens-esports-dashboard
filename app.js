@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const static = express.static(__dirname + "/public");
 const path = require("path");
-const session = require("express-session");
+const session = require("cookie-session");
 const configRoutes = require("./routes");
 const exphbs = require("express-handlebars");
 
@@ -53,7 +53,7 @@ app.use("/api", (req, res, next) => {
 
 configRoutes(app);
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log("We've now got a server!");
   console.log("Your routes will be running on http://localhost:3000");
 });
