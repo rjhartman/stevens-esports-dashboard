@@ -1,6 +1,5 @@
 const mongoCollections = require('../config/mongoCollections');
 const teams = mongoCollections.teams;
-const games = mongoCollections.games;
 const matches = mongoCollections.matches;
 const users = mongoCollections.users;
 const userFuncs = require("../data/users.js");
@@ -13,6 +12,14 @@ function checkString(str, name){
     if (s === '') throw `${name || 'provided variable'} is an empty string`
 }
 
+function checkTeamObj(obj){
+    checkString(obj.teamName, "team name");
+    checkString(obj.varsity, 'varsity status');
+    checkString(obj.teamGame, "team game");
+    if (obj.varsity.toLowerCase().trim() !== "varsity" && obj.varsity.toLowerCase().trim() !== "junior varsity") {
+        throw `Error: team status should be set to Varsity or Junior Varsity`;
+    }
+}
 
 module.exports = {
     async getTeamById(id) {
@@ -61,17 +68,7 @@ module.exports = {
         }
         
         checkString(game, "addTeam game");
-        /*
-        if (!Array.isArray(players) || players.length == 0) {
-            throw 'Error: Please make sure your players is an array.';
-        }
-        
-        for (let i = 0; i < players.length; i++) {
-            // if (typeof players[i] !== 'string' || players[i].trim().length == 0) {
-            //     throw 'Error: players should all be strings of length greater than zero.';
-            // }
-            let parsedId = ObjectId(players[i]);
-        }*/
+
         let newTeam = {
             name: name,
             status: status,
@@ -81,83 +78,47 @@ module.exports = {
         const team_insert = await teamCollection.insertOne(newTeam);
         if(team_insert.insertedCount === 0) throw `Error: Could not add team!`;
 
-        const insertedTeam = await this.getTeamById(team_insert.insertedId.toString());
-        return insertedTeam;
+        
+        return await this.getTeamById(team_insert.insertedId.toString());
     },
-    // async addTeam(obj){
-    //     const teamCollection = await teams();
-    //     if (typeof obj.name !== "string" || obj.name.trim().length === 0) {
-    //         throw `Error: name should be a string of length greater than zero.`;
-    //     }
-    //     if (typeof obj.status !== "string" || obj.status.trim().length === 0) {
-    //         throw `Error: status should be a string of length greater than zero.`;
-    //     }
-    //     if (obj.status.toLowerCase().trim() !== "varsity" && obj.status.toLowerCase().trim() !== "junior varsity") {
-    //         throw `Error: team status should be set to Varsity or Junior Varsity`;
-    //     }
-    //     if (typeof obj.game !== "string" || obj.game.trim().length === 0) {
-    //         throw `Error: game should be a string of length greater than zero.`;
-    //     }
-    //     if (!Array.isArray(obj.players) || obj.players.length == 0) {
-    //         throw 'Error: Please make sure your players is an array.';
-    //     }
-    //     for (let i = 0; i < players.length; i++) {
-    //         // if (typeof players[i] !== 'string' || players[i].trim().length == 0) {
-    //         //     throw 'Error: players should all be strings of length greater than zero.';
-    //         // }
-    //         let parsedId = ObjectId(obj.players[i]);
-    //     }
-    //     let newTeam = {
-    //         name: obj.name,
-    //         status: obj.status,
-    //         game: obj.game,
-    //         players: obj.players
-    //     };
-    //     const newInsertInformation = await teamCollection.insertOne(newTeam);
-    //     if(newInsertInformation.insertedCount === 0) throw "Error: Could not add match!";
-    //     return await getTeamById(newInsertInformation.insertedId.toString());
-    // }, 
 
     async updateTeam(id, obj){
         checkString(id,'id');
+        checkTeamObj(obj);
         let parsedId = ObjectId(id);
         const teamCollection = await teams();
-        if (typeof obj.name !== "string" || obj.name.trim().length === 0) {
-            throw `Error: name should be a string of length greater than zero.`;
-        }
-        if (typeof obj.status !== "string" || obj.status.trim().length === 0) {
-            throw `Error: status should be a string of length greater than zero.`;
-        }
-        if (obj.status.toLowerCase().trim() !== "varsity" && obj.status.toLowerCase().trim() !== "junior varsity") {
-            throw `Error: team status should be set to Varsity or Junior Varsity`;
-        }
-        if (typeof obj.game !== "string" || obj.game.trim().length === 0) {
-            throw `Error: game should be a string of length greater than zero.`;
-        }
-        if (!Array.isArray(obj.players) || obj.players.length == 0) {
-            throw 'Error: Please make sure your players is an array.';
-        }
-        for (let i = 0; i < players.length; i++) {
-            // if (typeof players[i] !== 'string' || players[i].trim().length == 0) {
-            //     throw 'Error: players should all be strings of length greater than zero.';
-            // }
-            let parsedId = ObjectId(obj.players[i]);
-        }
-        const team = await getTeamById(id);
+        const matchCollection = await matches();
+        const userCollection = await users();
+
+        // Updates team object
+        const teamToUpdate = await this.getTeamById(id);
         let updatedTeam = {
-            name: obj.name,
-            status: obj.status,
-            game: obj.game,
-            players: obj.players
+            name: obj.teamName,
+            status: obj.varsity,
+            game: obj.teamGame,
+            players: teamToUpdate.players
         };
         const updatedInfo = await teamCollection.updateOne(
             { _id: parsedId },
             { $set: updatedTeam }
         );
         if (updatedInfo.modifiedCount === 0) {
-            throw 'could not update team successfully';
+            throw `could not update team ${teamToUpdate.name} successfully`;
         }
-        return await getTeamById(id);
+
+        // Updates all matches with updated team name
+        await matchCollection.updateMany(
+            { team: teamToUpdate.name },
+            { $set: { team: obj.teamName }}
+        );
+
+        // Updates all user object arrays with updated team name
+        await userCollection.updateMany(
+            { activePlayers: { $elemMatch: { team: teamToUpdate.name }}},
+            { $set: { "activePlayers.$.team": obj.teamName }}
+        );
+
+        return await this.getTeamById(id);
     },
 
     // Deletes team object from database

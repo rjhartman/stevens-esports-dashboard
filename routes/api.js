@@ -29,6 +29,11 @@ function checkScore(num, name) {
   if (score < 0) throw `${name} must be a non-negative integer.`;
 }
 
+function checkArray(arr, name) {
+  if(!Array.isArray(arr))
+    throw `${name} must be an array.`;
+}
+
 function checkMatchBody(body) {
   let { team, opponent, game, date, result, teamsScore, opponentScore } = body;
   checkString(team, "Team");
@@ -53,6 +58,13 @@ function checkGameBody(body) {
   let { gameName, image } = body;
   checkString(gameName, "game title");
   checkString(image, "image link");
+}
+
+function checkTeamBody(body) {
+  let { teamName, varsity, teamGame } = body;
+  checkString(teamName, "team name");
+  checkString(varsity, "varsity status");
+  checkString(teamGame, "team game");
 }
 
 router.get("/users", async (req, res) => {
@@ -162,6 +174,32 @@ router.patch("/matches/:id/update", async (req, res) => {
         result,
         teamsScore,
         opponentScore,
+      })
+    );
+  } catch (e) {
+    console.error(e);
+    res.status(400).json({ error: e });
+  }
+});
+
+router.patch("/teams/:id/update", async (req, res) => {
+  let { id } = req.params;
+  let { teamName, varsity, teamGame } =
+    req.body;
+
+  if (!id || !(id = id.trim()))
+    return res.status(400).json({ error: "ID cannot be empty." });
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).json({ error: "ID was not a valid BSON id." });
+
+  // Error checking
+  try {
+    checkTeamBody(req.body);
+    res.json(
+      await teamData.updateTeam(id, {
+        teamName,
+        varsity,
+        teamGame
       })
     );
   } catch (e) {

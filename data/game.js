@@ -111,7 +111,7 @@ async function getAllGames() {
 // Updates game object and all associated matches, teams, and user players
 async function updateGame(id, obj) {
   checkString(id, "id");
-  checkGameObj(obj, "game object");
+  checkGameObj(obj);
   let parsedId = ObjectId(id);
   let gameToUpdate = await getGameById(id);
   const gameCollection = await games();
