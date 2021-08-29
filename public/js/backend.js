@@ -479,6 +479,17 @@ function deleteMatch(match){
   });
 }
 
+function deleteTeam(team){
+  $.ajax({
+    url: `/api/teams/${team._id}/delete`,
+    method: "DELETE",
+    success: () => {
+      reloadDashboard();
+    },
+    error: (xhr, status, e) => console.error(e),
+  });
+}
+
 function deleteGame(game){
   $.ajax({
     url: `/api/games/${game._id}/delete`,
@@ -717,7 +728,7 @@ function fillTeamsTable(table){
         deleteButton.classList.add("promote");
         deleteButton.innerHTML = deleteIcon;
         deleteButton.addEventListener("click", () => {
-          console.log("hello 2");
+          deleteTeam(team);
         });
         deleteCol.appendChild(deleteButton);
         row.appendChild(deleteCol);

@@ -1,6 +1,8 @@
 const mongoCollections = require('../config/mongoCollections');
 const teams = mongoCollections.teams;
 const games = mongoCollections.games;
+const matches = mongoCollections.matches;
+const users = mongoCollections.users;
 const userFuncs = require("../data/users.js");
 let { ObjectId } = require('mongodb');
 
@@ -158,17 +160,61 @@ module.exports = {
         return await getTeamById(id);
     },
 
+    // Deletes team object from database
+    // Also deletes user array player object and all matches associated with it
     async deleteTeam(teamId){
-        // TODO: Complete this function for deleting a team from database
         checkString(teamId, "teamId");
         let parsedId = ObjectId(teamId);
-        let team = await this.getTeamById(teamId);
+        let teamToDelete = await this.getTeamById(teamId);
         const teamCollection = await teams();
-        const deletionInfo = await teamCollection.deleteOne({ _id: parsedId});
+
+        // Deletes team object
+        const deletionInfo = await teamCollection.deleteOne({ _id: parsedId });
         if(deletionInfo.deletedCount === 0){
             throw `Could not delete team with id ${teamId}.`;
         }
 
-        return `${team.name} has been successfully deleted`;
+        // Deletes all matches with team
+        const matchCollection = await matches();
+        await matchCollection.deleteMany({ team: teamToDelete.name });
+
+        // Deletes all player objects associated with team in user docs
+        const userCollection = await users();
+        let userArray = await userCollection.find({
+            activePlayers: {$elemMatch: {team: teamToDelete.name}}
+        }).toArray();
+
+        if(userArray.length !== 0){
+            for(let i = 0; i < userArray.length; i++){
+                let playerArray = userArray[i].activePlayers.filter(function(obj){
+                    return obj.team !== teamToDelete.name;
+                });
+            
+                let updatedUser = {
+                    firstName: userArray[i].firstName,
+                    lastName: userArray[i].lastName,
+                    username: userArray[i].username,
+                    nickname: userArray[i].nickname,
+                    email: userArray[i].email,
+                    discordtag: userArray[i].discordtag,
+                    passwordDigest: userArray[i].passwordDigest,
+                    role: userArray[i].role,
+                    biography: userArray[i].biography,
+                    avatar: userArray[i].avatar,
+                    activePlayers: playerArray
+                };
+            
+                const returnval = await userCollection.updateOne(
+                    { _id: userArray[i]._id },
+                    { $set: updatedUser }
+                );
+            
+                if(returnval.modifiedCount === 0){
+                    throw `Could not delete player with username: ${userArray[i].username}`;
+                }
+            }
+        }
+
+        return `${teamToDelete.name} has been successfully deleted`;
     }
 };
