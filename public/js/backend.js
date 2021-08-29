@@ -350,9 +350,38 @@ function fillGameForm(options) {
 function fillPlayerForm(options) {
   enablePlayerForm();
   const form = document.getElementById("player-form");
-  form.querySelector("h2").innerText = options.create
-    ? "Add Player"
-    : "Edit Player";
+  if(options.create === "remove"){
+    form.querySelector("h2").innerText = "Remove Player";
+
+    form.querySelector("label[for=m-position]").style.display = "none";
+    document.getElementById("m-position").setAttribute("disabled", true);
+    document.getElementById("m-position").setAttribute("hidden", true);
+
+    form.querySelector("label[for=m-starter]").style.display = "none";
+    document.getElementById("m-starter").setAttribute("disabled", true);
+    document.getElementById("m-starter").setAttribute("hidden", true);
+
+    form.querySelector("label[for=m-captain]").style.display = "none";
+    document.getElementById("m-captain").setAttribute("disabled", true);
+    document.getElementById("m-captain").setAttribute("hidden", true);
+  }
+  else{
+    form.querySelector("h2").innerText = options.create
+      ? "Add Player"
+      : "Edit Player";
+    
+    form.querySelector("label[for=m-position]").style.display = "block";
+    document.getElementById("m-position").removeAttribute("disabled");
+    document.getElementById("m-position").removeAttribute("hidden");
+
+    form.querySelector("label[for=m-starter]").style.display = "block";
+    document.getElementById("m-starter").removeAttribute("disabled");
+    document.getElementById("m-starter").removeAttribute("hidden");
+
+    form.querySelector("label[for=m-captain]").style.display = "block";
+    document.getElementById("m-captain").removeAttribute("disabled");
+    document.getElementById("m-captain").removeAttribute("hidden");
+  }
   form.action = options.endpoint;
   form.dataset.method = "PATCH";
 
@@ -882,6 +911,7 @@ function fillTeamsTable(table){
             game: team.game,
             endpoint: `api/players/${team._id}/delete-player`,
             method: "PUT",
+            create: 'remove',
           });
         });
 
