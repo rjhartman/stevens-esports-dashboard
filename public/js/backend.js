@@ -698,6 +698,69 @@ function fillTeamsTable(table){
       });
 
       if (row.children) {
+        // Appends add player button
+        const addPlayerColumn = document.createElement("td");
+        const addPlayerButton = document.createElement("button");
+        addPlayerColumn.classList.add("center");
+
+        addPlayerButton.classList.add("promote");
+        addPlayerButton.innerHTML = promoteIcon;
+
+        addPlayerButton.addEventListener("click", () => {
+          fillTeamForm({
+            name: team.name,
+            status: team.status,
+            game: team.game,
+            endpoint: `api/teams/${team._id}/update`,
+            method: "PUT",
+          });
+        });
+
+        addPlayerColumn.appendChild(addPlayerButton);
+        row.appendChild(addPlayerColumn);
+
+        // Appends edit player button
+        const editPlayerColumn = document.createElement("td");
+        const editPlayerButton = document.createElement("button");
+        editPlayerColumn.classList.add("center");
+
+        editPlayerButton.classList.add("promote");
+        editPlayerButton.innerHTML = editIcon;
+
+        editPlayerButton.addEventListener("click", () => {
+          fillTeamForm({
+            name: team.name,
+            status: team.status,
+            game: team.game,
+            endpoint: `api/teams/${team._id}/update`,
+            method: "PUT",
+          });
+        });
+
+        editPlayerColumn.appendChild(editPlayerButton);
+        row.appendChild(editPlayerColumn);
+
+        // Appends delete player button
+        const delPlayerColumn = document.createElement("td");
+        const delPlayerButton = document.createElement("button");
+        delPlayerColumn.classList.add("center");
+
+        delPlayerButton.classList.add("promote");
+        delPlayerButton.innerHTML = demoteIcon;
+
+        delPlayerButton.addEventListener("click", () => {
+          fillTeamForm({
+            name: team.name,
+            status: team.status,
+            game: team.game,
+            endpoint: `api/teams/${team._id}/update`,
+            method: "PUT",
+          });
+        });
+
+        delPlayerColumn.appendChild(delPlayerButton);
+        row.appendChild(delPlayerColumn);
+
         // Make and append a button to edit this team
         const column = document.createElement("td");
         const button = document.createElement("button");
