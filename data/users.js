@@ -334,6 +334,7 @@ module.exports = {
     checkString(username, 'username');
 
     const userCollection = await users();
+    const teamCollection = await teams();
     let userToUpdate = await this.getUser(username);
 
     let playerArray = userToUpdate.activePlayers.filter(function(obj){
@@ -363,8 +364,8 @@ module.exports = {
         throw `Could not delete player with username: ${username}`;
     }
 
-    // Removes player id from teanm object
-    let teamToUpdate = await teamCollection.find({
+    // Removes player id from team object
+    let teamToUpdate = await teamCollection.findOne({
       name: team
     });
 

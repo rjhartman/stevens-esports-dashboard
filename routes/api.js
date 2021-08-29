@@ -29,11 +29,6 @@ function checkScore(num, name) {
   if (score < 0) throw `${name} must be a non-negative integer.`;
 }
 
-function checkArray(arr, name) {
-  if(!Array.isArray(arr))
-    throw `${name} must be an array.`;
-}
-
 function checkMatchBody(body) {
   let { team, opponent, game, date, result, teamsScore, opponentScore } = body;
   checkString(team, "Team");
@@ -65,6 +60,22 @@ function checkTeamBody(body) {
   checkString(teamName, "team name");
   checkString(varsity, "varsity status");
   checkString(teamGame, "team game");
+}
+
+function checkPlayerBody(body) {
+  let { playerTeam, playerGame, playerName, position, starter, captain } = body;
+  checkString(playerTeam, "team name");
+  checkString(playerGame, "team game");
+  checkString(playerName, "player's username");
+  checkString(position, "player's position");
+  checkString(starter, "isStarter");
+  checkString(captain, "isCaptain");
+}
+
+function checkRMPlayerBody(body) {
+  let { playerTeam, playerName } = body;
+  checkString(playerTeam, "team name");
+  checkString(playerName, "player's username");
 }
 
 router.get("/users", async (req, res) => {
@@ -222,6 +233,57 @@ router.patch("/games/:id/update", async (req, res) => {
   try {
     checkGameBody(req.body);
     res.json(await gameData.updateGame(id, { gameName, image }));
+  } catch (e) {
+    console.error(e);
+    res.status(400).json({ error: e });
+  }
+});
+
+router.patch("/players/:teamId/add-player", async (req, res) => {
+  let { teamId } = req.params;
+  let { playerTeam, playerGame, playerName, position, starter, captain } =
+    req.body;
+
+  if (!teamId || !(teamId = teamId.trim()))
+    return res.status(400).json({ error: "ID cannot be empty." });
+  if (!ObjectID.isValid(req.params.teamId))
+    return res.status(400).json({ error: "ID was not a valid BSON id." });
+
+  // Error checking
+  try {
+    checkPlayerBody(req.body);
+    let isStarter;
+    if(starter === "true")
+      isStarter = true;
+    else if(starter === "false")
+      isStarter = false;
+
+    if(captain === "true")
+      isCaptain = true;
+    else if(captain === "false")
+      isCaptain = false;
+
+    res.json(await users.addPlayer(playerName, playerGame, playerTeam, position, isStarter, isCaptain));
+  } catch (e) {
+    console.error(e);
+    res.status(400).json({ error: e });
+  }
+});
+
+router.patch("/players/:teamId/delete-player", async (req, res) => {
+  let { teamId } = req.params;
+  let { playerTeam, playerName } =
+    req.body;
+
+  if (!teamId || !(teamId = teamId.trim()))
+    return res.status(400).json({ error: "ID cannot be empty." });
+  if (!ObjectID.isValid(req.params.teamId))
+    return res.status(400).json({ error: "ID was not a valid BSON id." });
+
+  // Error checking
+  try {
+    checkRMPlayerBody(req.body);
+    res.json(await users.deletePlayer(playerName, playerTeam));
   } catch (e) {
     console.error(e);
     res.status(400).json({ error: e });

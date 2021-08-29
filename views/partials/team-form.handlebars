@@ -35,10 +35,14 @@
   <!-- team-form -->
   <form id="player-form">
     <button class="close button">&times;</button>
-    <h2>Edit Player</h2>
+    <h2>Add Player</h2>
     <div class="row">
       <label for="m-playerTeam">Roster Name</label>
-      <input type="text" name="playerTeam" id="m-playerTeam"/>
+      <select name="playerTeam" id="m-playerTeam">
+        {{#each teams }}
+          <option value="{{this.name}}">{{this.name}}</option>
+        {{/each}}
+      </select>
       <p class="error">Error</p>
     </div>
     <div class="row">
@@ -91,7 +95,6 @@
         <th data-name="game">Game</th>
         <th data-name="players">Players</th>
         <th>Add Player</th>
-        <th>Edit Player</th>
         <th>Delete Player</th>
         <th>Edit Team</th>
         <th>Delete Team</th>

@@ -353,6 +353,10 @@ function fillPlayerForm(options) {
   if(options.create === "remove"){
     form.querySelector("h2").innerText = "Remove Player";
 
+    form.querySelector("label[for=m-playerGame]").style.display = "none";
+    document.getElementById("m-playerGame").setAttribute("disabled", true);
+    document.getElementById("m-playerGame").setAttribute("hidden", true);
+
     form.querySelector("label[for=m-position]").style.display = "none";
     document.getElementById("m-position").setAttribute("disabled", true);
     document.getElementById("m-position").setAttribute("hidden", true);
@@ -366,9 +370,11 @@ function fillPlayerForm(options) {
     document.getElementById("m-captain").setAttribute("hidden", true);
   }
   else{
-    form.querySelector("h2").innerText = options.create
-      ? "Add Player"
-      : "Edit Player";
+    form.querySelector("h2").innerText = "Add Player"
+
+    form.querySelector("label[for=m-playerGame]").style.display = "block";
+    document.getElementById("m-playerGame").removeAttribute("disabled");
+    document.getElementById("m-playerGame").removeAttribute("hidden");
     
     form.querySelector("label[for=m-position]").style.display = "block";
     document.getElementById("m-position").removeAttribute("disabled");
@@ -876,26 +882,6 @@ function fillTeamsTable(table){
 
         addPlayerColumn.appendChild(addPlayerButton);
         row.appendChild(addPlayerColumn);
-
-        // Appends edit player button
-        const editPlayerColumn = document.createElement("td");
-        const editPlayerButton = document.createElement("button");
-        editPlayerColumn.classList.add("center");
-
-        editPlayerButton.classList.add("promote");
-        editPlayerButton.innerHTML = editIcon;
-
-        editPlayerButton.addEventListener("click", () => {
-          fillPlayerForm({
-            name: team.name,
-            game: team.game,
-            endpoint: `api/players/${team._id}/update-player`,
-            method: "PUT",
-          });
-        });
-
-        editPlayerColumn.appendChild(editPlayerButton);
-        row.appendChild(editPlayerColumn);
 
         // Appends delete player button
         const delPlayerColumn = document.createElement("td");
