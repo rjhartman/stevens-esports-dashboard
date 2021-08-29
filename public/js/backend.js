@@ -33,6 +33,19 @@ function getGameFormElements() {
   }
 }
 
+function getPlayerFormElements() {
+  return {
+    form: document.getElementById("player-form"),
+    playerTeam: document.getElementById("m-playerTeam"),
+    playerGame: document.getElementById("m-playerGame"),
+    playerName: document.getElementById("m-playerName"),
+    position: document.getElementById("m-position"),
+    starter: document.getElementById("m-starter"),
+    captain: document.getElementById("m-captain"),
+  }
+}
+
+
 function addError(input, error) {
   const errorEl = input.closest(".row").querySelector(".error");
   errorEl.innerText = error;
@@ -143,6 +156,50 @@ function validateGameForm() {
   return valid;
 }
 
+function validatePlayerForm() {
+  const { playerTeam, playerGame, playerName, position, starter, captain } = getPlayerFormElements();
+  let valid = true;
+
+  document
+    .getElementById("player-form")
+    .querySelectorAll("input, select, textarea")
+    .forEach((el) => {
+      if (!el.checkValidity()) {
+        addError(el, el.validationMessage);
+        valid = false;
+      } else {
+        removeError(el);
+      }
+    });
+
+  if (!playerTeam) {
+    addError(playerTeam, "There must be a team name.");
+    valid = false;
+  }
+  if (!playerGame) {
+    addError(playerGame, "There must be a game.");
+    valid = false;
+  }
+  if (!playerName) {
+    addError(playerName, "There must be a player username.");
+    valid = false;
+  }
+  if (!position) {
+    addError(position, "There must be a team position.");
+    valid = false;
+  }
+  if (!starter) {
+    addError(starter, "There must be a yes/no to starter.");
+    valid = false;
+  }
+  if (!captain) {
+    addError(captain, "There must be a yes/no to team captain.");
+    valid = false;
+  }
+
+  return valid;
+}
+
 function disableMatchForm() {
   document.getElementById("match-form").classList.remove("visible");
 }
@@ -172,6 +229,17 @@ function enableGameForm() {
   document.getElementById("game-form").classList.add("visible");
   document
     .getElementById("game-form")
+    .querySelectorAll(".error.active")
+    .forEach((el) => el.classList.remove("active"));
+}
+
+function disablePlayerForm() {
+  document.getElementById("player-form").classList.remove("visible");
+}
+function enablePlayerForm() {
+  document.getElementById("player-form").classList.add("visible");
+  document
+    .getElementById("player-form")
     .querySelectorAll(".error.active")
     .forEach((el) => el.classList.remove("active"));
 }
@@ -279,6 +347,31 @@ function fillGameForm(options) {
   image.value = options.image ? options.image : "";
 }
 
+function fillPlayerForm(options) {
+  enablePlayerForm();
+  const form = document.getElementById("player-form");
+  form.querySelector("h2").innerText = options.create
+    ? "Add Player"
+    : "Edit Player";
+  form.action = options.endpoint;
+  form.dataset.method = "PATCH";
+
+  Object.values(getPlayerFormElements()).forEach(
+    (el) => (el.required = options.create === true && el.type !== "number")
+  );
+
+  // Fill team name:
+  const rosterName = document.getElementById("m-playerTeam");
+  rosterName.value = options.name ? options.name : "";
+
+  // Select game:
+  const game = document.getElementById("m-playerGame");
+  const selectedGame = game.querySelector(`option[value='${options.game}']`);
+  game.selectedIndex = selectedGame
+    ? Array.from(game.children).indexOf(selectedGame)
+    : 0;
+}
+
 function bindAccordions() {
   const collapsables = document.querySelectorAll(".collapsable");
   collapsables.forEach((section) => {
@@ -371,6 +464,27 @@ function submitGameForm(e) {
   } else console.log("Error with inputs");
 }
 
+function submitPlayerForm(e) {
+  e.preventDefault();
+  if (validatePlayerForm()) {
+    const { form } = getPlayerFormElements();
+
+    // Get form data in JSON format
+    const data = {};
+    new FormData(form).forEach((value, key) => (data[key] = value));
+
+    $.ajax({
+      url: form.action,
+      method: form.dataset.method,
+      data: data,
+      success: () => {
+        reloadDashboard();
+      },
+      error: (xhr, status, e) => console.error(e),
+    });
+  } else console.log("Error with inputs");
+}
+
 function bindForms() {
   const matchesFormButton = document
     .getElementById("match-form")
@@ -413,6 +527,21 @@ function bindForms() {
       endpoint: "/teams/",
     });
   });
+
+  const playerFormButton = document
+    .getElementById("player-form")
+    .querySelector("button:not(.close)");
+  playerFormButton.addEventListener("click", submitPlayerForm);
+  document
+    .getElementById("player-form")
+    .addEventListener("submit", submitPlayerForm);
+  document
+    .getElementById("player-form")
+    .querySelector("button.close")
+    .addEventListener("click", (e) => {
+      e.preventDefault();
+      disablePlayerForm();
+    });
 
   const gameFormButton = document
     .getElementById("game-form")
@@ -707,12 +836,12 @@ function fillTeamsTable(table){
         addPlayerButton.innerHTML = promoteIcon;
 
         addPlayerButton.addEventListener("click", () => {
-          fillTeamForm({
+          fillPlayerForm({
             name: team.name,
-            status: team.status,
             game: team.game,
-            endpoint: `api/teams/${team._id}/update`,
+            endpoint: `api/players/${team._id}/add-player`,
             method: "PUT",
+            create: true,
           });
         });
 
@@ -728,11 +857,10 @@ function fillTeamsTable(table){
         editPlayerButton.innerHTML = editIcon;
 
         editPlayerButton.addEventListener("click", () => {
-          fillTeamForm({
+          fillPlayerForm({
             name: team.name,
-            status: team.status,
             game: team.game,
-            endpoint: `api/teams/${team._id}/update`,
+            endpoint: `api/players/${team._id}/update-player`,
             method: "PUT",
           });
         });
@@ -749,11 +877,10 @@ function fillTeamsTable(table){
         delPlayerButton.innerHTML = demoteIcon;
 
         delPlayerButton.addEventListener("click", () => {
-          fillTeamForm({
+          fillPlayerForm({
             name: team.name,
-            status: team.status,
             game: team.game,
-            endpoint: `api/teams/${team._id}/update`,
+            endpoint: `api/players/${team._id}/delete-player`,
             method: "PUT",
           });
         });

@@ -32,6 +32,57 @@
     </div>
     <button class="button rounded">SUBMIT</button>
   </form>
+  <!-- team-form -->
+  <form id="player-form">
+    <button class="close button">&times;</button>
+    <h2>Edit Player</h2>
+    <div class="row">
+      <label for="m-playerTeam">Roster Name</label>
+      <input type="text" name="playerTeam" id="m-playerTeam"/>
+      <p class="error">Error</p>
+    </div>
+    <div class="row">
+      <label for="m-playerGame">Game</label>
+      <select name="playerGame" id="m-playerGame">
+        {{#each games }}
+          <option value="{{this.title}}">{{this.title}}</option>
+        {{/each}}
+      </select>
+      <p class="error">Error</p>
+    </div>
+    <div class="row">
+      <label for="m-playerName">Username of Player</label>
+      <select name="playerName" id="m-playerName">
+        {{#each users }}
+          <option value="{{this.username}}">{{this.username}}</option>
+        {{/each}}
+      </select>
+      <p class="error">Error</p>
+    </div>
+    <div class="row">
+      <label for="m-position">Position</label>
+      <input type="text" name="position" id="m-position"/>
+      <p class="error">Error</p>
+    </div>
+    <div class="row">
+      <label for="m-starter">Starter Player?</label>
+      <select name="starter" id="m-starter">
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
+      <p class="error">Error</p>
+    </div>
+    <div class="row">
+      <label for="m-captain">Team Captain?</label>
+      <select name="captain" id="m-captain">
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
+      <p class="error">Error</p>
+    </div>
+    <button class="button rounded">SUBMIT</button>
+  </form>
+  <!-- player-form -->
   <table id="teams" class="fillable">
     <thead>
       <tr>
